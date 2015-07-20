@@ -1,0 +1,89 @@
+body > .primer-pattern {
+    margin-left: $primer-gutter;
+    margin-right: $primer-gutter;
+}
+
+.primer-pattern {
+	margin-bottom: 2.5em;
+	margin-top: 2.5em;
+	// border: 1px solid $border-color;
+	background: #fff;
+
+	border-radius: $border-radius;
+	box-shadow: 0 1px 2px rgba(43,59,93,0.29);
+
+	// When it follows a group heading, reduce the vertical margin
+	.primer-group__header + & {
+		margin-top: 1em;
+	}
+
+	// First item on the page
+	body > &:first-child {
+		margin-top: 1em;
+	}
+}
+
+.primer-pattern__header {
+	font-family: $font-family;
+	font-size: 18px;
+	line-height: 24px;
+	// background: $header-color;
+	border-bottom: 1px solid #edecec;
+	overflow: hidden;
+	padding: 1em $horizontal-spacing;
+	color: $font-color;
+
+	border-radius: $border-radius $border-radius 0 0;
+}
+
+.primer-pattern__title {
+	float: left;
+}
+
+.primer-pattern__id {
+	font-family: 'courier new';
+	font-size: 0.75em;
+	opacity: 0;
+	margin-left: 0.5em;
+
+	.primer-pattern:hover & {
+		opacity: 0.5;
+	}
+}
+
+.primer-pattern__copy {
+	clear: both;
+	font-family: $font-family;
+	font-size: 0.75em;
+	margin-top: 2.2em;
+	color: #444;
+
+	p:last-child {
+		margin-bottom: 0.4em;
+	}
+}
+
+
+
+.primer-pattern__actions {
+	@extend %primer-actions;
+
+	margin: -10px;
+}
+
+.primer-pattern__content {
+	padding: 1em $horizontal-spacing;
+}
+
+.primer-pattern__html {
+	border: 1px solid $border-color;
+	margin: $horizontal-spacing;
+
+	pre {
+		margin: 0 !important;
+		padding: 0.5em;
+		font-size: 0.75em;
+	}
+
+	@import "prismjs";
+}

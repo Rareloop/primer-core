@@ -1,6 +1,6 @@
 <?php namespace Rareloop\Primer\Renderable;
 
-use Rareloop\Primer\Templating\Handlebars;
+// use Rareloop\Primer\Templating\Handlebars;
 use Rareloop\Primer\Exceptions\NotFoundException;
 use Rareloop\Primer\Templating\View;
 use Rareloop\Primer\Templating\ViewData;
@@ -73,7 +73,19 @@ class Pattern implements Renderable
             throw new NotFoundException('Pattern not found: ' . $this->id);
         }
 
-        $engine = Handlebars::instance();
+        $pathToPattern = $this->path;
+
+        // If this is an alias we need to load the template of the parent pattern
+        if (strpos($this->id, "~") !== false) {
+            $parts = explode("~", $this->id);
+
+            if (count($parts) > 1) {
+                $pathToPattern = Primer::$PATTERN_PATH . '/' . $parts[0];
+            }
+        }
+
+        $templateClass = Primer::$TEMPLATE_CLASS;
+        $template = new $templateClass($pathToPattern, 'template');
 
         // Get the title
         $idComponents = explode('/', $this->id);
@@ -90,7 +102,8 @@ class Pattern implements Renderable
 
         $parser = new \Gajus\Dindent\Parser();
 
-        $this->html = $engine->render($this->id, $this->data);
+        // $this->html = $engine->render($this->id, $this->data);
+        $this->html = $template->render($this->data);
 
         // Tidy the HTML
         $this->html = $parser->indent($this->html);

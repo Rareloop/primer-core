@@ -1,10 +1,10 @@
-<?php namespace Rareloop\Primer\Templating\Helpers;
+<?php namespace Rareloop\Primer\Templating\Handlebars\Helpers;
 
 use Handlebars\Context;
 use Handlebars\Helper;
 use Handlebars\Template;
 use \InvalidArgumentException;
-use Rareloop\Primer\Templating\Handlebars;
+use Rareloop\Primer\Templating\Handlebars\Handlebars;
 use Rareloop\Primer\Templating\ViewData;
 use Rareloop\Primer\FileSystem;
 use Rareloop\Primer\Events\Event;

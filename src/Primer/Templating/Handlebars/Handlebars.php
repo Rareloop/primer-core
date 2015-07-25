@@ -1,7 +1,7 @@
-<?php namespace Rareloop\Primer\Templating;
+<?php namespace Rareloop\Primer\Templating\Handlebars;
 
 use Rareloop\Primer\FileSystem;
-use Rareloop\Primer\Templating\Helpers\Inc;
+use Rareloop\Primer\Templating\Handlebars\Helpers\Inc;
 use Rareloop\Primer\Events\Event;
 
 class Handlebars extends \Handlebars\Handlebars
@@ -25,12 +25,7 @@ class Handlebars extends \Handlebars\Handlebars
      */
     public function __construct(array $options = array())
     {
-        $customOptions = array(
-            'loader' => new PatternLoader(),
-            'partials_loader' => new PatternLoader()
-        );
-
-        parent::__construct($customOptions);
+        parent::__construct($options);
 
         // Register a helper to include sub patterns
         $this->getHelpers()->add('inc', new Inc());

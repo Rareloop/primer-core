@@ -30,6 +30,13 @@ class Primer
     public static $PATTERN_PATH;
 
     /**
+     * Template class including namespace
+     *
+     * @var String
+     */
+    public static $TEMPLATE_CLASS;
+
+    /**
      * Singleton accessor
      *
      * @return Primer The singleton instance
@@ -51,13 +58,15 @@ class Primer
      * @param  String $basePath The base path of the project
      * @return Rareloop\Primer\Primer
      */
-    public static function start($basePath)
+    public static function start($basePath, $templateClass = 'Rareloop\Primer\Templating\Handlebars\HandlebarsTemplate')
     {
         ErrorHandler::register();
         ExceptionHandler::register();
 
         Primer::$BASE_PATH = realpath($basePath);
         Primer::$PATTERN_PATH = Primer::$BASE_PATH . '/patterns';
+
+        Primer::$TEMPLATE_CLASS = $templateClass;
 
         return Primer::instance();
     }

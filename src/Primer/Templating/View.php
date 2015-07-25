@@ -24,14 +24,11 @@ class View
             $params = new ViewData($params);
         }
 
-        $engine = new \Handlebars\Handlebars(array(
-            'loader' => new \Rareloop\Primer\Templating\HandlebarsLoader(Primer::$BASE_PATH.'/views/')
-        ));
-
-        Event::fire('handlebars.new', $engine);
+        $templateClass = Primer::$TEMPLATE_CLASS;
+        $template = new $templateClass(Primer::$BASE_PATH.'/views/', $name);
 
         Event::fire('view.' . $name, $params);
 
-        return $engine->render($name, $params);
+        return $template->render($params);
     }
 }

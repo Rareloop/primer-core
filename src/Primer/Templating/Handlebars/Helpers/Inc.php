@@ -4,7 +4,8 @@ use Handlebars\Context;
 use Handlebars\Helper;
 use Handlebars\Template;
 use \InvalidArgumentException;
-use Rareloop\Primer\Templating\Handlebars\Handlebars;
+use Rareloop\Primer\Templating\Handlebars\HandlebarsTemplate;
+use Rareloop\Primer\Primer;
 use Rareloop\Primer\Templating\ViewData;
 use Rareloop\Primer\FileSystem;
 use Rareloop\Primer\Events\Event;
@@ -51,7 +52,7 @@ class Inc implements Helper
                 }
             }
 
-            $partial = Handlebars::instance()->loadPartial($partialId);
+            $template = new HandlebarsTemplate(Primer::$BASE_PATH . '/patterns/' . $partialId, 'template');
 
             // Get the default data for this pattern
             $defaultData = FileSystem::getDataForPattern($partialId);
@@ -101,7 +102,7 @@ class Inc implements Helper
 
             Event::fire('pattern.' . $partialId, $mergedData);
 
-            return $partial->render($mergedData);
+            return $template->render($mergedData);
         } else {
             return "";
         }

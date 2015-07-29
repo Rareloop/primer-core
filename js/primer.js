@@ -1,5 +1,5 @@
 /*!
- * Primer frontend v1.0.0 (built: 2015-07-18)
+ * Primer frontend v1.0.0 (built: 2015-07-29)
  * http://github.com/rareloop/primer
  *
  * Copyright 2015 Rareloop (http://rareloop.com)
@@ -37,7 +37,7 @@ var $r = {
 
     addClass: function(el, className) {
         if (el.classList) el.classList.add(className);
-        else if (!hasClass(el, className)) el.className += ' ' + className;
+        else if (!$r.hasClass(el, className)) el.className += ' ' + className;
     },
 
     removeClass: function(el, className) {
@@ -46,12 +46,17 @@ var $r = {
     },
 
     toggleClass: function(el, className) {
-        if(hasClass(el, className)) {
+        if($r.hasClass(el, className)) {
             removeClass(el, className);
         }
         else {
             addClass(className);
         }
+    },
+
+    isHidden: function(el) {
+        var style = window.getComputedStyle(el);
+        return (style.display === 'none')
     }
 }
 
@@ -83,7 +88,7 @@ if ( 'querySelector' in document && 'addEventListener' in window ) {
             button.addEventListener('click', function(event) {
                 event.preventDefault();
 
-                if(el.offsetParent === null) {
+                if($r.isHidden(el)) {
                     // Hidden so show it
                     el.style.display = '';
                     $r.addClass(button, 'primer-pattern__toggle-button--active');
@@ -124,7 +129,7 @@ if ( 'querySelector' in document && 'addEventListener' in window ) {
             button.addEventListener('click', function(event) {
                 event.preventDefault();
 
-                if(el.offsetParent === null) {
+                if($r.isHidden(el)) {
                     // Hidden so show it
                     el.style.display = '';
                     $r.addClass(button, 'primer-pattern__toggle-button--active');

@@ -386,7 +386,7 @@ body > .primer-pattern {
   display: none;
   margin-bottom: 1em;
   max-height: 300px;
-  overflow: scroll; }
+  overflow: auto; }
 
 .primer-menu__list {
   margin: 0;

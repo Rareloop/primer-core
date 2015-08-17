@@ -232,11 +232,24 @@ class Primer
     }
 
     /**
-     * Get the menu listing all the page templates in the site
-     * 
-     * @return String
+     * Get the list of templates available. Returns an array of associative arrays
+     *
+     * e.g.
+     *
+     * array(
+     *     array(
+     *         'id' => 'home',
+     *         'title' => 'Home',
+     *     ),
+     *     array(
+     *         'id' => 'about-us',
+     *         'title' => 'About Us'
+     *     )
+     * );
+     *
+     * @return array
      */
-    public function getMenu()
+    public function getTemplates()
     {
         $templates = array();
         $path = Primer::$BASE_PATH . '/patterns/templates';
@@ -244,7 +257,7 @@ class Primer
         if ($handle = opendir($path)) {
 
             while (false !== ($entry = readdir($handle))) {
-                
+
                 if (substr($entry, 0, 1) !== '.') {
                     $templates[] = array(
                         'id' => $entry,
@@ -256,8 +269,18 @@ class Primer
             closedir($handle);
         }
 
+        return $templates;
+    }
+
+    /**
+     * Get the menu listing all the page templates in the site
+     *
+     * @return String
+     */
+    public function getMenu()
+    {
         $viewData = new ViewData(array(
-            'templates' => $templates
+            'templates' => $this->getTemplates()
         ));
 
         return \Rareloop\Primer\Templating\View::render('menu', $viewData);

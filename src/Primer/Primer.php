@@ -119,7 +119,6 @@ class Primer
         return Primer::instance();
     }
 
-
     /**
      * Remove unsafe/unsupported characters from the id
      *
@@ -290,11 +289,24 @@ class Primer
     }
 
     /**
-     * Get the menu listing all the page templates in the site
+     * Get the list of templates available. Returns an array of associative arrays
      *
-     * @return String
+     * e.g.
+     *
+     * array(
+     *     array(
+     *         'id' => 'home',
+     *         'title' => 'Home',
+     *     ),
+     *     array(
+     *         'id' => 'about-us',
+     *         'title' => 'About Us'
+     *     )
+     * );
+     *
+     * @return array
      */
-    public function getMenu()
+    public function getTemplates()
     {
         $templates = array();
         $path = Primer::$BASE_PATH . '/patterns/templates';
@@ -314,8 +326,18 @@ class Primer
             closedir($handle);
         }
 
+        return $templates;
+    }
+
+    /**
+     * Get the menu listing all the page templates in the site
+     *
+     * @return String
+     */
+    public function getMenu()
+    {
         $viewData = new ViewData(array(
-            'templates' => $templates
+            'templates' => $this->getTemplates()
         ));
 
         return \Rareloop\Primer\Templating\View::render('menu', $viewData);

@@ -13,9 +13,10 @@ class FileSystem
      * Retrieve data for a patter
      *
      * @param  String $id The id of the pattern
+     * @param  Boolean $resolveAlias Whether or not to resolve data from aliased patterns (e.g. button~outline -> button)
      * @return object     The decoded JSON data
      */
-    public static function getDataForPattern($id)
+    public static function getDataForPattern($id, $resolveAlias = false)
     {
         $data = array();
 
@@ -29,6 +30,20 @@ class FileSystem
                 // Merge in the data
                 $data += (array)$json;
             }
+        }
+
+        if ($resolveAlias) {
+            // Parent data - e.g. elements/button is the parent of elements/button~primary
+            $parentData = array();
+
+            // Load parent data if this is inherit
+            if (preg_match('/(.*?)~.*?/', $id, $matches)) {
+
+                $parentData = FileSystem::getDataForPattern($matches[1]);
+            }
+
+            // Merge the parent and pattern data together, giving preference to the pattern data
+            $data = array_replace_recursive((array)$parentData, (array)$data);
         }
 
         $viewData = new ViewData($data);

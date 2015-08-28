@@ -116,21 +116,8 @@ class Pattern implements Renderable
      */
     protected function loadData()
     {
-        $defaultData = FileSystem::getDataForPattern($this->id);
-
-        // TODO: Remove repeated code block (also found in Handlebars `inc` helper)
-
-        // Parent data - e.g. elements/button is the parent of elements/button~primary
-        $parentData = array();
-
-        // Load parent data if this is inherit
-        if (preg_match('/(.*?)~.*?/', $this->id, $matches)) {
-
-            $parentData = FileSystem::getDataForPattern($matches[1]);
-        }
-
-        // Merge the parent and pattern data together, giving preference to the pattern data
-        $defaultData = array_replace_recursive((array)$parentData, (array)$defaultData);
+        // Get the data for the pattern and resolve any aliases
+        $defaultData = FileSystem::getDataForPattern($this->id, true);
 
         return new ViewData($defaultData);
     }

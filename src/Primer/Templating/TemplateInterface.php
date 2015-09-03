@@ -27,5 +27,5 @@ interface TemplateInterface
      *
      * @return Array A list of strings
      */
-    public function extensions();
+    public function extension();
 }

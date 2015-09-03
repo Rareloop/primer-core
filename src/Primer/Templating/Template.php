@@ -5,11 +5,11 @@ use Rareloop\Primer\Templating\TemplateInterface;
 abstract class Template implements TemplateInterface
 {
     /**
-     * Array of file extensions
+     * File extensions
      *
-     * @var array
+     * @var String
      */
-    protected $extensions = array();
+    protected $extension;
 
     protected $directory;
 
@@ -34,12 +34,12 @@ abstract class Template implements TemplateInterface
     }
 
     /**
-     * Default implementation of the extensions function
+     * Default implementation of the extension function
      *
-     * @return Array A list of strings
+     * @return String The file extension for this template type
      */
-    public function extensions()
+    public function extension()
     {
-        return $this->extensions;
+        return $this->extension;
     }
 }

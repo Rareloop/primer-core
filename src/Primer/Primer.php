@@ -23,7 +23,14 @@ class Primer
     public static $BASE_PATH;
 
     /**
-     * Base path for the App
+     * Path to the cache directory
+     *
+     * @var String
+     */
+    public static $CACHE_PATH;
+
+    /**
+     * Path to the patterns directory
      *
      * @var String
      */
@@ -46,7 +53,7 @@ class Primer
         if (!isset(Primer::$instance)) {
             Primer::$instance = new Primer;
 
-            Event::fire('patternlab.init', Primer::$instance);
+            Event::fire('primer.init', Primer::$instance);
         }
 
         return Primer::$instance;
@@ -55,21 +62,51 @@ class Primer
     /**
      * Bootstrap the Primer singleton
      *
-     * @param  String $basePath The base path of the project
+     * For backwards compatibility the first param is either a string to the BASE_PATH
+     * or it can be an assoc array
+     *
+     * array(
+     *     'basePath' => '',
+     *     'patternPath' => '',     // Defaults to PRIMER::$BASE_PATH . '/pattern'
+     *     'cachePath' => '',       // Defaults to PRIMER::$BASE_PATH . '/cache'
+     *     'templateEngine' => ''   // Defaults to 'Rareloop\Primer\TemplateEngine\Handlebars\Template'
+     * )
+     *
+     * @param  String|Array $options 
      * @return Rareloop\Primer\Primer
      */
-    public static function start($basePath, $templateClass = 'Rareloop\Primer\Templating\Handlebars\HandlebarsTemplate')
+    public static function start($options)
     {
         ErrorHandler::register();
         ExceptionHandler::register();
 
-        Primer::$BASE_PATH = realpath($basePath);
-        Primer::$PATTERN_PATH = Primer::$BASE_PATH . '/patterns';
+        // Default params
+        $defaultTemplateClass = 'Rareloop\Primer\TemplateEngine\Handlebars\Template';
 
-        Primer::$TEMPLATE_CLASS = $templateClass;
+        // Work out what we were passed as an argument
+        if(is_string($options)) {
+            // Backwards compatibility
+            Primer::$BASE_PATH = realpath($options);
+            Primer::$PATTERN_PATH = Primer::$BASE_PATH . '/patterns';
+            Primer::$CACHE_PATH = Primer::$BASE_PATH . '/cache';
+            Primer::$TEMPLATE_CLASS = $defaultTemplateClass;
+        }
+        else {
+            // New more expressive function params
+            if(!isset($options['basePath'])) {
+                throw new Exception('No `basePath` param passed to Primer::start()');
+            }
+
+            Primer::$BASE_PATH = realpath($options['basePath']);
+
+            Primer::$PATTERN_PATH = isset($options['patternPath']) ? $options['patternPath'] : Primer::$BASE_PATH . '/patterns';
+            Primer::$CACHE_PATH = isset($options['cachePath']) ? $options['cachePath'] : Primer::$BASE_PATH . '/cache';
+            Primer::$TEMPLATE_CLASS = isset($options['templateClass']) ? $options['templateClass'] : $defaultTemplateClass;
+        }
 
         return Primer::instance();
     }
+
 
     /**
      * Remove unsafe/unsupported characters from the id

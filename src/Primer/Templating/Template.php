@@ -9,7 +9,7 @@ abstract class Template implements TemplateInterface
      *
      * @var String
      */
-    protected $extension;
+    public static $extension;
 
     protected $directory;
 
@@ -40,6 +40,6 @@ abstract class Template implements TemplateInterface
      */
     public function extension()
     {
-        return $this->extension;
+        return static::$extension;
     }
 }

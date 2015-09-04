@@ -21,11 +21,4 @@ interface TemplateInterface
      * @return String              HTML text
      */
     public function render($data);
-
-    /**
-     * Returns a list of acceptable file extensions
-     *
-     * @return Array A list of strings
-     */
-    public function extension();
 }

@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## 2.0.0 (?)
 ### Feature
 - Added support for multiple template engines (Twig & Blade)
+- Each pattern folder can also include an optional `init.php` that gets loaded before any data making it easier to scope view composers
 
 ### Breaking
 - New Handlebars engine drops support for `.handlebars` extensions, only `.hbs` now supported out of the box

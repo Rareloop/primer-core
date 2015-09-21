@@ -66,7 +66,7 @@ class Pattern implements Renderable
         $this->id = Primer::cleanId($id);
 
         $this->path = Primer::$PATTERN_PATH . '/' . $this->id;
-        
+
 
         // Check the path is valid
         if (!is_dir($this->path)) {
@@ -91,11 +91,15 @@ class Pattern implements Renderable
         $idComponents = explode('/', $this->id);
         $this->title = ucwords(preg_replace('/(\-|~)/', ' ', strtolower(end($idComponents))));
 
+        // Attempt to load the init script to bootstrap any listeners
+        @include_once($this->path . '/init.php');
+
         // Load the copy
         $this->copy = $this->loadCopy();
 
         // Load the data
         $this->data = $this->loadData();
+
 
         // Render the template
         Event::fire('pattern.' . $this->id, $this->data);
@@ -155,12 +159,12 @@ class Pattern implements Renderable
         if ($handle = opendir($path)) {
 
             while (false !== ($entry = readdir($handle))) {
-                
+
                 $fullPath = $path . '/' . $entry;
 
                 if ($entry != '..' && $entry != '.' && is_dir($fullPath)) {
-                    
-                    
+
+
 
                     $id = trim(str_replace(Primer::$PATTERN_PATH, '', $fullPath), '/');
 

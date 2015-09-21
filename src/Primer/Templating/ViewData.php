@@ -30,7 +30,6 @@ class ViewData extends \stdClass
         }
 
         foreach ($ids as $id) {
-            echo "register data.$id<br/>";
             Event::listen("data.$id", $callable);
         }
     }

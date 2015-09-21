@@ -92,9 +92,6 @@ class Pattern implements Renderable
         $idComponents = explode('/', $this->id);
         $this->title = ucwords(preg_replace('/(\-|~)/', ' ', strtolower(end($idComponents))));
 
-        // Attempt to load the init script to bootstrap any listeners
-        @include_once($this->path . '/init.php');
-
         // Load the copy
         $this->copy = $this->loadCopy();
 

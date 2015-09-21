@@ -6,6 +6,8 @@ use Rareloop\Primer\Events\Event;
 use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\Debug\ExceptionHandler;
 
+use Symfony\Component\Finder\Finder;
+
 class Primer
 {
     /**
@@ -72,7 +74,7 @@ class Primer
      *     'templateEngine' => ''   // Defaults to 'Rareloop\Primer\TemplateEngine\Handlebars\Template'
      * )
      *
-     * @param  String|Array $options 
+     * @param  String|Array $options
      * @return Rareloop\Primer\Primer
      */
     public static function start($options)
@@ -102,6 +104,16 @@ class Primer
             Primer::$PATTERN_PATH = isset($options['patternPath']) ? $options['patternPath'] : Primer::$BASE_PATH . '/patterns';
             Primer::$CACHE_PATH = isset($options['cachePath']) ? $options['cachePath'] : Primer::$BASE_PATH . '/cache';
             Primer::$TEMPLATE_CLASS = isset($options['templateClass']) ? $options['templateClass'] : $defaultTemplateClass;
+        }
+
+        // Attempt to load all `init.php` files. We shouldn't really have to do this here but currently
+        // include functions don't actually load patterns so its hard to track when things are loaded
+        // TODO: Move everything through Pattern constructors
+        $finder = new Finder();
+        $initFiles = $finder->in(Primer::$PATTERN_PATH)->files()->name('init.php');
+
+        foreach($initFiles as $file) {
+            include_once($file);
         }
 
         return Primer::instance();
@@ -279,7 +291,7 @@ class Primer
 
     /**
      * Get the menu listing all the page templates in the site
-     * 
+     *
      * @return String
      */
     public function getMenu()
@@ -290,7 +302,7 @@ class Primer
         if ($handle = opendir($path)) {
 
             while (false !== ($entry = readdir($handle))) {
-                
+
                 if (substr($entry, 0, 1) !== '.') {
                     $templates[] = array(
                         'id' => $entry,

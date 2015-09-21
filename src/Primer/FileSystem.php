@@ -49,6 +49,7 @@ class FileSystem
         $viewData = new ViewData($data);
 
         Event::fire('data.' . $id, $viewData);
+        echo 'data.' . $id . "</br>";
 
         // TODO: Convert codebase so that ViewData objects are the fundamental data object passed around the system
         return $viewData->toArray();

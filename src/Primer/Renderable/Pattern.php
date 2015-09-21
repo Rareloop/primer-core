@@ -60,8 +60,9 @@ class Pattern implements Renderable
      * Constructor
      *
      * @param String $id The Id of the pattern
+     * @param  Array $customData Optional data to load at runtime
      */
-    public function __construct($id)
+    public function __construct($id, $customData = array())
     {
         $this->id = Primer::cleanId($id);
 
@@ -98,7 +99,7 @@ class Pattern implements Renderable
         $this->copy = $this->loadCopy();
 
         // Load the data
-        $this->data = $this->loadData();
+        $this->data = $this->loadData($customData);
 
 
         // Render the template
@@ -116,14 +117,15 @@ class Pattern implements Renderable
     /**
      * Load the data for this template
      *
+     * @param Array $customData Custom data to load at runtime
      * @return array The data as an associative array
      */
-    protected function loadData()
+    protected function loadData($customData = array())
     {
         // Get the data for the pattern and resolve any aliases
         $defaultData = FileSystem::getDataForPattern($this->id, true);
 
-        return new ViewData($defaultData);
+        return new ViewData(array_merge($defaultData, $customData));
     }
 
     /**

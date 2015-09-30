@@ -102,6 +102,21 @@ class Pattern implements Renderable
         // Render the template
         Event::fire('pattern.' . $this->id, $this->data);
 
+        // Fire off other events that let us listen for parent paths
+        // e.g. components/misc/* and components/*
+        $parts = explode('/', $this->id);
+
+        // We don't need to do the full path as we've already done it
+        array_pop($parts);
+        $eventString = '';
+
+        foreach($parts as $part) {
+            $eventString .= '/' . $part;
+            $eventString = trim($eventString, '/');
+
+            Event::fire('pattern.' . $eventString . '/*', $this->data, $this->id);
+        }
+
         $parser = new \Gajus\Dindent\Parser();
 
         // $this->html = $engine->render($this->id, $this->data);

@@ -39,6 +39,13 @@ class Primer
     public static $PATTERN_PATH;
 
     /**
+     * Path to the patterns directory
+     *
+     * @var String
+     */
+    public static $VIEW_PATH;
+
+    /**
      * Template class including namespace
      *
      * @var String
@@ -90,6 +97,7 @@ class Primer
             // Backwards compatibility
             Primer::$BASE_PATH = realpath($options);
             Primer::$PATTERN_PATH = Primer::$BASE_PATH . '/patterns';
+            Primer::$PATTERN_PATH = Primer::$BASE_PATH . '/views';
             Primer::$CACHE_PATH = Primer::$BASE_PATH . '/cache';
             Primer::$TEMPLATE_CLASS = $defaultTemplateClass;
         }
@@ -102,6 +110,7 @@ class Primer
             Primer::$BASE_PATH = realpath($options['basePath']);
 
             Primer::$PATTERN_PATH = isset($options['patternPath']) ? $options['patternPath'] : Primer::$BASE_PATH . '/patterns';
+            Primer::$VIEW_PATH = isset($options['viewPath']) ? $options['viewPath'] : Primer::$BASE_PATH . '/views';
             Primer::$CACHE_PATH = isset($options['cachePath']) ? $options['cachePath'] : Primer::$BASE_PATH . '/cache';
             Primer::$TEMPLATE_CLASS = isset($options['templateClass']) ? $options['templateClass'] : $defaultTemplateClass;
         }

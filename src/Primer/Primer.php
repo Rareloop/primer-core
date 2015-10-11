@@ -8,6 +8,12 @@ use Symfony\Component\Debug\ExceptionHandler;
 
 use Symfony\Component\Finder\Finder;
 
+use Rareloop\Primer\Renderable\RenderList;
+use Rareloop\Primer\Renderable\Pattern;
+use Rareloop\Primer\Renderable\Group;
+use Rareloop\Primer\Renderable\Section;
+use Rareloop\Primer\Templating\View;
+
 class Primer
 {
     /**
@@ -93,17 +99,16 @@ class Primer
         $defaultTemplateClass = 'Rareloop\Primer\TemplateEngine\Handlebars\Template';
 
         // Work out what we were passed as an argument
-        if(is_string($options)) {
+        if (is_string($options)) {
             // Backwards compatibility
             Primer::$BASE_PATH = realpath($options);
             Primer::$PATTERN_PATH = Primer::$BASE_PATH . '/patterns';
             Primer::$PATTERN_PATH = Primer::$BASE_PATH . '/views';
             Primer::$CACHE_PATH = Primer::$BASE_PATH . '/cache';
             Primer::$TEMPLATE_CLASS = $defaultTemplateClass;
-        }
-        else {
+        } else {
             // New more expressive function params
-            if(!isset($options['basePath'])) {
+            if (!isset($options['basePath'])) {
                 throw new Exception('No `basePath` param passed to Primer::start()');
             }
 
@@ -121,7 +126,7 @@ class Primer
         $finder = new Finder();
         $initFiles = $finder->in(Primer::$PATTERN_PATH)->files()->name('init.php');
 
-        foreach($initFiles as $file) {
+        foreach ($initFiles as $file) {
             include_once($file);
         }
 
@@ -153,30 +158,45 @@ class Primer
      */
     public function getTemplate($id)
     {
-        $id = \Rareloop\Primer\Primer::cleanId($id);
+        $wrapTemplateInView = false;
+
+        $id = Primer::cleanId($id);
 
         // Create the template
-        $template = new \Rareloop\Primer\Renderable\Pattern('templates/' . $id);
+        $template = new Pattern('templates/' . $id);
 
-        $data = $template->getData();
-        $view = 'template';
+        $templateData = new ViewData([
+            "primer" => [
+                'bodyClass' => 'is-template',
+                'template' => $id,
+            ],
+        ]);
 
-        // Check the data to see if there is a custom view
-        if (isset($data['view'])) {
-            $view = $data['view'];
+        if ($wrapTemplateInView) {
+            $data = $template->getData();
+            $view = 'template';
+
+            // Check the data to see if there is a custom view
+            if (isset($data->view)) {
+                $view = $data->view;
+            }
+
+            $viewData = new ViewData([
+                'items' => $template->render(false),
+            ]);
+
+            $viewData->merge($templateData);
+            Event::fire('render', $viewData);
+
+            return View::render($view, $viewData);
+        } else {
+            $template->setData($templateData);
+            Event::fire('render', $viewData);
+
+            return $template->render(false);
         }
 
-        $renderList = new \Rareloop\Primer\Renderable\RenderList(array($template));
-
-        $viewData = new ViewData(array(
-            'items' => $renderList->render(false),
-            'bodyClass' => 'is-template',
-            'template' => $id,
-        ));
-
-        Event::fire('render', $viewData);
-
-        return \Rareloop\Primer\Templating\View::render($view, $viewData);
+        
     }
 
     /**
@@ -187,6 +207,27 @@ class Primer
     public function showTemplate($id)
     {
         echo $this->getTemplate($id);
+    }
+
+    protected function prepareViewForPatterns(RenderList $renderList, $showChrome = false)
+    {
+        $bodyClasses = array('not-template');
+
+        // If we're in minimal mode then add a new class to the body
+        if (!$showChrome) {
+            $bodyClasses[] = 'minimal';
+        }
+
+        $viewData = new ViewData([
+            'primer' => [
+                'items' => $renderList->render($showChrome),
+                'bodyClass' => implode(' ', $bodyClasses),
+            ]
+        ]);
+
+        Event::fire('render', $viewData);
+
+        return View::render('template', $viewData);
     }
 
     /**
@@ -203,41 +244,26 @@ class Primer
          *
          * @var array
          */
-        $renderList = new \Rareloop\Primer\Renderable\RenderList();
+        $renderList = new RenderList();
 
         foreach ($ids as $id) {
-
-            $id = \Rareloop\Primer\Primer::cleanId($id);
+            $id = Primer::cleanId($id);
 
             // Check if the Id is for a pattern or a group
             $parts = explode('/', $id);
             if (count($parts) > 2) {
                 // It's a pattern
-                $renderList->add(new \Rareloop\Primer\Renderable\Pattern($id));
+                $renderList->add(new Pattern($id));
             } elseif (count($parts) > 1) {
                 // It's a group
-                $renderList->add(new \Rareloop\Primer\Renderable\Group($id));
+                $renderList->add(new Group($id));
             } else {
                 // It's a section (e.g. all elements or all components)
-                $renderList->add(new \Rareloop\Primer\Renderable\Section($id));
+                $renderList->add(new Section($id));
             }
         }
 
-        $bodyClasses = array('not-template');
-
-        // If we're in minimal mode then add a new class to the body
-        if(!$showChrome) {
-            $bodyClasses[] = 'minimal';
-        }
-
-        $viewData = new ViewData(array(
-            'items' => $renderList->render($showChrome),
-            'bodyClass' => implode(' ', $bodyClasses),
-        ));
-
-        Event::fire('render', $viewData);
-
-        return \Rareloop\Primer\Templating\View::render('template', $viewData);
+        return $this->prepareViewForPatterns($renderList, $showChrome);
     }
 
     /**
@@ -264,27 +290,13 @@ class Primer
          *
          * @var array
          */
-        $renderList = new \Rareloop\Primer\Renderable\RenderList();
+        $renderList = new RenderList();
 
         // Show all patterns
         $renderList->add(new \Rareloop\Primer\Renderable\Section('elements'));
         $renderList->add(new \Rareloop\Primer\Renderable\Section('components'));
 
-        $bodyClasses = array('not-template');
-
-        // If we're in minimal mode then add a new class to the body
-        if(!$showChrome) {
-            $bodyClasses[] = 'minimal';
-        }
-
-        $viewData = new ViewData(array(
-            'items' => $renderList->render($showChrome),
-            'bodyClass' => implode(' ', $bodyClasses),
-        ));
-
-        Event::fire('render', $viewData);
-
-        return \Rareloop\Primer\Templating\View::render('template', $viewData);
+        return $this->prepareViewForPatterns($renderList, $showChrome);
     }
 
     /**
@@ -321,9 +333,7 @@ class Primer
         $path = Primer::$BASE_PATH . '/patterns/templates';
 
         if ($handle = opendir($path)) {
-
             while (false !== ($entry = readdir($handle))) {
-
                 if (substr($entry, 0, 1) !== '.') {
                     $templates[] = array(
                         'id' => $entry,
@@ -349,7 +359,7 @@ class Primer
             'templates' => $this->getTemplates()
         ));
 
-        return \Rareloop\Primer\Templating\View::render('menu', $viewData);
+        return View::render('menu', $viewData);
     }
 
     /**

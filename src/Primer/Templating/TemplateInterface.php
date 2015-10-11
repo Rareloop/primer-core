@@ -1,4 +1,6 @@
-<?php namespace Rareloop\Primer\Templating;
+<?php
+
+namespace Rareloop\Primer\Templating;
 
 /**
  * Interface defining common templating functions
@@ -17,7 +19,7 @@ interface TemplateInterface
     /**
      * Render the current object
      *
-     * @param  Object $data An associative array to pass to the template
+     * @param  ViewData $data An associative array to pass to the template
      * @return String              HTML text
      */
     public function render($data);

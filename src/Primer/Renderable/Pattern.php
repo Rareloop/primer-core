@@ -7,6 +7,8 @@ use Rareloop\Primer\Templating\ViewData;
 use Rareloop\Primer\Primer;
 use Rareloop\Primer\FileSystem;
 use Rareloop\Primer\Events\Event;
+use Gajus\Dindent\Parser;
+use Michelf\Markdown;
 
 /**
  * Class to represent a pattern
@@ -36,20 +38,6 @@ class Pattern implements Renderable
     protected $title;
 
     /**
-     * The Handlebars template rendered
-     *
-     * @var String
-     */
-    protected $html;
-
-    /**
-     * Data to pass into the template
-     *
-     * @var array
-     */
-    protected $data = array();
-
-    /**
      * Content/annotations to add to the pattern
      *
      * @var String
@@ -68,7 +56,6 @@ class Pattern implements Renderable
 
         $this->path = Primer::$PATTERN_PATH . '/' . $this->id;
 
-
         // Check the path is valid
         if (!is_dir($this->path)) {
             throw new NotFoundException('Pattern not found: ' . $this->id);
@@ -85,59 +72,51 @@ class Pattern implements Renderable
             }
         }
 
+        // Load the correct template with the correct template engine
         $templateClass = Primer::$TEMPLATE_CLASS;
-        $template = new $templateClass($pathToPattern, 'template');
+        $this->template = new $templateClass($pathToPattern, 'template');
 
         // Get the title
         $idComponents = explode('/', $this->id);
         $this->title = ucwords(preg_replace('/(\-|~)/', ' ', strtolower(end($idComponents))));
 
         // Load the copy
-        $this->copy = $this->loadCopy();
+        $this->loadCopy();
 
         // Load the data
-        $this->data = $this->loadData($customData);
-
-
-        // Render the template
-        Event::fire('pattern.' . $this->id, $this->data);
-
-        // Fire off other events that let us listen for parent paths
-        // e.g. components/misc/* and components/*
-        $parts = explode('/', $this->id);
-
-        // We don't need to do the full path as we've already done it
-        array_pop($parts);
-        $eventString = '';
-
-        foreach($parts as $part) {
-            $eventString .= '/' . $part;
-            $eventString = trim($eventString, '/');
-
-            Event::fire('pattern.' . $eventString . '/*', $this->data, $this->id);
-        }
-
-        $parser = new \Gajus\Dindent\Parser();
-
-        // $this->html = $engine->render($this->id, $this->data);
-        $this->html = $template->render($this->data);
-
-        // Tidy the HTML
-        $this->html = $parser->indent($this->html);
+        $this->loadData($customData);
     }
 
     /**
-     * Load the data for this template
-     *
-     * @param Array $customData Custom data to load at runtime
-     * @return array The data as an associative array
+     * Load the copy/descriptive text for this pattern
      */
-    protected function loadData($customData = array())
+    protected function loadCopy()
     {
-        // Get the data for the pattern and resolve any aliases
-        $defaultData = FileSystem::getDataForPattern($this->id, true);
+        $copy = @file_get_contents($this->path . '/README.md');
 
-        return new ViewData(array_merge($defaultData, $customData));
+        if ($copy) {
+            $this->copy = Markdown::defaultTransform($copy);
+        } else {
+            $this->copy = false;
+        }
+    }
+
+    /**
+     * Load the data for this pattern
+     */
+    protected function loadData()
+    {
+        $this->data = FileSystem::getDataForPattern($this->id);
+    }
+
+    public function setData($data)
+    {
+        $this->data->merge($data);
+    }
+
+    public function getData()
+    {
+        return $this->data;
     }
 
     /**
@@ -148,17 +127,25 @@ class Pattern implements Renderable
      */
     public function render($showChrome = true)
     {
+        $html = $this->template->render($this->data);
+
+        // Tidy the HTML
+        $parser = new Parser();
+        $html = $parser->indent($html);
+
         if ($showChrome) {
-            return View::render('pattern', array(
+            return View::render('pattern', [
                 'title' => $this->title,
                 'id' => $this->id,
-                'html' => $this->html,
+                'html' => $html,
                 'copy' => $this->copy
-            ));
+            ]);
         } else {
-            return $this->html;
+            return $html;
         }
     }
+
+
 
     /**
      * Helper function to load all patterns in a folder
@@ -171,15 +158,10 @@ class Pattern implements Renderable
         $patterns = array();
 
         if ($handle = opendir($path)) {
-
             while (false !== ($entry = readdir($handle))) {
-
                 $fullPath = $path . '/' . $entry;
 
                 if ($entry != '..' && $entry != '.' && is_dir($fullPath)) {
-
-
-
                     $id = trim(str_replace(Primer::$PATTERN_PATH, '', $fullPath), '/');
 
                     // Load the pattern
@@ -194,31 +176,12 @@ class Pattern implements Renderable
     }
 
     /**
-     * Load the copy/descriptive text for this pattern
+     * Composer function to bind events to Pattern events
      *
-     * @return String HTML text
+     * @param  [type] $ids      [description]
+     * @param  [type] $callable [description]
+     * @return [type]           [description]
      */
-    protected function loadCopy()
-    {
-        $copy = @file_get_contents($this->path . '/README.md');
-
-        if ($copy) {
-            return \Michelf\Markdown::defaultTransform($copy);
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Get the patterns data
-     *
-     * @return Array
-     */
-    public function getData()
-    {
-        return (array)$this->data;
-    }
-
     public static function composer($ids, $callable)
     {
         if (!is_array(($ids))) {

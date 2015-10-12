@@ -76,6 +76,18 @@ body.not-template:not(.minimal) {
     }
 }
 
+.primer-pattern__toggle-button--data {
+    background: url('../img/data.png') no-repeat center;
+    background: url('../img/data@2x.png') no-repeat center center / 13px 16px;
+
+    &.primer-pattern__toggle-button--active {
+        background: url('../img/data-on.png') no-repeat center;
+        background: url('../img/data-on@2x.png') no-repeat center center / 13px 16px;
+
+        opacity: 1;
+    }
+}
+
 .primer-pattern__toggle-button--readme {
     background: url('../img/info.png') no-repeat center;
     background: url('../img/info@2x.png') no-repeat center center / 7px 16px;

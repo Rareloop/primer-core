@@ -23,4 +23,11 @@ interface TemplateInterface
      * @return String              HTML text
      */
     public function render($data);
+
+    /**
+     * Return the raw template without any processing having been done
+     *
+     * @return String The raw template file
+     */
+    public function raw();
 }

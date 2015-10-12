@@ -76,6 +76,9 @@ class Pattern implements Renderable
         $templateClass = Primer::$TEMPLATE_CLASS;
         $this->template = new $templateClass($pathToPattern, 'template');
 
+        // Save the raw template string too
+        $this->templateRaw = $this->template->raw();
+
         // Get the title
         $idComponents = explode('/', $this->id);
         $this->title = ucwords(preg_replace('/(\-|~)/', ' ', strtolower(end($idComponents))));
@@ -138,7 +141,9 @@ class Pattern implements Renderable
                 'title' => $this->title,
                 'id' => $this->id,
                 'html' => $html,
-                'copy' => $this->copy
+                'template' => $this->templateRaw,
+                'copy' => $this->copy,
+                'data' => json_encode($this->data, JSON_PRETTY_PRINT),
             ]);
         } else {
             return $html;

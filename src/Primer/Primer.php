@@ -59,6 +59,13 @@ class Primer
     public static $TEMPLATE_CLASS;
 
     /**
+     * Should templates be wrapped with a View
+     *
+     * @var Bool
+     */
+    public static $WRAP_TEMPLATES;
+
+    /**
      * Singleton accessor
      *
      * @return Primer The singleton instance
@@ -106,6 +113,7 @@ class Primer
             Primer::$PATTERN_PATH = Primer::$BASE_PATH . '/views';
             Primer::$CACHE_PATH = Primer::$BASE_PATH . '/cache';
             Primer::$TEMPLATE_CLASS = $defaultTemplateClass;
+            Primer::$WRAP_TEMPLATES = true;
         } else {
             // New more expressive function params
             if (!isset($options['basePath'])) {
@@ -118,6 +126,8 @@ class Primer
             Primer::$VIEW_PATH = isset($options['viewPath']) ? $options['viewPath'] : Primer::$BASE_PATH . '/views';
             Primer::$CACHE_PATH = isset($options['cachePath']) ? $options['cachePath'] : Primer::$BASE_PATH . '/cache';
             Primer::$TEMPLATE_CLASS = isset($options['templateClass']) ? $options['templateClass'] : $defaultTemplateClass;
+
+            Primer::$WRAP_TEMPLATES = isset($options['wrapTemplate']) ? $options['wrapTemplate'] : true;
         }
 
         // Attempt to load all `init.php` files. We shouldn't really have to do this here but currently
@@ -158,7 +168,8 @@ class Primer
      */
     public function getTemplate($id)
     {
-        $wrapTemplateInView = false;
+        // Default system wide template wrapping config
+        $wrapTemplate = Primer::$WRAP_TEMPLATES;
 
         $id = Primer::cleanId($id);
 
@@ -172,8 +183,14 @@ class Primer
             ],
         ]);
 
-        if ($wrapTemplateInView) {
-            $data = $template->getData();
+        $data = $template->getData();
+
+        // Template level wrapping config
+        if (isset($data->primer->wrapTemplate)) {
+            $wrapTemplate = $data->primer->wrapTemplate;
+        }
+
+        if ($wrapTemplate) {
             $view = 'template';
 
             // Check the data to see if there is a custom view
@@ -181,22 +198,21 @@ class Primer
                 $view = $data->view;
             }
 
-            $viewData = new ViewData([
-                'items' => $template->render(false),
-            ]);
+            $templateData->primer->items = $template->render(false);
 
-            $viewData->merge($templateData);
-            Event::fire('render', $viewData);
+            Event::fire('render', $templateData);
 
-            return View::render($view, $viewData);
+            return View::render($view, $templateData);
         } else {
+            // Merge the data we would have passed into the view into the template
             $template->setData($templateData);
+
+            // Get a reference to the template data so that we can pass it to anyone who's listening
+            $viewData = $template->getData();
             Event::fire('render', $viewData);
 
             return $template->render(false);
         }
-
-        
     }
 
     /**
@@ -239,11 +255,6 @@ class Primer
      */
     public function getPatterns($ids, $showChrome = true)
     {
-        /**
-         * A list of groups/patterns to render
-         *
-         * @var array
-         */
         $renderList = new RenderList();
 
         foreach ($ids as $id) {
@@ -285,16 +296,11 @@ class Primer
      */
     public function getAllPatterns($showChrome = true)
     {
-        /**
-         * A list of groups/patterns to render
-         *
-         * @var array
-         */
         $renderList = new RenderList();
 
         // Show all patterns
-        $renderList->add(new \Rareloop\Primer\Renderable\Section('elements'));
-        $renderList->add(new \Rareloop\Primer\Renderable\Section('components'));
+        $renderList->add(new Section('elements'));
+        $renderList->add(new Section('components'));
 
         return $this->prepareViewForPatterns($renderList, $showChrome);
     }

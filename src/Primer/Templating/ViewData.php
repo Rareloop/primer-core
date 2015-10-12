@@ -9,9 +9,10 @@ class ViewData extends \stdClass
 {
     public function __construct(array $data)
     {
-        foreach ($data as $k => $v) {
-            $this->{$k} = $v;
-        }
+        $this->setDataFromArray($data);
+        // foreach ($data as $k => $v) {
+        //     $this->{$k} = $v;
+        // }
     }
 
     public function toArray()
@@ -37,8 +38,14 @@ class ViewData extends \stdClass
             throw new Exception('Unexpected data type passed to ViewData merge function');
         }
 
-        foreach ($data->toArray() as $k => $v) {
-            $this->{$k} = $v;
+        $this->setDataFromArray($data->toArray());
+    }
+
+    protected function setDataFromArray(array $data)
+    {
+        foreach ($data as $k => $v) {
+            // Use json encode/decode to convert to nested assoc arrays to objects
+            $this->{$k} = json_decode(json_encode($v));
         }
     }
 

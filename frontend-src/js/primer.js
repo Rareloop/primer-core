@@ -88,10 +88,10 @@ if ( 'querySelector' in document && 'addEventListener' in window ) {
 
                     // Add the correct class to the buttons
                     [].forEach.call(tabButtons.querySelectorAll('.primer-tabs__control'), function(control) {
-                        $r.removeClass(control, 'primer-tab__control--current');
+                        $r.removeClass(control, 'primer-tabs__control--current');
                     });
 
-                    $r.addClass(event.target, 'primer-tab__control--current');
+                    $r.addClass(event.target, 'primer-tabs__control--current');
                 });
             });
 

@@ -404,6 +404,28 @@ body > .primer-pattern {
     content: attr(data-end);
     top: auto; }
 
+.primer-tabs__controls {
+  background: #292D31;
+  border-radius: 2px 2px 0px 0px;
+  text-align: right; }
+  .primer-tabs__controls ~ .primer-tab pre[class*="language-"] {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0; }
+
+.primer-tabs__control {
+  padding: 0.7em;
+  font-size: 12px;
+  font-weight: 400;
+  font-family: "Helvetica Neue", "Arial", sans-serif;
+  color: rgba(255, 255, 255, 0.5);
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer; }
+
+.primer-tabs__control--current {
+  color: #fff; }
+
 .primer-minimal-toggle {
   background: rgba(0, 0, 0, 0.8);
   color: #fff;

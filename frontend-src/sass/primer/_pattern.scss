@@ -88,3 +88,33 @@ body > .primer-pattern {
 
 	@import "prismjs";
 }
+
+.primer-tabs__controls {
+	background: #292D31;
+	border-radius: 2px 2px 0px 0px;
+
+	text-align: right;
+
+	& ~ .primer-tab pre[class*="language-"] {
+		border-top-left-radius: 0;
+		border-top-right-radius: 0;
+	}
+}
+
+.primer-tabs__control {
+	padding: 0.7em;
+
+	font-size: 12px;
+	font-weight: 400;
+	font-family: $font-family;
+	color: rgba(#fff, 0.5);
+
+	background: none;
+	border: none;
+	outline: none;
+	cursor: pointer;
+}
+
+.primer-tabs__control--current {
+	color: #fff;
+}

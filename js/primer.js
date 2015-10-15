@@ -1,5 +1,5 @@
 /*!
- * Primer frontend v1.0.0 (built: 2015-10-12)
+ * Primer frontend v1.0.0 (built: 2015-10-15)
  * http://github.com/rareloop/primer
  *
  * Copyright 2015 Rareloop (http://rareloop.com)
@@ -96,10 +96,10 @@ if ( 'querySelector' in document && 'addEventListener' in window ) {
 
                     // Add the correct class to the buttons
                     [].forEach.call(tabButtons.querySelectorAll('.primer-tabs__control'), function(control) {
-                        $r.removeClass(control, 'primer-tab__control--current');
+                        $r.removeClass(control, 'primer-tabs__control--current');
                     });
 
-                    $r.addClass(event.target, 'primer-tab__control--current');
+                    $r.addClass(event.target, 'primer-tabs__control--current');
                 });
             });
 

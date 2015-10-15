@@ -25,7 +25,7 @@ class View
         }
 
         $templateClass = Primer::$TEMPLATE_CLASS;
-        $template = new $templateClass(Primer::$BASE_PATH.'/views/', $name);
+        $template = new $templateClass(Primer::$VIEW_PATH, $name);
 
         Event::fire('view.' . $name, $params);
 

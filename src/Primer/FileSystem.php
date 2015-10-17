@@ -2,6 +2,7 @@
 
 use Rareloop\Primer\Templating\ViewData;
 use Rareloop\Primer\Events\Event;
+use Rareloop\Primer\Primer;
 
 /**
  * File system helper class
@@ -19,6 +20,8 @@ class FileSystem
     public static function getDataForPattern($id, $resolveAlias = false)
     {
         $data = array();
+
+        $id = Primer::cleanId($id);
 
         // Load the Patterns default data
         $defaultData = @file_get_contents(Primer::$PATTERN_PATH . '/' . $id . '/data.json');

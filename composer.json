@@ -3,7 +3,6 @@
     "description": "Core Primer framework",
 
     "require": {
-        "xamin/handlebars.php": "0.10.*",
         "michelf/php-markdown": "1.5.*",
         "symfony/event-dispatcher": "2.3.*",
         "gajus/dindent": "1.0.*",

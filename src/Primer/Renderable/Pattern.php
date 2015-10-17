@@ -109,7 +109,7 @@ class Pattern implements Renderable
      */
     protected function loadData()
     {
-        $this->data = FileSystem::getDataForPattern($this->id);
+        $this->data = FileSystem::getDataForPattern($this->id, true);
     }
 
     public function setData($data)

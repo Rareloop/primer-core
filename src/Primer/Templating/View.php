@@ -31,4 +31,9 @@ class View
 
         return $template->render($params);
     }
+
+    public static function composer($name, $callable)
+    {
+        Event::listen("view.$name", $callable);
+    }
 }

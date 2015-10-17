@@ -10,9 +10,18 @@
         "symfony/debug": "2.7.*",
         "symfony/finder": "2.7.*"
     },
+    "require-dev": {
+        "rareloop/primer-template-engine-handlebars": "dev-master"
+    },
     "autoload": {
         "psr-4": {
             "Rareloop\\Primer\\": "src/Primer"
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:Rareloop/primer-template-engine-handlebars.git"
+        }
+    ]
 }

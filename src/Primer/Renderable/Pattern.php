@@ -179,22 +179,4 @@ class Pattern implements Renderable
 
         return $patterns;
     }
-
-    /**
-     * Composer function to bind events to Pattern events
-     *
-     * @param  [type] $ids      [description]
-     * @param  [type] $callable [description]
-     * @return [type]           [description]
-     */
-    public static function composer($ids, $callable)
-    {
-        if (!is_array(($ids))) {
-            $ids = array($ids);
-        }
-
-        foreach ($ids as $id) {
-            Event::listen("pattern.$id", $callable);
-        }
-    }
 }

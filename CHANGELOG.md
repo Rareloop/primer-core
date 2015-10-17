@@ -8,6 +8,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Each pattern folder can also include an optional `init.php` that gets loaded before any data making it easier to scope view composers
 - Patterns now include raw template rendering
 - Patterns now show the data needed to render them
+- Removed `Pattern::composer`
+- Added `View::composer($name, $callable)` as a syntactic sugar for `Event::listen("view.$name", $callable)`
 
 ### Breaking
 - New Handlebars engine drops support for `.handlebars` extensions, only `.hbs` now supported out of the box

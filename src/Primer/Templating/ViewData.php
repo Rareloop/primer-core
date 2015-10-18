@@ -3,11 +3,12 @@
 namespace Rareloop\Primer\Templating;
 
 use Rareloop\Primer\Events\Event;
+use Rareloop\Primer\Events\EventInstanceGroup;
 use Exception;
 
 class ViewData extends \stdClass
 {
-    public function __construct(array $data)
+    public function __construct(array $data = array())
     {
         $this->setDataFromArray($data);
         // foreach ($data as $k => $v) {
@@ -23,7 +24,8 @@ class ViewData extends \stdClass
             $arr[$k] = $v;
         }
 
-        return $arr;
+        // Force all child objects to be converted to array's too
+        return json_decode(json_encode($arr), true);
     }
 
     public function merge($data)
@@ -55,9 +57,13 @@ class ViewData extends \stdClass
             $ids = array($ids);
         }
 
+        $events = [];
+
         foreach ($ids as $id) {
-            Event::listen("data.$id", $callable);
+            $events[] = Event::listen("data.$id", $callable);
         }
+
+        return new EventInstanceGroup($events);
     }
 
     public static function fire($id, &$data)

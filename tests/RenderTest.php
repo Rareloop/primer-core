@@ -1,19 +1,9 @@
 <?php
 
-// Test that chrome/no chrome works
-// Test pattern can be changed from a template data.json
-// Test that the right data is passed through in the primer namespace
-// Test that wrap/no wrap works
-
 namespace Rareloop\Primer\Tests;
 
 use Rareloop\Primer\Primer;
 use Rareloop\Primer\TemplateEngine\Handlebars\Template as HandlebarsTemplateEngine;
-
-// use Rareloop\Primer\Templating\ViewData;
-// use Rareloop\Primer\Templating\View;
-// use Rareloop\Primer\Events\Events;
-// use Rareloop\Primer\FileSystem;
 
 class RenderTest extends \PHPUnit_Framework_TestCase
 {

@@ -1,12 +1,13 @@
 <?php namespace Rareloop\Primer\Events;
 
+use Rareloop\Primer\Events\EventInstance;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class Event
 {
     protected static $eventDispatcher;
 
-    protected static function eventDispatcherInstance()
+    public static function eventDispatcherInstance()
     {
         if (!isset(Event::$eventDispatcher)) {
             Event::$eventDispatcher = new EventDispatcher();
@@ -43,6 +44,8 @@ class Event
         };
 
         Event::eventDispatcherInstance()->addListener($eventId, $closure, $priority);
+
+        return new EventInstance($eventId, $closure);
     }
 
     public static function fire($eventId, &$data = false)

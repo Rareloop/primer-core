@@ -34,6 +34,6 @@ class View
 
     public static function composer($name, $callable)
     {
-        Event::listen("view.$name", $callable);
+        return Event::listen("view.$name", $callable);
     }
 }

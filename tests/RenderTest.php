@@ -1,111 +1,74 @@
 <?php
 
 // Test that chrome/no chrome works
+// Test pattern can be changed from a template data.json
 // Test that the right data is passed through in the primer namespace
-// Test that wrap/no warp works
+// Test that wrap/no wrap works
 
-// namespace Rareloop\Primer\Tests;
+namespace Rareloop\Primer\Tests;
+
+use Rareloop\Primer\Primer;
+use Rareloop\Primer\TemplateEngine\Handlebars\Template as HandlebarsTemplateEngine;
 
 // use Rareloop\Primer\Templating\ViewData;
 // use Rareloop\Primer\Templating\View;
-// use Rareloop\Primer\TemplateEngine\Handlebars\Template as HandlebarsTemplateEngine;
 // use Rareloop\Primer\Events\Events;
 // use Rareloop\Primer\FileSystem;
 
-// class EventsTest extends \PHPUnit_Framework_TestCase
-// {
-//     protected $primer;
+class RenderTest extends \PHPUnit_Framework_TestCase
+{
+    protected $primer;
 
-//     /**
-//      * Bootstrap the system
-//      */
-//     public function setup()
-//     {
-//         $this->primer = \Rareloop\Primer\Primer::start(array(
-//             'basePath' => __DIR__.'/primer-test',
-//             'templateClass' => HandlebarsTemplateEngine::class,
-//         ));
-//     }
+    /**
+     * Bootstrap the system
+     */
+    public function setup()
+    {
+        $this->primer = Primer::start(array(
+            'basePath' => __DIR__.'/primer-test',
+            'templateClass' => HandlebarsTemplateEngine::class,
+        ));
+    }
 
-//     public function testLoadingDataShouldTriggerEvent()
-//     {
-//         $testData = new \stdClass;
-//         $testData->count = 0;
+    public function testRenderWithChrome()
+    {
+        $output = $this->primer->getPatterns(array('components/render/test'), true);
 
-//         ViewData::composer('components/events/loading-data', function ($data) use ($testData) {
-//             // Is the data the right type?
-//             $this->assertEquals(ViewData::class, get_class($data));
+        $this->assertEquals("template.hbs\npattern.hbs\ntest/template.hbs", $output);
+    }
 
-//             // Increment the count
-//             $testData->count++;
-//         });
+    public function testRenderWithoutChrome()
+    {
+        $output = $this->primer->getPatterns(array('components/render/test'), false);
 
-//         $viewData = FileSystem::getDataForPattern('components/events/loading-data');
+        $this->assertEquals("template.hbs\ntest/template.hbs", $output);
+    }
 
-//         $this->assertEquals(1, $testData->count);
-//     }
+    public function testOverwritingViewFromTemplateJson()
+    {
+        $output = $this->primer->getTemplate('overwrite-view');
 
-//     public function testLoadingDataShouldTriggerEventsForParentPaths()
-//     {
-//         $testData = new \stdClass;
-//         $testData->count = 0;
+        $this->assertEquals("template-overwrite.hbs\noverwrite-view/template.hbs", $output);
+    }
 
-//         ViewData::composer('components/events/*', function ($data) use ($testData) {
-//             // Is the data the right type?
-//             $this->assertEquals(ViewData::class, get_class($data));
+    public function testNotWrappingTemplateWithView()
+    {
+        $output = $this->primer->getTemplate('not-wrapped');
 
-//             // Increment the count
-//             $testData->count++;
-//         });
+        $this->assertEquals("not-wrapped/template.hbs", $output);
+    }
 
-//         ViewData::composer('components/*', function ($data) use ($testData) {
-//             // Is the data the right type?
-//             $this->assertEquals(ViewData::class, get_class($data));
+    public function testPrimerVariablesAreSetWhenWrappedWithView()
+    {
+        $output = $this->primer->getTemplate('variable-test-wrap');
 
-//             // Increment the count
-//             $testData->count++;
-//         });
+        $this->assertEquals("bodyClass:true\ntemplate:true\nitems:true\n", $output);
+    }
 
-//         $viewData = FileSystem::getDataForPattern('components/events/loading-data');
+    public function testPrimerVariablesAreSetWhenNotWrappedWithView()
+    {
+        $output = $this->primer->getTemplate('variable-test-no-wrap');
 
-//         $this->assertEquals(2, $testData->count);
-//     }
-
-//     public function testRenderingAViewShouldTriggerEvent()
-//     {
-//         $testData = new \stdClass;
-//         $testData->count = 0;
-
-//         View::composer('pattern', function ($data) use ($testData) {
-//             // Is the data the right type?
-//             $this->assertEquals(ViewData::class, get_class($data));
-
-//             // Increment the count
-//             $testData->count++;
-//         });
-
-//         // Render a pattern with chrome so that it uses the pattern.hbs file
-//         $output = $this->primer->getPatterns(array('components/events/view-render'), true);
-
-//         $this->assertEquals(1, $testData->count);
-//     }
-
-//     public function testRenderingAViewShouldTriggerEvent()
-//     {
-//         $testData = new \stdClass;
-//         $testData->count = 0;
-
-//         View::composer('pattern', function ($data) use ($testData) {
-//             // Is the data the right type?
-//             $this->assertEquals(ViewData::class, get_class($data));
-
-//             // Increment the count
-//             $testData->count++;
-//         });
-
-//         // Render a pattern with chrome so that it uses the pattern.hbs file
-//         $output = $this->primer->getPatterns(array('components/events/view-render'), true);
-
-//         $this->assertEquals(1, $testData->count);
-//     }
-// }
+        $this->assertEquals("bodyClass:true\ntemplate:true", $output);
+    }
+}

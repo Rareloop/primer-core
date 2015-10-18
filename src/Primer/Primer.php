@@ -194,8 +194,8 @@ class Primer
             $view = 'template';
 
             // Check the data to see if there is a custom view
-            if (isset($data->view)) {
-                $view = $data->view;
+            if (isset($data->primer) && isset($data->primer->view)) {
+                $view = $data->primer->view;
             }
 
             $templateData->primer->items = $template->render(false);

@@ -2,7 +2,9 @@
 
 namespace Rareloop\Primer\Events;
 
-class EventObject extends \Symfony\Component\EventDispatcher\Event
+use Symfony\Component\EventDispatcher\Event as SymfonyEvent;
+
+class EventObject extends SymfonyEvent
 {
     protected $data;
     protected $eventId;

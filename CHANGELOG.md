@@ -4,16 +4,16 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 2.0.0 (?)
 ### Feature
-- Added support for multiple template engines (Twig & Blade)
+- Added support for multiple template engines (Handlebars & Twig)
 - Each pattern folder can also include an optional `init.php` that gets loaded before any data making it easier to scope view composers
 - Patterns now include raw template rendering
 - Patterns now show the data needed to render them
-- Removed `Pattern::composer`
-- Added `View::composer($name, $callable)` as a syntactic sugar for `Event::listen("view.$name", $callable)`
-- Primer specific data moved to `primer` namespace in `data.json` files
+- Added `View::composer($name, $callable)` as syntactic sugar for `Event::listen("view.$name", $callable)`
 
 ### Breaking
+- Primer specific data moved to `primer` namespace in `data.json` files
 - New Handlebars engine drops support for `.handlebars` extensions, only `.hbs` now supported out of the box
+- Removed `Pattern::composer`
 
 ## 1.1.0 (2015-08-16)
 ### Feature

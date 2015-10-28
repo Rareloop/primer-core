@@ -336,9 +336,8 @@ class Primer
     public function getTemplates()
     {
         $templates = array();
-        $path = Primer::$BASE_PATH . '/patterns/templates';
 
-        if ($handle = opendir($path)) {
+        if ($handle = opendir(Primer::$PATTERN_PATH . '/templates')) {
             while (false !== ($entry = readdir($handle))) {
                 if (substr($entry, 0, 1) !== '.') {
                     $templates[] = array(

@@ -16,6 +16,9 @@ body.not-template:not(.minimal) {
 .primer-group__link {
   margin-right: 7px; }
 
+.primer-pattern__link {
+  margin-left: -7px; }
+
 .primer-section__link,
 .primer-group__link,
 .primer-pattern__link,

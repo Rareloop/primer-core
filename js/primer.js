@@ -1,5 +1,5 @@
 /*!
- * Primer frontend v1.0.0 (built: 2015-10-15)
+ * Primer frontend v1.0.0 (built: 2015-10-28)
  * http://github.com/rareloop/primer
  *
  * Copyright 2015 Rareloop (http://rareloop.com)

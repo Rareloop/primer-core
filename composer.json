@@ -3,6 +3,7 @@
     "description": "Core Primer framework",
 
     "require": {
+        "php": ">=5.5",
         "michelf/php-markdown": "1.5.*",
         "symfony/event-dispatcher": "2.3.*",
         "gajus/dindent": "1.0.*",

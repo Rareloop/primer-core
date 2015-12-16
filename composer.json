@@ -1,6 +1,7 @@
 {
     "name": "rareloop/primer-core",
     "description": "Core Primer framework",
+    "license": "MIT",
 
     "require": {
         "php": ">=5.5",
@@ -18,11 +19,5 @@
         "psr-4": {
             "Rareloop\\Primer\\": "src/Primer"
         }
-    },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "git@github.com:Rareloop/primer-template-engine-handlebars.git"
-        }
-    ]
+    }
 }

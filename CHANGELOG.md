@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## 2.0.0 (?)
+## 2.0.0 (2015-12-16)
 ### Feature
 - Added support for multiple template engines (Handlebars & Twig)
 - Each pattern folder can also include an optional `init.php` that gets loaded before any data making it easier to scope view composers

@@ -1,6 +1,6 @@
 {
   "name": "Primer",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "author": "rareloop",
   "devDependencies": {
     "grunt": "~0.4.2",

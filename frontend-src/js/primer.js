@@ -56,6 +56,96 @@ var $r = {
 // Cut the mustard
 if ( 'querySelector' in document && 'addEventListener' in window ) {
 
+    // Handle the tabs
+    document.addEventListener('DOMContentLoaded', function() {
+        var list = document.getElementsByClassName('primer-tabs');
+
+        // iterate over elements and output their HTML content
+        [].forEach.call(list, function(el) {
+            // Create tab controls
+            var tabButtons = document.createElement('div');
+            $r.addClass(tabButtons, 'primer-tabs__controls');
+            el.insertBefore(tabButtons, el.childNodes[0]);
+
+            [].forEach.call(el.querySelectorAll('.primer-tab'), function(tab) {
+                // Remove the title
+                var title = tab.querySelector('.primer-tab__title');
+                var content = tab.querySelector('.primer-tab__content');
+                title.parentElement.removeChild(title);
+
+                // Create a tab button
+                title = title.innerText;
+
+                var button = document.createElement('button');
+                $r.addClass(button, 'primer-tabs__control');
+                button.setAttribute('title', title);
+                button.appendChild(document.createTextNode(title));
+
+                tabButtons.appendChild(button);
+
+                button.addEventListener('click', function(event) {
+                    // Hide all the tabs for this control
+                    [].forEach.call(el.querySelectorAll('.primer-tab__content'), function(content) {
+                        content.style.display = 'none';
+                    });
+
+                    content.style.display = 'block';
+
+                    // Add the correct class to the buttons
+                    [].forEach.call(tabButtons.querySelectorAll('.primer-tabs__control'), function(control) {
+                        $r.removeClass(control, 'primer-tabs__control--current');
+                    });
+
+                    $r.addClass(event.target, 'primer-tabs__control--current');
+                });
+            });
+
+            // Select the default tab to show
+            tabButtons.querySelector('.primer-tabs__control:first-child').click();
+        });
+    });
+
+    // Handle show/hide JSON data
+    document.addEventListener('DOMContentLoaded', function() {
+
+        var list = document.getElementsByClassName('primer-pattern__data');
+
+        // iterate over elements and output their HTML content
+        [].forEach.call(list, function(el) {
+            el.style.display = 'none';
+
+            // Create a button element
+            var button = document.createElement('button');
+            $r.addClass(button, 'primer-pattern__toggle-button');
+            $r.addClass(button, 'primer-pattern__toggle-button--data');
+            button.setAttribute('title', 'Show Data');
+            button.appendChild(document.createTextNode('Show Data'));
+
+            // Get the place for the button to be positioned
+            var actions = el.closest('.primer-pattern').querySelectorAll('.primer-pattern__actions')[0]
+            actions.insertBefore(button, actions.childNodes[0]);
+
+            // Listen for interactions on the button
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+
+                if(el.offsetParent === null) {
+                    // Hidden so show it
+                    el.style.display = '';
+                    $r.addClass(button, 'primer-pattern__toggle-button--active');
+                    button.innerText = 'Hide Data';
+                }
+                else {
+                    // Visible so hide it
+                    el.style.display = 'none';
+                    $r.removeClass(button, 'primer-pattern__toggle-button--active');
+                    button.innerText = 'Show Data';
+                }
+            });
+        });
+
+    });
+
     // Handle show/hide HTML markup
     document.addEventListener('DOMContentLoaded', function() {
 
@@ -186,7 +276,7 @@ if ( 'querySelector' in document && 'addEventListener' in window ) {
     document.addEventListener('DOMContentLoaded', function() {
         if('Prism' in window) {
 
-            var list = document.querySelectorAll('.primer-pattern__html pre code');
+            var list = document.querySelectorAll('.primer-pattern__html pre code, .primer-pattern__data pre code');
 
             // iterate over elements and output their HTML content
             [].forEach.call(list, function(el) {

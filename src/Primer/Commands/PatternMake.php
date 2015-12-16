@@ -48,7 +48,10 @@ class PatternMake extends Command
             return;
         }
 
-        @touch($patternPath . '/template.hbs');
+        $templateClass = Primer::$TEMPLATE_CLASS;
+        $templateExtension = $templateClass::$extension;
+
+        @touch($patternPath . '/template.' . $templateExtension);
         @touch($patternPath . '/data.json');
 
         $output->writeln('<info>Pattern `' . $cleanId . '` created</info>');

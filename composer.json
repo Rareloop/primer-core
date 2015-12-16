@@ -13,7 +13,7 @@
         "symfony/finder": "2.7.*"
     },
     "require-dev": {
-        "rareloop/primer-template-engine-handlebars": "dev-master"
+        "rareloop/primer-template-engine-handlebars": "1.0.*"
     },
     "autoload": {
         "psr-4": {

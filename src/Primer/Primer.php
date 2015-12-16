@@ -108,10 +108,10 @@ class Primer
         // Work out what we were passed as an argument
         if (is_string($options)) {
             // Backwards compatibility
-            Primer::$BASE_PATH = realpath($options);
-            Primer::$PATTERN_PATH = Primer::$BASE_PATH . '/patterns';
-            Primer::$PATTERN_PATH = Primer::$BASE_PATH . '/views';
-            Primer::$CACHE_PATH = Primer::$BASE_PATH . '/cache';
+            Primer::$BASE_PATH      = realpath($options);
+            Primer::$PATTERN_PATH   = Primer::$BASE_PATH . '/patterns';
+            Primer::$PATTERN_PATH   = Primer::$BASE_PATH . '/views';
+            Primer::$CACHE_PATH     = Primer::$BASE_PATH . '/cache';
             Primer::$TEMPLATE_CLASS = $defaultTemplateClass;
             Primer::$WRAP_TEMPLATES = true;
         } else {
@@ -120,14 +120,14 @@ class Primer
                 throw new Exception('No `basePath` param passed to Primer::start()');
             }
 
-            Primer::$BASE_PATH = realpath($options['basePath']);
+            Primer::$BASE_PATH      = realpath($options['basePath']);
 
-            Primer::$PATTERN_PATH = isset($options['patternPath']) ? $options['patternPath'] : Primer::$BASE_PATH . '/patterns';
-            Primer::$VIEW_PATH = isset($options['viewPath']) ? $options['viewPath'] : Primer::$BASE_PATH . '/views';
-            Primer::$CACHE_PATH = isset($options['cachePath']) ? $options['cachePath'] : Primer::$BASE_PATH . '/cache';
-            Primer::$TEMPLATE_CLASS = isset($options['templateClass']) ? $options['templateClass'] : $defaultTemplateClass;
+            Primer::$PATTERN_PATH   = isset($options['patternPath'])    ? realpath($options['patternPath'])     : Primer::$BASE_PATH . '/patterns';
+            Primer::$VIEW_PATH      = isset($options['viewPath'])       ? realpath($options['viewPath'])        : Primer::$BASE_PATH . '/views';
+            Primer::$CACHE_PATH     = isset($options['cachePath'])      ? realpath($options['cachePath'])       : Primer::$BASE_PATH . '/cache';
+            Primer::$TEMPLATE_CLASS = isset($options['templateClass'])  ? $options['templateClass']             : $defaultTemplateClass;
 
-            Primer::$WRAP_TEMPLATES = isset($options['wrapTemplate']) ? $options['wrapTemplate'] : true;
+            Primer::$WRAP_TEMPLATES = isset($options['wrapTemplate'])   ? $options['wrapTemplate']              : true;
         }
 
         // Attempt to load all `init.php` files. We shouldn't really have to do this here but currently

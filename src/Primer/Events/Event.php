@@ -36,7 +36,7 @@ class Event
             $data = $eventObject->getData();
 
             // Work out if we should stop event propogation
-            $returnValue = $callable($data, $eventObject->getEventId());
+            $returnValue = $callable($data, $eventObject->getEventId(), $eventObject->getOriginalId());
 
             if ($returnValue === false) {
                 $eventObject->stopPropagation();
@@ -48,9 +48,9 @@ class Event
         return new EventInstance($eventId, $closure);
     }
 
-    public static function fire($eventId, &$data = false)
+    public static function fire($eventId, &$data = false, $id = false)
     {
-        $event = new EventObject($eventId, $data);
+        $event = new EventObject($eventId, $data, $id);
 
         // Trigger the exact event
         Event::eventDispatcherInstance()->dispatch($eventId, $event);

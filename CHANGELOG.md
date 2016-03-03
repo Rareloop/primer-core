@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.0.1 (2016-03-03)
+### Bug fixes
+- Events properly broadcast the original id of the pattern
+
 ## 2.0.0 (2015-12-16)
 ### Feature
 - Added support for multiple template engines (Handlebars & Twig)

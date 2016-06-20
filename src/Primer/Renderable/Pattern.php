@@ -87,7 +87,8 @@ class Pattern implements Renderable
         $this->loadCopy();
 
         // Load the data
-        $this->loadData($customData);
+        $this->loadData();
+        $this->setData($customData);
     }
 
     /**

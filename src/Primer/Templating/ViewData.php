@@ -32,15 +32,15 @@ class ViewData extends \stdClass
     {
         $arr = [];
 
-        if (get_class($data) == ViewData::class) {
-            $arr = $data->toArray();
-        } elseif (is_array($data)) {
+        if (is_array($data)) {
             $arr = $data;
+        } elseif (get_class($data) == ViewData::class) {
+            $arr = $data->toArray();
         } else {
             throw new Exception('Unexpected data type passed to ViewData merge function');
         }
 
-        $this->setDataFromArray($data->toArray());
+        $this->setDataFromArray($arr);
     }
 
     protected function setDataFromArray(array $data)

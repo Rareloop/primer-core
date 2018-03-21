@@ -2,20 +2,20 @@
 
 use Rareloop\Primer\Primer;
 use Handlebars\Loader;
-use Handlebars\String;
+use Handlebars\StringWrapper;
 
 class PatternLoader implements Loader
 {
     /**
-	 * Cached templates
-	 *
-	 * @var array
-	 */
+     * Cached templates
+     *
+     * @var array
+     */
     protected $templates = array();
 
     public function load($name)
     {
-        return new String($this->loadPattern($name));
+        return new StringWrapper($this->loadPattern($name));
     }
 
     protected function loadPattern($name)
@@ -32,11 +32,10 @@ class PatternLoader implements Loader
         $handlebarsTemplate = null;
         $path = Primer::$BASE_PATH . '/patterns/' . $name;
 
-        if(file_exists($path.'/template.hbs')) {
-            $handlebarsTemplate = $path.'/template.hbs';
-        }
-        else if(file_exists($path.'/template.handlebars')) {
-            $handlebarsTemplate = $path.'/template.handlebars';
+        if (file_exists($path . '/template.hbs')) {
+            $handlebarsTemplate = $path . '/template.hbs';
+        } else if (file_exists($path . '/template.handlebars')) {
+            $handlebarsTemplate = $path . '/template.handlebars';
         }
 
         $this->templates[$name] = file_get_contents($handlebarsTemplate);

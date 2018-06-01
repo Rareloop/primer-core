@@ -1,5 +1,5 @@
 /*!
- * Primer frontend v2.0.0 (built: 2015-12-16)
+ * Primer frontend v2.0.0 (built: 2018-06-01)
  * http://github.com/rareloop/primer
  *
  * Copyright 2015 Rareloop (http://rareloop.com)
@@ -302,41 +302,17 @@ if ( 'querySelector' in document && 'addEventListener' in window ) {
             return;
         }
 
-        var httpRequest;
-        if (window.XMLHttpRequest) { // Mozilla, Safari, IE7+ ...
-            httpRequest = new XMLHttpRequest();
-        } else if (window.ActiveXObject) { // IE 6 and older
-            httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
-        }
+        body.innerHTML += '<div class="primer-sidebar-button">Menu</div>';
 
-        httpRequest.onreadystatechange = function() {
-            if (httpRequest.readyState === 4) {
-                if (httpRequest.status === 200) {
-                    var response = httpRequest.responseText;
+        var primerContainer = document.querySelector('.primer-container');
+        var primerContainerButton = document.querySelector('.primer-sidebar-button');
 
-                    var nav = document.createElement('div');
-                    $r.addClass(nav, 'primer-menu');
-
-                    nav.innerHTML = response + '<button class="primer-menu__button">Menu</button>';
-
-                    body.appendChild(nav);
-
-                    nav.addEventListener('click', function(event) {
-                        if($r.hasClass(nav, 'visible')) {
-                            $r.removeClass(nav, 'visible');
-                        }
-                        else {
-                            $r.addClass(nav, 'visible');
-                        }
-                    });
-                }
-            }
-        };
-
-        httpRequest.open('GET', '/menu', true);
-        httpRequest.send(null);
+        primerContainerButton.addEventListener('click', function(event) {
+            primerContainer.classList.toggle('menu-is-active');
+        }, false);
     });
-};
+}
+;
 /* **********************************************
      Begin prism-core.js
 ********************************************** */

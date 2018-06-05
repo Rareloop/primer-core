@@ -293,39 +293,16 @@ if ( 'querySelector' in document && 'addEventListener' in window ) {
         if($r.hasClass(body, 'is-template')) {
             return;
         }
+        var primerContainerButton = document.createElement('div');
+        primerContainerButton.classList.add('primer-sidebar-button');
+        primerContainerButton.innerText = 'Menu';
 
-        var httpRequest;
-        if (window.XMLHttpRequest) { // Mozilla, Safari, IE7+ ...
-            httpRequest = new XMLHttpRequest();
-        } else if (window.ActiveXObject) { // IE 6 and older
-            httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
-        }
+        body.appendChild(primerContainerButton);
 
-        httpRequest.onreadystatechange = function() {
-            if (httpRequest.readyState === 4) {
-                if (httpRequest.status === 200) {
-                    var response = httpRequest.responseText;
+        var primerContainer = document.querySelector('.primer-container');
 
-                    var nav = document.createElement('div');
-                    $r.addClass(nav, 'primer-menu');
-
-                    nav.innerHTML = response + '<button class="primer-menu__button">Menu</button>';
-
-                    body.appendChild(nav);
-
-                    nav.addEventListener('click', function(event) {
-                        if($r.hasClass(nav, 'visible')) {
-                            $r.removeClass(nav, 'visible');
-                        }
-                        else {
-                            $r.addClass(nav, 'visible');
-                        }
-                    });
-                }
-            }
-        };
-
-        httpRequest.open('GET', '/menu', true);
-        httpRequest.send(null);
+        primerContainerButton.addEventListener('click', function(event) {
+            primerContainer.classList.toggle('menu-is-active');
+        }, false);
     });
 }

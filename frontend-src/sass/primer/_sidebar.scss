@@ -1,0 +1,209 @@
+.primer-container {
+    position: relative;
+
+    height: 100vh;
+
+    @media (min-width: 648px) {
+        transform: none;
+        transition: transform 0.18s ease;
+    }
+}
+
+.is-template .primer-sidebar {
+    display: none;
+}
+
+.primer-sidebar {
+    box-sizing: border-box;
+    font-family: sans-serif;
+    padding: 8px;
+
+    background: #fff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+
+    text-align: center;
+
+    transform: translateX(-100%);
+    transition: transform 0.18s ease;
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
+
+    @media (min-width: 648px) {
+        right: auto;
+        width: 300px;
+        transform: none;
+        text-align: left;
+    }
+}
+
+.primer-main {
+    padding: 24px 0.5em 0;
+    overflow: scroll;
+
+    -webkit-overflow-scrolling: touch;
+    transition: margin 0.18s ease;
+
+    @media (min-width: 648px) {
+        margin-left: 300px;
+    }
+}
+
+.menu-is-active {
+    .primer-sidebar {
+        transform: translateX(0);
+    }
+
+    @media (min-width: 648px) {
+        .primer-sidebar {
+            transform: translateX(-300px);
+        }
+
+        .primer-main {
+            margin-left: 0;
+        }
+    }
+}
+
+.primer-logo {
+    font-size: 2.4em;
+    margin: 16px;
+
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
+}
+
+.primer-menu__nav {
+    display: block;
+    max-height: none;
+    overflow: hidden;
+    margin-top: 48px;
+
+    @media (min-width: 648px) {
+        margin-top: 0;
+    }
+
+    a {
+        position: relative;
+
+        display: block;
+        font-size: 20px;
+        padding: 16px;
+        overflow: hidden;
+
+        color: #4C4C4C;
+        text-decoration: none;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        border-radius: 0;
+        outline: none;
+
+        transition: transform 180ms ease;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, .2);
+
+        @media (min-width: 648px) {
+            font-size: 16px;
+            padding: 8px 16px;
+        }
+
+        &:hover {
+            color: #4C4C4C;
+            text-decoration: none;
+
+            transform: translateX(8px);
+        }
+    }
+
+    ul {
+        padding: 0;
+        margin: 0;
+
+        font-size: 16px;
+        line-height: 1;
+    }
+
+    li {
+        margin: 0;
+
+        list-style-type: none;
+    }
+}
+
+.primer-menu__item {
+    padding: 0;
+}
+
+
+.primer-menu__top-level {
+    position: relative;
+
+    > .primer-menu__link {
+        color: inherit;
+        position: relative;
+        padding: 16px;
+        font-size: 20px;
+        font-weight: bold;
+
+        @media (min-width: 648px) {
+            font-size: 16px;
+        }
+    }
+}
+
+.primer-sub-menu.primer-sub-menu {
+    width: 100%;
+    padding: 0 0 16px;
+}
+
+.primer-sub-menu a {
+    @media (min-width: 648px) {
+        padding-left: 48px;
+    }
+}
+
+.primer-sidebar-button {
+    background: rgba(0,0,0,.8);
+    color: #fff;
+    font-family: arial,sans-serif;
+    padding: .8em;
+    position: fixed;
+    bottom: .5em;
+    left: .5em;
+    cursor: pointer;
+    opacity: .2;
+    font-size: .875em;
+    border-radius: 5px;
+    transition: opacity 500ms ease;
+    z-index: 100;
+    user-select: none;
+}
+
+.minimal {
+    @media (min-width: 648px) {
+        .primer-sidebar {
+            transform: translateX(-300px);
+        }
+
+        .primer-main {
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        .menu-is-active {
+            .primer-sidebar {
+                transform: translateX(0);
+            }
+
+            .primer-main {
+                margin-left: 300px;
+            }
+        }
+    }
+}

@@ -108,10 +108,10 @@ class Primer
         // Work out what we were passed as an argument
         if (is_string($options)) {
             // Backwards compatibility
-            Primer::$BASE_PATH      = realpath($options);
-            Primer::$PATTERN_PATH   = Primer::$BASE_PATH . '/patterns';
-            Primer::$PATTERN_PATH   = Primer::$BASE_PATH . '/views';
-            Primer::$CACHE_PATH     = Primer::$BASE_PATH . '/cache';
+            Primer::$BASE_PATH = realpath($options);
+            Primer::$PATTERN_PATH = Primer::$BASE_PATH . '/patterns';
+            Primer::$PATTERN_PATH = Primer::$BASE_PATH . '/views';
+            Primer::$CACHE_PATH = Primer::$BASE_PATH . '/cache';
             Primer::$TEMPLATE_CLASS = $defaultTemplateClass;
             Primer::$WRAP_TEMPLATES = true;
         } else {
@@ -120,14 +120,14 @@ class Primer
                 throw new Exception('No `basePath` param passed to Primer::start()');
             }
 
-            Primer::$BASE_PATH      = realpath($options['basePath']);
+            Primer::$BASE_PATH = realpath($options['basePath']);
 
-            Primer::$PATTERN_PATH   = isset($options['patternPath'])    ? realpath($options['patternPath'])     : Primer::$BASE_PATH . '/patterns';
-            Primer::$VIEW_PATH      = isset($options['viewPath'])       ? realpath($options['viewPath'])        : Primer::$BASE_PATH . '/views';
-            Primer::$CACHE_PATH     = isset($options['cachePath'])      ? realpath($options['cachePath'])       : Primer::$BASE_PATH . '/cache';
-            Primer::$TEMPLATE_CLASS = isset($options['templateClass'])  ? $options['templateClass']             : $defaultTemplateClass;
+            Primer::$PATTERN_PATH = isset($options['patternPath']) ? realpath($options['patternPath']) : Primer::$BASE_PATH . '/patterns';
+            Primer::$VIEW_PATH = isset($options['viewPath']) ? realpath($options['viewPath']) : Primer::$BASE_PATH . '/views';
+            Primer::$CACHE_PATH = isset($options['cachePath']) ? realpath($options['cachePath']) : Primer::$BASE_PATH . '/cache';
+            Primer::$TEMPLATE_CLASS = isset($options['templateClass']) ? $options['templateClass'] : $defaultTemplateClass;
 
-            Primer::$WRAP_TEMPLATES = isset($options['wrapTemplate'])   ? $options['wrapTemplate']              : true;
+            Primer::$WRAP_TEMPLATES = isset($options['wrapTemplate']) ? $options['wrapTemplate'] : true;
         }
 
         // Attempt to load all `init.php` files. We shouldn't really have to do this here but currently
@@ -238,6 +238,9 @@ class Primer
             'primer' => [
                 'items' => $renderList->render($showChrome),
                 'bodyClass' => implode(' ', $bodyClasses),
+                'components' => $this->getComponents(),
+                'elements' => $this->getElements(),
+                'templates' => $this->getTemplates()
             ]
         ]);
 
@@ -353,6 +356,46 @@ class Primer
         return $templates;
     }
 
+    public function getComponents()
+    {
+        $components = array();
+
+        if ($handle = opendir(Primer::$PATTERN_PATH . '/components')) {
+            while (false !== ($entry = readdir($handle))) {
+                if (substr($entry, 0, 1) !== '.') {
+                    $components[] = array(
+                        'id' => $entry,
+                        'title' => preg_replace('/[^A-Za-z0-9]/', ' ', $entry),
+                    );
+                }
+            }
+
+            closedir($handle);
+        }
+
+        return $components;
+    }
+
+    public function getElements()
+    {
+        $elements = array();
+
+        if ($handle = opendir(Primer::$PATTERN_PATH . '/elements')) {
+            while (false !== ($entry = readdir($handle))) {
+                if (substr($entry, 0, 1) !== '.') {
+                    $elements[] = array(
+                        'id' => $entry,
+                        'title' => preg_replace('/[^A-Za-z0-9]/', ' ', $entry),
+                    );
+                }
+            }
+
+            closedir($handle);
+        }
+
+        return $elements;
+    }
+
     /**
      * Get the menu listing all the page templates in the site
      *
@@ -361,6 +404,8 @@ class Primer
     public function getMenu()
     {
         $viewData = new ViewData(array(
+            'components' => $this->getComponents(),
+            'elements' => $this->getElements(),
             'templates' => $this->getTemplates()
         ));
 

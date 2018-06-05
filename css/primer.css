@@ -640,7 +640,8 @@ body > .primer-pattern {
   .minimal .primer-sidebar {
     transform: translateX(-300px); }
   .minimal .primer-main {
-    margin-left: 0; }
+    padding: 0 !important;
+    margin: 0 !important; }
   .minimal .menu-is-active .primer-sidebar {
     transform: translateX(0); }
   .minimal .menu-is-active .primer-main {

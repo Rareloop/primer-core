@@ -1,5 +1,5 @@
 /*!
- * Primer frontend v2.0.0 (built: 2018-06-01)
+ * Primer frontend v2.0.0 (built: 2018-06-05)
  * http://github.com/rareloop/primer
  *
  * Copyright 2015 Rareloop (http://rareloop.com)
@@ -301,11 +301,13 @@ if ( 'querySelector' in document && 'addEventListener' in window ) {
         if($r.hasClass(body, 'is-template')) {
             return;
         }
+        var primerContainerButton = document.createElement('div');
+        primerContainerButton.classList.add('primer-sidebar-button');
+        primerContainerButton.innerText = 'Menu';
 
-        body.innerHTML += '<div class="primer-sidebar-button">Menu</div>';
+        body.appendChild(primerContainerButton);
 
         var primerContainer = document.querySelector('.primer-container');
-        var primerContainerButton = document.querySelector('.primer-sidebar-button');
 
         primerContainerButton.addEventListener('click', function(event) {
             primerContainer.classList.toggle('menu-is-active');

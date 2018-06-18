@@ -340,6 +340,10 @@ class Primer
     {
         $templates = array();
 
+        if (!file_exists(Primer::$PATTERN_PATH . '/templates')) {
+            return $templates;
+        }
+
         if ($handle = opendir(Primer::$PATTERN_PATH . '/templates')) {
             while (false !== ($entry = readdir($handle))) {
                 if (substr($entry, 0, 1) !== '.') {
@@ -360,6 +364,10 @@ class Primer
     {
         $components = array();
 
+        if (!file_exists(Primer::$PATTERN_PATH . '/components')) {
+            return $components;
+        }
+
         if ($handle = opendir(Primer::$PATTERN_PATH . '/components')) {
             while (false !== ($entry = readdir($handle))) {
                 if (substr($entry, 0, 1) !== '.') {
@@ -379,6 +387,10 @@ class Primer
     public function getElements()
     {
         $elements = array();
+
+        if (!file_exists(Primer::$PATTERN_PATH . '/elements')) {
+            return $elements;
+        }
 
         if ($handle = opendir(Primer::$PATTERN_PATH . '/elements')) {
             while (false !== ($entry = readdir($handle))) {

@@ -1,0 +1,81 @@
+%typography {
+    @include font-smoothing();
+
+    font-family: $primer-font-stack;
+    font-weight: $primer-font-weight-regular;
+    color: #101010;
+}
+
+%body-typography {
+    @include font-smoothing();
+
+    font-family: $primer-font-stack;
+    font-weight: $primer-font-weight-regular;
+    font-size: 17px;
+    color: #737373;
+    line-height: 2em;
+}
+
+.primer-typography {
+    margin: 0 auto;
+    padding: 2em 0;
+    max-width: 850px;
+
+    // Scope the styles so they don't bleed into any embeds
+    > :first-child {
+        margin-top: 0
+    }
+
+    > h1 {
+        @extend %typography;
+
+        font-size: 45px;
+    }
+
+    > h2 {
+        @extend %typography;
+
+        font-size: 25px;
+    }
+
+    > h3 {
+        @extend %typography;
+
+        font-size: 18px;
+        text-decoration: uppercase;
+    }
+
+    > h4 {
+        @extend %typography;
+    }
+
+    > h5 {
+        @extend %typography;
+    }
+
+    > h6 {
+        @extend %typography;
+    }
+
+    > p {
+        @extend %body-typography;
+    }
+
+    > ul {
+        @extend %body-typography;
+    }
+
+    > ol {
+        @extend %body-typography;
+    }
+
+    > blockquote {
+        @extend %body-typography;
+
+        margin-left: 0;
+        margin-right: 0;
+        padding-left: 2em;
+
+        border-left: 5px solid #D8DDE3;
+    }
+}

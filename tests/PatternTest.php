@@ -1,27 +1,36 @@
 <?php
 
-namespace Rareloop\Primer\Tests;
+namespace Rareloop\Primer\Test;
 
-use Rareloop\Primer\Primer;
-use Rareloop\Primer\Renderable\Pattern;
-use Rareloop\Primer\TemplateEngine\Handlebars\Template as HandlebarsTemplateEngine;
+use PHPUnit\Framework\TestCase;
+use Rareloop\Primer\Pattern;
 
-class PatternTest extends \PHPUnit_Framework_TestCase
+class PatternTest extends TestCase
 {
-    protected $primer;
-
-    public function testCustomPatternData()
+    /** @test */
+    public function title_is_created_from_id()
     {
-        $primer = Primer::start(array(
-            'basePath' => __DIR__.'/primer-test',
-            'templateClass' => HandlebarsTemplateEngine::class,
-        ));
+        $pattern1 = new Pattern('components/misc/header', [], '');
+        $pattern2 = new Pattern('components/misc/header-with-hyphen', [], '');
 
-        $pattern = new Pattern('components/patterns/custom-data', [
-            'name' => 'Test name',
-        ]);
+        $this->assertSame('Header', $pattern1->title());
+        $this->assertSame('Header With Hyphen', $pattern2->title());
+    }
 
-        $output = $pattern->render(false);
-        $this->assertEquals("Test name", $output);
+    /** @test */
+    public function can_get_template()
+    {
+        $pattern = new Pattern('components/misc/header', [], '<p>{{ title }}</p>');
+
+        $this->assertSame('<p>{{ title }}</p>', $pattern->template());
+    }
+
+    /** @test */
+    public function template_is_in_array_output()
+    {
+        $pattern = new Pattern('components/misc/header', [], '<p>{{ title }}</p>');
+        $data = $pattern->toArray();
+
+        $this->assertSame('<p>{{ title }}</p>', $data['template']);
     }
 }

@@ -1,11 +1,20 @@
 language: php
 php:
-- 5.6
-- 7.0
 - 7.1
 - 7.2
-install: composer install
+- 7.3
+env:
+  matrix:
+  - COMPOSER_FLAGS="--prefer-lowest"
+  - COMPOSER_FLAGS=""
+before_script:
+- travis_retry composer self-update
+- travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-source
+script:
+- vendor/bin/phpunit --coverage-clover ./tests/logs/clover.xml
+- vendor/bin/phpcs --standard=PSR2 ./src
+after_script:
+- php vendor/bin/php-coveralls -v
 notifications:
-  email: false
   slack:
     secure: wufHJYJOn6OLwj320LtF6XQtgVEEM/IYksS1mvyhOq8ONQ/wmh58GgKAM7sDr0aRfRZ5uSzkapAA9+WijwoERBtyo+B1/xe9QqcpP1XADoDpzdQ3NeCAK1+nAFbVEbXeAAjJKGsma5AI6lBvYx5M1p/isBPlEJS2Vh9WZ4Wqs7Sy9A3HSCkoovWfIZAketbxgWwXoyFBnkBNoPMde7jQ3Vk3x2zVjNDy0rl0/3hc33gbYuqMzKZIw/NNzj5TlqoO61du5A5hQ/fSTwCxCw9i0GZYKzBlVczRZv/YEw1O1TMHOw3/wqNWl0OoAuDw1rtrAYwQbgvTIfOpn3RLtGgoiRynqkiA1HmVmRaNOc/24Iz+9PzwXWsSyXP5ra4a384oCt9BLlKxz8mKrUemtXufgNCUMZYHe07NRyycLlzvMQ9zo8rbNv7lOeQpsEHz1QDEAigQDlgFC8pi7d+w6g1/De3SmNGN54Npuyb1ri/qiBU9/vtgC4n2hdHtl0FKTGVZVk/O+fdwg44pp8kvNUtWrkMi2PERPkNpNvm7AP61ajD+WHv7MfTOa15TYCEjql2LF+rkagmlD1Eri6HgkG2O9PYJygKmLLK/fUrRjV9byotDjBXCKpTBhu8g+ZodyEbeCN334lKD+cm9mHQr4x+nejvX5863q08qrWATeA5yoWU=

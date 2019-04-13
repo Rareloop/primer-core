@@ -26,7 +26,7 @@ class FileSystemDocumentProvider implements DocumentProvider
         $finder = new Finder();
         $finder->files()->in($this->paths)->name('*.' . $this->fileExtension);
 
-        return collect($finder)->map(function ($file) {
+        return collect($finder)->map(function ($file, $test) {
             return str_replace('.' . $this->fileExtension, '', $file->getRelativePathname());
         })->sort()->map(function ($id) {
             // Remove any numeric prefix from sub section

@@ -39,7 +39,7 @@ class FileSystemDocumentProvider implements DocumentProvider
         })->values()->toArray();
     }
 
-    public function getDocument($id) : Document
+    public function getDocument(string $id) : Document
     {
         $finder = new Finder;
         $finder->in($this->paths)->path($this->getFolderPathFromId($id));

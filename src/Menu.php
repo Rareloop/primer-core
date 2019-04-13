@@ -52,7 +52,9 @@ class Menu implements Arrayable
             try {
                 $section->setCurrent($id);
                 $this->currentSection = $sectionName;
-            } catch (Exception $e) {}
+            } catch (Exception $e) {
+                // Gracefully recover
+            }
         }
 
         return $this;

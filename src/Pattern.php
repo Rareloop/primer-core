@@ -12,8 +12,13 @@ class Pattern implements Arrayable
     protected $stateOptions = ['default'];
     protected $template;
 
-    public function __construct(string $id, array $stateData, string $template, string $stateName = 'default', array $stateOptions = ['default'])
-    {
+    public function __construct(
+        string $id,
+        array $stateData,
+        string $template,
+        string $stateName = 'default',
+        array $stateOptions = ['default']
+    ) {
         $this->id = $id;
         $this->stateData = $stateData;
         $this->stateName = $stateName;

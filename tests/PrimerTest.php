@@ -147,6 +147,41 @@ class PrimerTest extends TestCase
         $this->assertSame('<p>Testing123</p>', $primer->renderPatterns('components/misc'));
     }
 
+    /** @test */
+    public function correct_patterns_are_rendered_when_one_name_is_contained_in_another()
+    {
+        $patternIds = [
+            'components/misc/header',
+            'components/misc/headers',
+        ];
+
+        $templateRenderer = Mockery::mock(TemplateRenderer::class);
+        $templateRenderer
+            ->shouldReceive('renderPatterns')
+            ->once()
+            ->withArgs(function (array $patterns, Menu $menu, array $primerData) use ($patternIds) {
+                return
+                    count($patterns) === 1 &&
+                    $patterns[0]->id() === 'components/misc/header';
+            })
+            ->andReturn('<p>Testing123</p>');
+
+        $patternProvider = Mockery::mock(PatternProvider::class);
+        $patternProvider
+            ->shouldReceive('allPatternIds')->andReturn($patternIds)
+            ->shouldReceive('getPattern')->with('components/misc/header')->once()->andReturn(new Pattern('components/misc/header', [], ''));
+
+        $templateProvider = Mockery::mock(PatternProvider::class);
+        $templateProvider->shouldReceive('allPatternIds')->once()->andReturn([]);
+
+        $documentProvider = Mockery::mock(DocumentProvider::class);
+        $documentProvider->shouldReceive('allDocumentIds')->once()->andReturn([]);
+
+        $primer = new Primer($templateRenderer, $patternProvider, $templateProvider, $documentProvider);
+
+        $this->assertSame('<p>Testing123</p>', $primer->renderPatterns('components/misc/header'));
+    }
+
     /**
      * @test
      * @expectedException Rareloop\Primer\Exceptions\PatternNotFoundException

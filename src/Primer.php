@@ -65,7 +65,15 @@ class Primer
     {
         $patterns = collect($this->patternProvider->allPatternIds())
             ->filter(function ($thisId) use ($id) {
-                return strpos($thisId, $id) === 0;
+                if (strpos($thisId, $id) !== 0) {
+                    return false;
+                }
+
+                // We need to make sure that we don't match substrings that are not folder prefixes
+                // e.g. we don't want to match `misc/headers` against `misc/header`
+                $nextChar = substr($thisId, strlen($id), 1);
+
+                return empty($nextChar) || $nextChar === '/';
             })->map(function ($thisId) {
                 return $this->patternProvider->getPattern($thisId);
             })->all();

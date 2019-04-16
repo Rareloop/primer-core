@@ -107,7 +107,7 @@ class FileSystemPatternProvider implements PatternProvider, TemplateProvider
             return str_replace('-', '\-', $part);
         }, explode('/', $id));
 
-        $id = '/^' . implode('\/', $parts) . '/';
+        $id = '/^' . implode('\/', $parts) . '\//';
 
         return $id;
     }

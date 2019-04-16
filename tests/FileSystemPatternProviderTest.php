@@ -272,6 +272,40 @@ class FileSystemPatternProviderTest extends TestCase
     }
 
     /** @test */
+    public function can_get_correct_pattern_when_name_is_a_prefix_to_another()
+    {
+        vfsStream::setup();
+        $root = vfsStream::create([
+            'foo' => [
+                'bar' => [
+                    'components' => [
+                        'misc' => [
+                            'headers' => [
+                                'template.twig' => '<header>Not Hello World</header>',
+                                'data.php' => '<?php return [\'bar\' => \'baz\'];',
+                            ],
+                            'header' => [
+                                'template.twig' => '<header>Hello World</header>',
+                                'data.php' => '<?php return [\'foo\' => \'bar\'];',
+                                'data~error.php' => '<?php return [\'foo1\' => \'bar1\'];',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        $dataProvider = new FileSystemPatternProvider([vfsStream::url('root/foo/bar')], 'twig');
+        $pattern = $dataProvider->getPattern('components/misc/header');
+
+        $this->assertInstanceOf(Pattern::class, $pattern);
+        $this->assertSame('components/misc/header', $pattern->id());
+        $this->assertSame(['foo' => 'bar'], $pattern->data());
+        $this->assertSame('default', $pattern->state());
+        $this->assertSame(['default', 'error'], $pattern->states());
+    }
+
+    /** @test */
     public function can_get_pattern_with_non_default_state()
     {
         vfsStream::setup();

@@ -28,6 +28,16 @@ class TwigTemplateRenderer implements TemplateRenderer
         return $this->twig->render($this->templateFilename, $data);
     }
 
+    public function renderTemplate(Pattern $pattern, array $primerData = []) : string
+    {
+        $data = [
+            'patterns' => [$pattern->toArray()],
+            'primer' => $primerData,
+        ];
+
+        return $this->twig->render($pattern->id(), $data);
+    }
+
     public function renderPatterns(array $patterns, Menu $menu, array $primerData = []) : string
     {
         $data = [

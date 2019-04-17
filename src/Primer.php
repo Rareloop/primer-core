@@ -42,7 +42,7 @@ class Primer
     {
         $pattern = $this->templateProvider->getPattern($id, $state);
 
-        return $this->templateRenderer->renderPatternWithoutChrome($pattern, [
+        return $this->templateRenderer->renderTemplate($pattern, [
             'title' => IdHelpers::title($id),
         ]);
     }

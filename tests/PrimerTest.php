@@ -73,7 +73,7 @@ class PrimerTest extends TestCase
     {
         $templateRenderer = Mockery::mock(TemplateRenderer::class);
         $templateRenderer
-            ->shouldReceive('renderPatternWithoutChrome')
+            ->shouldReceive('renderTemplate')
             ->once()
             ->withArgs(function (Pattern $pattern, array $primerData) {
                 $this->assertSame('Home', $primerData['title']);

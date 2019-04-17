@@ -35,6 +35,7 @@ class Primer
 
         return $this->templateRenderer->renderPatternWithoutChrome($pattern, [
             'title' => IdHelpers::title($id),
+            'mode' => 'pattern',
         ]);
     }
 
@@ -44,6 +45,7 @@ class Primer
 
         return $this->templateRenderer->renderTemplate($pattern, [
             'title' => IdHelpers::title($id),
+            'mode' => 'template',
         ]);
     }
 
@@ -56,6 +58,7 @@ class Primer
             $this->getMenu()->setCurrent('patterns', $id),
             [
                 'ui' => true,
+                'mode' => 'pattern',
                 'title' => $pattern->title(),
             ]
         );
@@ -84,6 +87,7 @@ class Primer
 
         return $this->templateRenderer->renderPatterns($patterns, $this->getMenu()->setCurrent('patterns', $id), [
             'ui' => true,
+            'mode' => 'pattern',
             'title' => IdHelpers::title($id),
         ]);
     }
@@ -94,6 +98,7 @@ class Primer
 
         return $this->templateRenderer->renderDocument($document, $this->getMenu()->setCurrent('documents', $id), [
             'ui' => true,
+            'mode' => 'document',
             'title' => $document->title(),
             'description' => $document->description(),
         ]);

@@ -51,6 +51,7 @@ class PrimerTest extends TestCase
             ->once()
             ->withArgs(function (Pattern $pattern, array $primerData) {
                 $this->assertSame('Header', $primerData['title']);
+                $this->assertSame('pattern', $primerData['mode']);
 
                 return $pattern->id() === 'components/misc/header' && $pattern->state() === 'error';
             })
@@ -77,6 +78,7 @@ class PrimerTest extends TestCase
             ->once()
             ->withArgs(function (Pattern $pattern, array $primerData) {
                 $this->assertSame('Home', $primerData['title']);
+                $this->assertSame('template', $primerData['mode']);
 
                 return $pattern->id() === 'templates/home';
             })
@@ -122,6 +124,7 @@ class PrimerTest extends TestCase
                 $this->assertMenu($menu, 'components/misc', $documentIds, $patternIds, $templateIds);
                 $this->assertUIVisible($primerData);
                 $this->assertSame('Misc', $primerData['title']);
+                $this->assertSame('pattern', $primerData['mode']);
 
                 return
                     count($patterns) === 2 &&
@@ -289,6 +292,7 @@ class PrimerTest extends TestCase
                 $this->assertUIVisible($primerData);
                 $this->assertSame('title', $primerData['title']);
                 $this->assertSame('description', $primerData['description']);
+                $this->assertSame('document', $primerData['mode']);
 
                 return $doc->id() === 'frontend/overview' && $doc->content() === 'Document';
             })

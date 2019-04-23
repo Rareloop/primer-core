@@ -1,11 +1,11 @@
-$primer-search-padding-horizontal: 1rem !default;
-$primer-search-control-padding-vertical: 0.5rem !default;
-$primer-search-control-padding-horizontal: 1rem !default;
+$primer-search-padding-horizontal: 16px !default;
+$primer-search-control-padding-vertical: 8px !default;
+$primer-search-control-padding-horizontal: 16px !default;
 
 .primer-search {
     position: relative;
 
-    padding: 0 $primer-search-padding-horizontal 1rem;
+    padding: 0 $primer-search-padding-horizontal 16px;
 }
 
 .primer-search__control {
@@ -23,7 +23,7 @@ $primer-search-control-padding-horizontal: 1rem !default;
     height: 100%;
     height: calc(100% - #{2 * $primer-search-control-padding-vertical});
 
-    font-size: 1rem;
+    font-size: 16px;
     color: rgba(#000, 0.55);
 }
 
@@ -33,7 +33,7 @@ $primer-search-control-padding-horizontal: 1rem !default;
     width: 100%;
     width: calc(100% - #{2 * $primer-search-control-padding-horizontal});
 
-    font-size: 1rem;
+    font-size: 16px;
 
     background: #EEF2F5;
     border: 1px solid #EEF2F5;
@@ -62,7 +62,7 @@ $primer-search-control-padding-horizontal: 1rem !default;
     z-index: 100;
 
     padding: 0;
-    margin: 0.5rem 0 0;
+    margin: 8px 0 0;
     width: 100%;
     width: calc(100% - #{2 * $primer-search-padding-horizontal});
     max-height: 400px;
@@ -82,16 +82,16 @@ $primer-search-control-padding-horizontal: 1rem !default;
 }
 
 .primer-search__result--empty {
-    padding: 1rem;
+    padding: 16px;
 
-    font-size: 0.6rem;
+    font-size: 9.6px;
     text-align: center;
     color: rgba(#000, 0.5);
 }
 
 .primer-search__result-link {
     display: block;
-    padding: 0.75rem;
+    padding: 12px;
 
     color: $primer-sidebar-list-item-font-color;
     text-decoration: none;
@@ -116,14 +116,14 @@ $primer-search-control-padding-horizontal: 1rem !default;
 .primer-search__result-title {
     display: block;
 
-    font-size: 0.9rem;
+    font-size: 14.4px;
 }
 
 .primer-search__result-id {
     display: block;
-    margin-top: 0.25rem;
+    margin-top: 4px;
 
-    font-size: 0.8rem;
+    font-size: 12.8px;
 
     opacity: 0.7;
 }

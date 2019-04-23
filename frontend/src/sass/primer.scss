@@ -7,7 +7,7 @@
 @import 'partials/typography';
 @import 'partials/prismjs';
 
-$primer-body-padding: 1.2rem !default;
+$primer-body-padding: 19.2px !default;
 
 .primer-html {
     background: #eef2f5;
@@ -55,7 +55,7 @@ $primer-body-padding: 1.2rem !default;
     }
 
     .primer-main {
-        padding-left: 2rem;
+        padding-left: 32px;
         overflow: scroll;
 
         flex: 1;

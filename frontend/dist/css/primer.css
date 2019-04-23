@@ -10,7 +10,7 @@
 .primer-logo {
   overflow: hidden;
   display: block;
-  margin: 1.5rem 1rem;
+  margin: 24px 16px;
   height: 60px;
   text-indent: -600px;
   background: url("../img/logo.svg") no-repeat center;
@@ -33,8 +33,8 @@
 .primer-sidebar-group__title {
   position: relative;
   display: block;
-  padding: 1.1rem 1rem 1.1rem 2.8rem;
-  font-size: 0.9rem;
+  padding: 17.6px 16px 17.6px 44.8px;
+  font-size: 14.4px;
   font-weight: 500;
   color: #606163;
   background-color: #fff;
@@ -45,7 +45,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 2.8rem;
+  width: 44.8px;
   height: 96%;
   background-position: center;
   background-repeat: no-repeat;
@@ -55,7 +55,7 @@
 
 .primer-sidebar-group__title + .primer-nav-items {
   position: relative;
-  padding: 0.5rem 0;
+  padding: 8px 0;
   background: #F9FAFC;
 }
 
@@ -99,7 +99,7 @@
 .primer-nav-items {
   margin: 0;
   padding: 0;
-  font-size: 0.9rem;
+  font-size: 14.4px;
   list-style: none;
 }
 
@@ -109,7 +109,7 @@
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  padding: 0.9rem 1rem;
+  padding: 14.4px 16px;
   color: #7a7c7d;
   text-decoration: none;
   -webkit-box-align: center;
@@ -146,51 +146,51 @@
 }
 
 .primer-nav-items--level-1 .primer-nav-item__link {
-  padding-left: 2.6rem;
+  padding-left: 41.6px;
 }
 
 .primer-nav-items--level-2 .primer-nav-item__link {
-  padding-left: 4.2rem;
+  padding-left: 67.2px;
 }
 
 .primer-nav-items--level-3 .primer-nav-item__link {
-  padding-left: 5.8rem;
+  padding-left: 92.8px;
 }
 
 .primer-nav-items--level-4 .primer-nav-item__link {
-  padding-left: 7.4rem;
+  padding-left: 118.4px;
 }
 
 .primer-nav-items--level-5 .primer-nav-item__link {
-  padding-left: 9rem;
+  padding-left: 144px;
 }
 
 .primer-nav-items--level-6 .primer-nav-item__link {
-  padding-left: 10.6rem;
+  padding-left: 169.6px;
 }
 
 .primer-nav-items--level-7 .primer-nav-item__link {
-  padding-left: 12.2rem;
+  padding-left: 195.2px;
 }
 
 .primer-nav-items--level-8 .primer-nav-item__link {
-  padding-left: 13.8rem;
+  padding-left: 220.8px;
 }
 
 .primer-nav-items--level-9 .primer-nav-item__link {
-  padding-left: 15.4rem;
+  padding-left: 246.4px;
 }
 
 .primer-nav-items--level-10 .primer-nav-item__link {
-  padding-left: 17rem;
+  padding-left: 272px;
 }
 
 .primer-nav-item__link-title {
   position: relative;
   overflow: hidden;
   display: block;
-  padding-left: 1.8rem;
-  padding-right: 0.5em;
+  padding-left: 28.8px;
+  padding-right: 8px;
   white-space: nowrap;
   text-overflow: ellipsis;
   -webkit-box-flex: 1;
@@ -203,7 +203,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 1rem;
+  width: 16px;
   height: 92%;
   background: url("../img/chevron.svg") no-repeat center;
   -webkit-transform-origin: center;
@@ -244,7 +244,7 @@
 
 .primer-search {
   position: relative;
-  padding: 0 1rem 1rem;
+  padding: 0 16px 16px;
 }
 
 .primer-search__control {
@@ -255,21 +255,21 @@
   position: absolute;
   top: 0;
   left: 0;
-  padding: 0.5rem 1rem;
+  padding: 8px 16px;
   width: 100%;
-  width: calc(100% - 2rem);
+  width: calc(100% - 32px);
   height: 100%;
-  height: calc(100% - 1rem);
-  font-size: 1rem;
+  height: calc(100% - 16px);
+  font-size: 16px;
   color: rgba(0, 0, 0, 0.55);
 }
 
 .primer-search__input {
   display: block;
-  padding: 0.5rem 1rem;
+  padding: 8px 16px;
   width: 100%;
-  width: calc(100% - 2rem);
-  font-size: 1rem;
+  width: calc(100% - 32px);
+  font-size: 16px;
   background: #EEF2F5;
   border: 1px solid #EEF2F5;
   border-radius: 5px;
@@ -288,14 +288,14 @@
 
 .primer-search__results {
   position: absolute;
-  right: 1rem;
-  left: 1rem;
+  right: 16px;
+  left: 16px;
   left: calc($primer-search-padding-horizontal + 1px);
   z-index: 100;
   padding: 0;
-  margin: 0.5rem 0 0;
+  margin: 8px 0 0;
   width: 100%;
-  width: calc(100% - 2rem);
+  width: calc(100% - 32px);
   max-height: 400px;
   overflow: scroll;
   background: #fff;
@@ -310,15 +310,15 @@
 }
 
 .primer-search__result--empty {
-  padding: 1rem;
-  font-size: 0.6rem;
+  padding: 16px;
+  font-size: 9.6px;
   text-align: center;
   color: rgba(0, 0, 0, 0.5);
 }
 
 .primer-search__result-link {
   display: block;
-  padding: 0.75rem;
+  padding: 12px;
   color: #7a7c7d;
   text-decoration: none;
 }
@@ -341,13 +341,13 @@
 
 .primer-search__result-title {
   display: block;
-  font-size: 0.9rem;
+  font-size: 14.4px;
 }
 
 .primer-search__result-id {
   display: block;
-  margin-top: 0.25rem;
-  font-size: 0.8rem;
+  margin-top: 4px;
+  font-size: 12.8px;
   opacity: 0.7;
 }
 
@@ -419,9 +419,9 @@
             order: 3;
   }
   .primer-sidebar--small .primer-search {
-    padding-right: 1.2rem;
-    padding-left: 1.2rem;
-    margin-bottom: 1rem;
+    padding-right: 19.2px;
+    padding-left: 19.2px;
+    margin-bottom: 16px;
   }
   .primer-sidebar--small .primer-sidebar__nav {
     -webkit-box-ordinal-group: 5;
@@ -436,7 +436,7 @@
   overflow: hidden;
   height: 60px;
   width: 40px;
-  width: calc(24px + 1.2rem);
+  width: calc(24px + 19.2px);
   text-indent: -400%;
   background: transparent;
   border: 0;
@@ -688,7 +688,7 @@
 }
 
 .primer-pattern + .primer-pattern {
-  margin-top: 1.6rem;
+  margin-top: 25.6px;
 }
 
 .primer-pattern__header {
@@ -711,7 +711,7 @@
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  padding: 1.5rem;
+  padding: 24px;
   -webkit-box-flex: 1;
   -webkit-flex: 1;
       -ms-flex: 1;
@@ -720,13 +720,13 @@
   -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
-  font-size: 1.18rem;
+  font-size: 19px;
 }
 
 .primer-pattern__id {
   display: inline-block;
   margin-left: 1em;
-  font-size: 0.8rem;
+  font-size: 13px;
   font-family: courier;
   opacity: 0;
   -webkit-transition: opacity 100ms ease;
@@ -742,7 +742,7 @@
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  padding-right: 1rem;
+  padding-right: 16px;
   -webkit-box-align: center;
   -webkit-align-items: center;
       -ms-flex-align: center;
@@ -761,13 +761,13 @@
 
 .primer-pattern__states-select-container {
   position: relative;
-  margin-right: 0.7rem;
+  margin-right: 11.2px;
 }
 
 .primer-pattern__states-select-container:after {
   position: absolute;
   top: 0;
-  right: 0.5rem;
+  right: 8px;
   width: 15px;
   height: 100%;
   background: url("../img/select-arrow.svg") no-repeat center;
@@ -778,10 +778,10 @@
 .primer-pattern__states-select {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  padding: 0.5rem 2.1rem 0.5rem 0.75rem;
+  padding: 8px 33.6px 8px 12px;
   color: rgba(0, 0, 0, 0.45);
   font-family: "Roboto", sans-serif;
-  font-size: 0.85rem;
+  font-size: 13.5px;
   font-weight: 500;
   background: #eef2f5;
   border: none;
@@ -805,13 +805,13 @@
 }
 
 .primer-pattern__content {
-  margin: 0 0.75rem 0.75rem;
-  padding: 1rem;
+  margin: 0 12px 12px;
+  padding: 16px;
   border: 1px solid rgba(151, 151, 151, 0.17);
 }
 
 .primer-tabs {
-  padding: 0 0.75rem 0.75rem;
+  padding: 0 12px 12px;
 }
 
 .primer-tab__title,
@@ -819,17 +819,17 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   display: block;
-  padding: 1rem 0 1.6rem;
-  font-size: 0.9rem;
+  padding: 16px 0 25.6px;
+  font-size: 14.4px;
   font-family: "Roboto", sans-serif;
   font-weight: 500;
 }
 
 .primer-tab__content {
-  padding: 1rem;
+  padding: 16px;
   background: #56606A;
   font-family: courier;
-  font-size: 0.9rem;
+  font-size: 14.4px;
   color: #fff;
 }
 
@@ -882,8 +882,8 @@
 
 .primer-pattern--enhanced .primer-tabs-toc__link {
   position: relative;
-  padding-right: 1rem;
-  padding-left: 1rem;
+  padding-right: 16px;
+  padding-left: 16px;
   text-align: center;
   color: #000;
   text-decoration: none;
@@ -914,11 +914,11 @@
 
 @media (max-width: 700px) {
   .primer-pattern__title {
-    padding-left: 0.75rem;
-    font-size: 0.9rem;
+    padding-left: 12px;
+    font-size: 14.4px;
   }
   .primer-pattern__actions {
-    padding-right: 0.2rem;
+    padding-right: 3.2px;
   }
   .primer-pattern__link {
     width: 40px;
@@ -956,7 +956,7 @@
 
 .primer-typography {
   margin: 0 auto;
-  padding: 2em 0;
+  padding: 32px 0;
   max-width: 850px;
 }
 
@@ -1160,7 +1160,7 @@ pre[class*="language-"] > code[class*="language-"] {
 }
 
 .primer-main {
-  padding: 1.2rem;
+  padding: 19.2px;
 }
 
 @media (min-width: 1000px) {
@@ -1195,7 +1195,7 @@ pre[class*="language-"] > code[class*="language-"] {
     -webkit-overflow-scrolling: touch;
   }
   .primer-main {
-    padding-left: 2rem;
+    padding-left: 32px;
     overflow: scroll;
     -webkit-box-flex: 1;
     -webkit-flex: 1;

@@ -24,7 +24,7 @@ $primer-sidebar-list-item-border-left-color-current: #809cb9 !default;
     overflow: hidden;
 
     display: block;
-    margin: 1.5rem 1rem;
+    margin: 24px 16px;
     height: 60px;
 
     text-indent: -600px;
@@ -54,9 +54,9 @@ $primer-sidebar-list-item-border-left-color-current: #809cb9 !default;
     position: relative;
 
     display: block;
-    padding: 1.1rem 1rem 1.1rem 2.8rem;
+    padding: 17.6px 16px 17.6px 44.8px;
 
-    font-size: 0.9rem;
+    font-size: 14.4px;
     font-weight: $primer-font-weight-medium;
     color: $primer-sidebar-group-font-color;
 
@@ -68,7 +68,7 @@ $primer-sidebar-list-item-border-left-color-current: #809cb9 !default;
         top: 0;
         left: 0;
 
-        width: 2.8rem;
+        width: 44.8px;
         height: 96%;
 
         background-position: center;
@@ -82,7 +82,7 @@ $primer-sidebar-list-item-border-left-color-current: #809cb9 !default;
     + .primer-nav-items {
         position: relative;
 
-        padding: 0.5rem 0;
+        padding: 8px 0;
 
         background: $primer-sidebar-list-item-background-color;
 
@@ -138,7 +138,7 @@ $primer-sidebar-list-item-border-left-color-current: #809cb9 !default;
     margin: 0;
     padding: 0;
 
-    font-size: 0.9rem;
+    font-size: 14.4px;
     list-style: none;
 }
 
@@ -146,7 +146,7 @@ $primer-sidebar-list-item-border-left-color-current: #809cb9 !default;
     position: relative;
 
     display: flex;
-    padding: 0.9rem 1rem;
+    padding: 14.4px 16px;
 
     color: $primer-sidebar-list-item-font-color;
     text-decoration: none;
@@ -181,7 +181,7 @@ $primer-sidebar-list-item-border-left-color-current: #809cb9 !default;
 
     @for $level from 1 through 10 {
         .primer-nav-items--level-#{$level} & {
-            padding-left: 1 + ($level * 1.6rem);
+            padding-left: 16px + ($level * 25.6px);
         }
     }
 }
@@ -191,8 +191,8 @@ $primer-sidebar-list-item-border-left-color-current: #809cb9 !default;
     overflow: hidden;
 
     display: block;
-    padding-left: 1.8rem;
-    padding-right: 0.5em;
+    padding-left: 28.8px;
+    padding-right: 8px;
 
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -205,7 +205,7 @@ $primer-sidebar-list-item-border-left-color-current: #809cb9 !default;
     top: 0;
     left: 0;
 
-    width: 1rem;
+    width: 16px;
     height: 92%;
 
     background: url('../img/chevron.svg') no-repeat center;

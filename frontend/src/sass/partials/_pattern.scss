@@ -5,7 +5,7 @@
     box-shadow: 0px 2px 14px rgba(#000, 0.06);
 
     + .primer-pattern {
-        margin-top: 1.6rem;
+        margin-top: 25.6px;
     }
 }
 
@@ -22,19 +22,19 @@
 
 .primer-pattern__title {
     display: flex;
-    padding: 1.5rem;
+    padding: 24px;
 
     flex: 1;
     align-items: center;
 
-    font-size: 1.18rem;
+    font-size: 19px;
 }
 
 .primer-pattern__id {
     display: inline-block;
     margin-left: 1em;
 
-    font-size: 0.8rem;
+    font-size: 13px;
     font-family: courier;
 
     opacity: 0;
@@ -48,7 +48,7 @@
 
 .primer-pattern__actions {
     display: flex;
-    padding-right: 1rem;
+    padding-right: 16px;
 
     align-items: center;
 }
@@ -68,12 +68,12 @@
 .primer-pattern__states-select-container {
     position: relative;
 
-    margin-right: 0.7rem;
+    margin-right: 11.2px;
 
     &:after {
         position: absolute;
         top: 0;
-        right: 0.5rem;
+        right: 8px;
 
         width: 15px;
         height: 100%;
@@ -88,11 +88,11 @@
 .primer-pattern__states-select {
     @include font-smoothing;
 
-    padding: 0.5rem 2.1rem 0.5rem 0.75rem;
+    padding: 8px 33.6px 8px 12px;
 
     color: rgba(#000, 0.45);
     font-family: $primer-font-stack;
-    font-size: 0.85rem;
+    font-size: 13.5px;
     font-weight: $primer-font-weight-medium;
 
     background: #eef2f5;
@@ -118,14 +118,14 @@
 }
 
 .primer-pattern__content {
-    margin: 0 0.75rem 0.75rem;
-    padding: 1rem;
+    margin: 0 12px 12px;
+    padding: 16px;
 
     border: 1px solid rgba(#979797, 0.17);
 }
 
 .primer-tabs {
-    padding: 0 0.75rem 0.75rem;
+    padding: 0 12px 12px;
 }
 
 .primer-tab__title ,
@@ -133,20 +133,20 @@
     @include font-smoothing();
 
     display: block;
-    padding: 1rem 0 1.6rem;
+    padding: 16px 0 25.6px;
 
-    font-size: 0.9rem;
+    font-size: 14.4px;
     font-family: $primer-font-stack;
     font-weight: $primer-font-weight-medium;
 }
 
 .primer-tab__content {
-    padding: 1rem;
+    padding: 16px;
 
     background: #56606A;
 
     font-family: courier;
-    font-size: 0.9rem;
+    font-size: 14.4px;
     color: #fff;
 }
 
@@ -205,8 +205,8 @@
     .primer-tabs-toc__link {
         position: relative;
 
-        padding-right: 1rem;
-        padding-left: 1rem;
+        padding-right: 16px;
+        padding-left: 16px;
 
         text-align: center;
         color: #000;
@@ -244,13 +244,13 @@
 
 @media (max-width: 700px) {
     .primer-pattern__title {
-        padding-left: 0.75rem;
+        padding-left: 12px;
 
-        font-size: 0.9rem;
+        font-size: 14.4px;
     }
 
     .primer-pattern__actions {
-        padding-right: 0.2rem;
+        padding-right: 3.2px;
     }
 
     .primer-pattern__link {

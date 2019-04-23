@@ -61,11 +61,11 @@
         @extend %body-typography;
     }
 
-    > ul {
+    > ul li {
         @extend %body-typography;
     }
 
-    > ol {
+    > ol li {
         @extend %body-typography;
     }
 

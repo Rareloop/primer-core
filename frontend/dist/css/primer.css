@@ -950,7 +950,7 @@
   color: #101010;
 }
 
-.primer-typography > p, .primer-typography > ul, .primer-typography > ol, .primer-typography > blockquote {
+.primer-typography > p, .primer-typography > ul li, .primer-typography > ol li, .primer-typography > blockquote {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: "Roboto", sans-serif;

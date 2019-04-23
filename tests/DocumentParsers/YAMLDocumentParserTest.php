@@ -51,4 +51,15 @@ class YAMLDocumentParserTest extends TestCase
 
         $this->assertSame('Original Title', $outputDoc->title());
     }
+
+    /** @test */
+    public function can_handle_document_without_frontmatter()
+    {
+        $parser = new YAMLDocumentParser;
+
+        $doc = new Document('original-title', 'Content');
+        $outputDoc = $parser->parse($doc);
+
+        $this->assertSame('Content', $outputDoc->content());
+    }
 }

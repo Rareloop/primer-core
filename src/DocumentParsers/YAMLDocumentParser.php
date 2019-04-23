@@ -16,7 +16,7 @@ class YAMLDocumentParser implements DocumentParser
         $yaml = $parsedDocument->getYAML();
 
         $newDoc = new Document($document->id(), $parsedDocument->getContent());
-        $newDoc->setMeta($yaml);
+        $newDoc->setMeta($yaml ?? []);
 
         if (!empty($yaml['title'])) {
             $newDoc->setTitle($yaml['title']);

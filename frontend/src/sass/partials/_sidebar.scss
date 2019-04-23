@@ -157,10 +157,17 @@ $primer-sidebar-list-item-border-left-color-current: #809cb9 !default;
     .primer-nav-item--current > & {
         color: $primer-sidebar-list-item-font-color-current;
         font-weight: $primer-font-weight-medium;
+
+        &:hover {
+            color: $primer-sidebar-list-item-font-color-current;
+        }
     }
 
     &:hover {
         background: $primer-sidebar-list-item-background-color-hover;
+
+        color: $primer-sidebar-list-item-font-color;
+        text-decoration: none;
 
         .primer-nav-item__group-link {
             opacity: 1;

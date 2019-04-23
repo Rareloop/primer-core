@@ -127,8 +127,14 @@
   font-weight: 500;
 }
 
+.primer-nav-item--current > .primer-nav-item__link:hover {
+  color: #000;
+}
+
 .primer-nav-item__link:hover {
   background: rgba(0, 0, 0, 0.02);
+  color: #7a7c7d;
+  text-decoration: none;
 }
 
 .primer-nav-item__link:hover .primer-nav-item__group-link {

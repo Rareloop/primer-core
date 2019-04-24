@@ -187,7 +187,7 @@ class FileSystemPatternProvider implements PatternProvider, TemplateProvider
      * @param  string $state [description]
      * @return [type]        [description]
      */
-    protected function getPatternStateData(string $id, string $state = 'default') : array
+    public function getPatternStateData(string $id, string $state = 'default') : array
     {
         if (!$this->patternHasState($id, $state)) {
             return [];

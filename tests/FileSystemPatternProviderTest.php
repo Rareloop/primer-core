@@ -488,4 +488,104 @@ class FileSystemPatternProviderTest extends TestCase
 
         $this->assertSame(123456789, $dataProvider->getPatternTemplateLastModified('components/misc/header'));
     }
+
+    /** @test */
+    public function can_get_default_state_data_for_a_pattern()
+    {
+        vfsStream::setup();
+        $root = vfsStream::create([
+            'foo' => [
+                'bar' => [
+                    'components' => [
+                        'misc' => [
+                            'header' => [
+                                'template.twig' => '<header>Hello World</header>',
+                                'data.php' => '<?php return [\'foo\' => \'bar\'];',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        $dataProvider = new FileSystemPatternProvider([vfsStream::url('root/foo/bar')], 'twig');
+        $data = $dataProvider->getPatternStateData('components/misc/header');
+
+        $this->assertSame(['foo' => 'bar'], $data);
+    }
+
+    /** @test */
+    public function can_get_non_default_state_data_for_a_pattern()
+    {
+        vfsStream::setup();
+        $root = vfsStream::create([
+            'foo' => [
+                'bar' => [
+                    'components' => [
+                        'misc' => [
+                            'header' => [
+                                'template.twig' => '<header>Hello World</header>',
+                                'data.php' => '<?php return [\'foo\' => \'bar\'];',
+                                'data~error.php' => '<?php return [\'foo1\' => \'bar1\'];',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        $dataProvider = new FileSystemPatternProvider([vfsStream::url('root/foo/bar')], 'twig');
+        $data = $dataProvider->getPatternStateData('components/misc/header', 'error');
+
+        $this->assertSame(['foo1' => 'bar1'], $data);
+    }
+
+    /** @test */
+    public function getPatternStateData_returns_empty_array_when_no_data_is_available()
+    {
+        vfsStream::setup();
+        $root = vfsStream::create([
+            'foo' => [
+                'bar' => [
+                    'components' => [
+                        'misc' => [
+                            'header' => [
+                                'template.twig' => '<header>Hello World</header>',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        $dataProvider = new FileSystemPatternProvider([vfsStream::url('root/foo/bar')], 'twig');
+        $data = $dataProvider->getPatternStateData('components/misc/header', 'error');
+
+        $this->assertSame([], $data);
+    }
+
+    /**
+     * @test
+     * @expectedException Rareloop\Primer\Exceptions\PatternNotFoundException
+     */
+    public function getPatternStateData_throws_exception_when_pattern_is_invalid()
+    {
+        vfsStream::setup();
+        $root = vfsStream::create([
+            'foo' => [
+                'bar' => [
+                    'components' => [
+                        'misc' => [
+                            'header' => [
+                                'template.twig' => '<header>Hello World</header>',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        $dataProvider = new FileSystemPatternProvider([vfsStream::url('root/foo/bar')], 'twig');
+        $dataProvider->getPatternStateData('components/misc/not-header', 'error');
+    }
 }

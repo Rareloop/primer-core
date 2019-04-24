@@ -40,4 +40,13 @@ interface PatternProvider
      * @return Rareloop\Primer\Pattern
      */
     public function getPattern(string $id, string $state = 'default') : Pattern;
+
+    /**
+     * Get the data for the given pattern and state
+     *
+     * @param  string $id    [description]
+     * @param  string $state [description]
+     * @return [type]        [description]
+     */
+    public function getPatternStateData(string $id, string $state = 'default') : array;
 }

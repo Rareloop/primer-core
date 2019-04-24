@@ -9,10 +9,11 @@ use Rareloop\Primer\Contracts\DocumentRenderer;
 use Rareloop\Primer\Contracts\PatternProvider;
 use Rareloop\Primer\Contracts\TemplateRenderer;
 use Rareloop\Primer\Document;
+use Rareloop\Primer\Exceptions\PatternNotFoundException;
 use Rareloop\Primer\Menu;
 use Rareloop\Primer\Pattern;
-use Rareloop\Primer\Tree;
 use Rareloop\Primer\Primer;
+use Rareloop\Primer\Tree;
 
 class PrimerTest extends TestCase
 {
@@ -341,6 +342,47 @@ class PrimerTest extends TestCase
         $this->assertSame('patterns', $menu->getSection('patterns')->toArray()[0]['id']);
         $this->assertSame('templates', $menu->getSection('templates')->toArray()[0]['id']);
         $this->assertSame('documents', $menu->getSection('documents')->toArray()[0]['id']);
+    }
+
+    /** @test */
+    public function can_get_pattern_state_data()
+    {
+        $templateRenderer = Mockery::mock(TemplateRenderer::class);
+        $patternProvider = Mockery::mock(PatternProvider::class);
+        $patternProvider
+            ->shouldReceive('getPatternStateData')
+            ->once()
+            ->with('components/common/header', 'state-name')
+            ->andReturn(['foo' => 'bar']);
+
+        $templateProvider = Mockery::mock(PatternProvider::class);
+        $documentProvider = Mockery::mock(DocumentProvider::class);
+
+        $primer = new Primer($templateRenderer, $patternProvider, $templateProvider, $documentProvider);
+
+        $data = $primer->getPatternStateData('components/common/header', 'state-name');
+
+        $this->assertSame(['foo' => 'bar'], $data);
+    }
+
+    /** @test */
+    public function getPatternStateData_returns_empty_array_when_pattern_is_not_valid()
+    {
+        $templateRenderer = Mockery::mock(TemplateRenderer::class);
+        $patternProvider = Mockery::mock(PatternProvider::class);
+        $patternProvider
+            ->shouldReceive('getPatternStateData')
+            ->once()
+            ->andThrow(new PatternNotFoundException);
+
+        $templateProvider = Mockery::mock(PatternProvider::class);
+        $documentProvider = Mockery::mock(DocumentProvider::class);
+
+        $primer = new Primer($templateRenderer, $patternProvider, $templateProvider, $documentProvider);
+
+        $data = $primer->getPatternStateData('components/common/header', 'state-name');
+
+        $this->assertSame([], $data);
     }
 
     protected function assertUIVisible(array $data)

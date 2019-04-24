@@ -122,4 +122,13 @@ class Primer
 
         return $menu;
     }
+
+    public function getPatternStateData(string $id, string $state = 'default') : array
+    {
+        try {
+            return $this->patternProvider->getPatternStateData($id, $state);
+        } catch (PatternNotFoundException $e) {
+            return [];
+        }
+    }
 }

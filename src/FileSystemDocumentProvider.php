@@ -23,6 +23,10 @@ class FileSystemDocumentProvider implements DocumentProvider
 
     public function allDocumentIds() : array
     {
+        if (empty($this->paths)) {
+            return [];
+        }
+
         $finder = new Finder();
         $finder->files()->in($this->paths)->name('*.' . $this->fileExtension);
 
@@ -41,6 +45,10 @@ class FileSystemDocumentProvider implements DocumentProvider
 
     public function getDocument(string $id) : Document
     {
+        if (empty($this->paths)) {
+            throw new DocumentNotFoundException;
+        }
+
         $finder = new Finder;
         $finder->in($this->paths)->path($this->getFolderPathFromId($id));
 

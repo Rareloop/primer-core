@@ -31,6 +31,10 @@ class FileSystemPatternProvider implements PatternProvider, TemplateProvider
      */
     public function allPatternIds() : array
     {
+        if (empty($this->paths)) {
+            return [];
+        }
+
         $finder = new Finder();
         $finder->files()->in($this->paths)->name('template.' . $this->fileExtension);
 
@@ -75,6 +79,10 @@ class FileSystemPatternProvider implements PatternProvider, TemplateProvider
      */
     public function getPattern(string $id, string $state = 'default') : Pattern
     {
+        if (empty($this->paths)) {
+            throw new PatternNotFoundException;
+        }
+
         if (!$this->patternHasState($id, $state)) {
             $state = 'default';
         }
@@ -139,6 +147,10 @@ class FileSystemPatternProvider implements PatternProvider, TemplateProvider
      */
     public function patternExists(string $id) : bool
     {
+        if (empty($this->paths)) {
+            return false;
+        }
+
         try {
             $this->getPathForPattern($id);
 
@@ -159,6 +171,10 @@ class FileSystemPatternProvider implements PatternProvider, TemplateProvider
      */
     public function patternHasState(string $id, string $state = 'default') : bool
     {
+        if (empty($this->paths)) {
+            return false;
+        }
+
         $path = $this->getPathForPattern($id);
 
         if ($state === 'default') {

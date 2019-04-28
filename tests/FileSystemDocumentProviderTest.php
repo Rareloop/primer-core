@@ -193,4 +193,23 @@ class FileSystemDocumentProviderTest extends TestCase
 
         $dataProvider->getDocument('not-abstract');
     }
+
+    /** @test */
+    public function allDocumentIds_does_not_fall_over_if_no_paths_are_provided()
+    {
+        $dataProvider = new FileSystemDocumentProvider([], 'md');
+
+        $this->assertSame([], $dataProvider->allDocumentIds());
+    }
+
+    /**
+     * @test
+     * @expectedException Rareloop\Primer\Exceptions\DocumentNotFoundException
+     */
+    public function getDocument_does_not_fall_over_if_no_paths_are_provided()
+    {
+        $dataProvider = new FileSystemDocumentProvider([], 'md');
+
+        $dataProvider->getDocument('not/found');
+    }
 }

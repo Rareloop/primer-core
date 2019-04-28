@@ -588,4 +588,47 @@ class FileSystemPatternProviderTest extends TestCase
         $dataProvider = new FileSystemPatternProvider([vfsStream::url('root/foo/bar')], 'twig');
         $dataProvider->getPatternStateData('components/misc/not-header', 'error');
     }
+
+    /** @test */
+    public function allPatternIds_does_not_fall_over_if_no_paths_are_provided()
+    {
+        $dataProvider = new FileSystemPatternProvider([], 'twig');
+
+        $this->assertSame([], $dataProvider->allPatternIds());
+    }
+
+    /** @test */
+    public function patternExists_does_not_fall_over_if_no_paths_are_provided()
+    {
+        $dataProvider = new FileSystemPatternProvider([], 'twig');
+
+        $this->assertFalse($dataProvider->patternExists('not/found'));
+    }
+
+    /** @test */
+    public function patternHasState_does_not_fall_over_if_no_paths_are_provided()
+    {
+        $dataProvider = new FileSystemPatternProvider([], 'twig');
+
+        $this->assertFalse($dataProvider->patternHasState('not/found', 'state'));
+    }
+
+    /** @test */
+    public function getPatternStateData_does_not_fall_over_if_no_paths_are_provided()
+    {
+        $dataProvider = new FileSystemPatternProvider([], 'twig');
+
+        $this->assertSame([], $dataProvider->getPatternStateData('not/found', 'state'));
+    }
+
+    /**
+     * @test
+     * @expectedException Rareloop\Primer\Exceptions\PatternNotFoundException
+     */
+    public function getPattern_does_not_fall_over_if_no_paths_are_provided()
+    {
+        $dataProvider = new FileSystemPatternProvider([], 'md');
+
+        $dataProvider->getPattern('not/found');
+    }
 }

@@ -3,7 +3,6 @@
 namespace Rareloop\Primer;
 
 use Rareloop\Primer\Contracts\DocumentProvider;
-use Rareloop\Primer\Contracts\DocumentRenderer;
 use Rareloop\Primer\Contracts\PatternProvider;
 use Rareloop\Primer\Contracts\TemplateRenderer;
 use Rareloop\Primer\Exceptions\PatternNotFoundException;
@@ -12,7 +11,6 @@ use Rareloop\Primer\Exceptions\TreeNodeNotFoundException;
 class Primer
 {
     protected $templateRenderer;
-    protected $documentRenderer;
     protected $patternProvider;
     protected $templateProvider;
     protected $documentProvider;

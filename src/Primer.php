@@ -15,6 +15,8 @@ class Primer
     protected $templateProvider;
     protected $documentProvider;
 
+    protected $customData = [];
+
     public function __construct(
         TemplateRenderer $templateRenderer,
         PatternProvider $patternProvider,
@@ -31,20 +33,26 @@ class Primer
     {
         $pattern = $this->patternProvider->getPattern($id, $state);
 
-        return $this->templateRenderer->renderPatternWithoutChrome($pattern, [
-            'title' => IdHelpers::title($id),
-            'mode' => 'pattern',
-        ]);
+        return $this->templateRenderer->renderPatternWithoutChrome(
+            $pattern,
+            $this->getData([
+                'title' => IdHelpers::title($id),
+                'mode' => 'pattern',
+            ])
+        );
     }
 
     public function renderTemplate(string $id, string $state = 'default') : string
     {
         $pattern = $this->templateProvider->getPattern($id, $state);
 
-        return $this->templateRenderer->renderTemplate($pattern, [
-            'title' => IdHelpers::title($id),
-            'mode' => 'template',
-        ]);
+        return $this->templateRenderer->renderTemplate(
+            $pattern,
+            $this->getData([
+                'title' => IdHelpers::title($id),
+                'mode' => 'template',
+            ])
+        );
     }
 
     public function renderPattern(string $id, string $state = 'default') : string
@@ -54,11 +62,11 @@ class Primer
         return $this->templateRenderer->renderPatterns(
             [ $pattern ],
             $this->getMenu()->setCurrent('patterns', $id),
-            [
+            $this->getData([
                 'ui' => true,
                 'mode' => 'pattern',
                 'title' => $pattern->title(),
-            ]
+            ])
         );
     }
 
@@ -83,23 +91,36 @@ class Primer
             throw new PatternNotFoundException;
         }
 
-        return $this->templateRenderer->renderPatterns($patterns, $this->getMenu()->setCurrent('patterns', $id), [
-            'ui' => true,
-            'mode' => 'pattern',
-            'title' => IdHelpers::title($id),
-        ]);
+        return $this->templateRenderer->renderPatterns(
+            $patterns,
+            $this->getMenu()->setCurrent('patterns', $id),
+            $this->getData([
+                'ui' => true,
+                'mode' => 'pattern',
+                'title' => IdHelpers::title($id),
+            ])
+        );
     }
 
     public function renderDocument(string $id) : string
     {
         $document = $this->documentProvider->getDocument($id);
 
-        return $this->templateRenderer->renderDocument($document, $this->getMenu()->setCurrent('documents', $id), [
-            'ui' => true,
-            'mode' => 'document',
-            'title' => $document->title(),
-            'description' => $document->description(),
-        ]);
+        return $this->templateRenderer->renderDocument(
+            $document,
+            $this->getMenu()->setCurrent('documents', $id),
+            $this->getData([
+                'ui' => true,
+                'mode' => 'document',
+                'title' => $document->title(),
+                'description' => $document->description(),
+            ])
+        );
+    }
+
+    protected function getData(array $data = []) : array
+    {
+        return array_merge($this->customData, $data);
     }
 
     public function getMenu() : Menu
@@ -128,5 +149,16 @@ class Primer
         } catch (PatternNotFoundException $e) {
             return [];
         }
+    }
+
+    /**
+     * Provide custom data to pass to the twig renderer. Is merged into the `primer` set of data
+     *
+     * @param string $key
+     * @param string|number|array $value
+     */
+    public function setCustomData(string $key, $value)
+    {
+        $this->customData[$key] = $value;
     }
 }

@@ -385,6 +385,161 @@ class PrimerTest extends TestCase
         $this->assertSame([], $data);
     }
 
+    /** @test */
+    public function custom_set_data_is_applied_by_renderDocument()
+    {
+        $templateRenderer = Mockery::mock(TemplateRenderer::class);
+        $templateRenderer
+            ->shouldReceive('renderDocument')
+            ->once()
+            ->withArgs(function (Document $doc, Menu $menu, array $primerData) {
+                $this->assertSame('bar', $primerData['foo']);
+
+                return true;
+            })
+            ->andReturn('<body><p>Document</p></body>');
+
+        $patternProvider = Mockery::mock(PatternProvider::class);
+        $patternProvider->shouldReceive('allPatternIds')->andReturn([]);
+
+        $templateProvider = Mockery::mock(PatternProvider::class);
+        $templateProvider->shouldReceive('allPatternIds')->andReturn([]);
+
+        $documentProvider = Mockery::mock(DocumentProvider::class);
+        $documentProvider
+            ->shouldReceive('allDocumentIds')->once()->andReturn(['frontend/overview'])
+            ->shouldReceive('getDocument')->once()->with('frontend/overview')->andReturn(new Document('frontend/overview', 'Document'));
+
+        $primer = new Primer($templateRenderer, $patternProvider, $templateProvider, $documentProvider);
+        $primer->setCustomData('foo', 'bar');
+
+        $this->assertSame('<body><p>Document</p></body>', $primer->renderDocument('frontend/overview'));
+    }
+
+    /** @test */
+    public function custom_set_data_is_applied_by_renderPatterns()
+    {
+        $templateRenderer = Mockery::mock(TemplateRenderer::class);
+        $templateRenderer
+            ->shouldReceive('renderPatterns')
+            ->once()
+            ->withArgs(function (array $patterns, Menu $menu, array $primerData) {
+                $this->assertSame('bar', $primerData['foo']);
+
+                return true;
+            })
+            ->andReturn('<body><p>Document</p></body>');
+
+        $patternProvider = Mockery::mock(PatternProvider::class);
+        $patternProvider
+            ->shouldReceive('allPatternIds')->andReturn(['frontend/overview'])
+            ->shouldReceive('getPattern')->andReturn(Mockery::mock(Pattern::class));
+
+        $templateProvider = Mockery::mock(PatternProvider::class);
+        $templateProvider->shouldReceive('allPatternIds')->andReturn([]);
+
+        $documentProvider = Mockery::mock(DocumentProvider::class);
+        $documentProvider->shouldReceive('allDocumentIds')->andReturn([]);
+
+        $primer = new Primer($templateRenderer, $patternProvider, $templateProvider, $documentProvider);
+        $primer->setCustomData('foo', 'bar');
+
+        $this->assertSame('<body><p>Document</p></body>', $primer->renderPatterns('frontend/overview'));
+    }
+
+    /** @test */
+    public function custom_set_data_is_applied_by_renderPattern()
+    {
+        $templateRenderer = Mockery::mock(TemplateRenderer::class);
+        $templateRenderer
+            ->shouldReceive('renderPatterns')
+            ->once()
+            ->withArgs(function (array $patterns, Menu $menu, array $primerData) {
+                $this->assertSame('bar', $primerData['foo']);
+
+                return true;
+            })
+            ->andReturn('<body><p>Document</p></body>');
+
+        $patternProvider = Mockery::mock(PatternProvider::class);
+        $patternProvider
+            ->shouldReceive('allPatternIds')->andReturn(['frontend/overview'])
+            ->shouldReceive('getPattern')->andReturn(new Pattern('frontend/overview', [], ''));
+
+        $templateProvider = Mockery::mock(PatternProvider::class);
+        $templateProvider->shouldReceive('allPatternIds')->andReturn([]);
+
+        $documentProvider = Mockery::mock(DocumentProvider::class);
+        $documentProvider->shouldReceive('allDocumentIds')->andReturn([]);
+
+        $primer = new Primer($templateRenderer, $patternProvider, $templateProvider, $documentProvider);
+        $primer->setCustomData('foo', 'bar');
+
+        $this->assertSame('<body><p>Document</p></body>', $primer->renderPattern('frontend/overview'));
+    }
+
+    /** @test */
+    public function custom_set_data_is_applied_by_renderTemplate()
+    {
+        $templateRenderer = Mockery::mock(TemplateRenderer::class);
+        $templateRenderer
+            ->shouldReceive('renderTemplate')
+            ->once()
+            ->withArgs(function (Pattern $patterns, array $primerData) {
+                $this->assertSame('bar', $primerData['foo']);
+
+                return true;
+            })
+            ->andReturn('<body><p>Document</p></body>');
+
+        $patternProvider = Mockery::mock(PatternProvider::class);
+        $patternProvider->shouldReceive('allPatternIds')->andReturn([]);
+
+        $templateProvider = Mockery::mock(PatternProvider::class);
+        $templateProvider
+            ->shouldReceive('allPatternIds')->andReturn(['frontend/overview'])
+            ->shouldReceive('getPattern')->andReturn(new Pattern('frontend/overview', [], ''));
+
+        $documentProvider = Mockery::mock(DocumentProvider::class);
+        $documentProvider->shouldReceive('allDocumentIds')->andReturn([]);
+
+        $primer = new Primer($templateRenderer, $patternProvider, $templateProvider, $documentProvider);
+        $primer->setCustomData('foo', 'bar');
+
+        $this->assertSame('<body><p>Document</p></body>', $primer->renderTemplate('frontend/overview'));
+    }
+
+    /** @test */
+    public function custom_set_data_is_applied_by_renderPatternWithoutChrome()
+    {
+        $templateRenderer = Mockery::mock(TemplateRenderer::class);
+        $templateRenderer
+            ->shouldReceive('renderPatternWithoutChrome')
+            ->once()
+            ->withArgs(function (Pattern $patterns, array $primerData) {
+                $this->assertSame('bar', $primerData['foo']);
+
+                return true;
+            })
+            ->andReturn('<body><p>Document</p></body>');
+
+        $patternProvider = Mockery::mock(PatternProvider::class);
+        $patternProvider
+            ->shouldReceive('allPatternIds')->andReturn(['frontend/overview'])
+            ->shouldReceive('getPattern')->andReturn(new Pattern('frontend/overview', [], ''));
+
+        $templateProvider = Mockery::mock(PatternProvider::class);
+        $templateProvider->shouldReceive('allPatternIds')->andReturn([]);
+
+        $documentProvider = Mockery::mock(DocumentProvider::class);
+        $documentProvider->shouldReceive('allDocumentIds')->andReturn([]);
+
+        $primer = new Primer($templateRenderer, $patternProvider, $templateProvider, $documentProvider);
+        $primer->setCustomData('foo', 'bar');
+
+        $this->assertSame('<body><p>Document</p></body>', $primer->renderPatternWithoutChrome('frontend/overview'));
+    }
+
     protected function assertUIVisible(array $data)
     {
         $this->assertTrue(isset($data['ui']));

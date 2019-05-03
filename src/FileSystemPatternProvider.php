@@ -226,7 +226,6 @@ class FileSystemPatternProvider implements PatternProvider, TemplateProvider
         }
 
         if ($file->getExtension() === 'php') {
-            extract(['dataProvider' => $this]);
             return include $file->getPath() . '/' . $file->getFilename();
         }
 

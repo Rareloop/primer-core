@@ -365,35 +365,6 @@ class FileSystemPatternProviderTest extends TestCase
     }
 
     /** @test */
-    public function dataProvider_is_available_in_php_based_state_data_file()
-    {
-        vfsStream::setup();
-        $root = vfsStream::create([
-            'foo' => [
-                'bar' => [
-                    'components' => [
-                        'misc' => [
-                            'header' => [
-                                'template.twig' => '<header>Hello World</header>',
-                                'data.php' => '<?php return [ \'foo1\' => $dataProvider->getPatternStateData(\'components/misc/header\', \'error\')];',
-                                'data~error.php' => '<?php return [ \'foo2\' => \'bar2\'];',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ]);
-
-        $dataProvider = new FileSystemPatternProvider([vfsStream::url('root/foo/bar')], 'twig');
-
-        $pattern = $dataProvider->getPattern('components/misc/header');
-        $data = $pattern->data();
-
-        $this->assertTrue(isset($data['foo1']));
-        $this->assertSame(['foo2' => 'bar2'], $data['foo1']);
-    }
-
-    /** @test */
     public function pattern_uses_default_if_requested_state_does_not_exist()
     {
         vfsStream::setup();

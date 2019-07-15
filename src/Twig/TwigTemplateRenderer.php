@@ -30,10 +30,9 @@ class TwigTemplateRenderer implements TemplateRenderer
 
     public function renderTemplate(Pattern $pattern, array $primerData = []) : string
     {
-        $data = [
-            'patterns' => [$pattern->toArray()],
-            'primer' => $primerData,
-        ];
+        $data = $pattern->toArray();
+
+        $data['primer'] = $primerData;
 
         return $this->twig->render($pattern->id(), $data);
     }

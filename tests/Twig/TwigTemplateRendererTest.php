@@ -39,15 +39,17 @@ class TwigTemplateRendererTest extends TestCase
     {
         $pattern = new Pattern('components/misc/header', ['foo' => 'bar'], '');
 
-        $twig = Mockery::mock(Environment::class);
-        $twig->shouldReceive('render')->with('components/misc/header', [
-            'patterns' => [
-                $pattern->toArray(),
-            ],
-            'primer' => [
-                'custom' => 'data',
+        $expectedRenderData = array_merge(
+            $pattern->toArray(),
+            [
+                'primer' => [
+                    'custom' => 'data',
+                ],
             ]
-        ])->andReturn('<p>Testing123</p>');
+        );
+
+        $twig = Mockery::mock(Environment::class);
+        $twig->shouldReceive('render')->with('components/misc/header', $expectedRenderData)->andReturn('<p>Testing123</p>');
         $twigRenderer = new TwigTemplateRenderer($twig);
 
         $this->assertSame('<p>Testing123</p>', $twigRenderer->renderTemplate($pattern, ['custom' => 'data']));

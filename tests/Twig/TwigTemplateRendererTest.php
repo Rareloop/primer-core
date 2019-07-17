@@ -40,8 +40,8 @@ class TwigTemplateRendererTest extends TestCase
         $pattern = new Pattern('components/misc/header', ['foo' => 'bar'], '');
 
         $expectedRenderData = array_merge(
-            $pattern->toArray(),
             [
+                'foo' => 'bar',
                 'primer' => [
                     'custom' => 'data',
                 ],

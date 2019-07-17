@@ -30,7 +30,7 @@ class TwigTemplateRenderer implements TemplateRenderer
 
     public function renderTemplate(Pattern $pattern, array $primerData = []) : string
     {
-        $data = $pattern->toArray();
+        $data = $pattern->data();
 
         $data['primer'] = $primerData;
 

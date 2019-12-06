@@ -20,4 +20,23 @@ class MarkdownDocumentParserTest extends TestCase
 
         $this->assertSame('<h1>Heading 1</h1>', trim($outputDoc->content()));
     }
+
+    /** @test */
+    public function indents_are_not_treated_as_code_blocks()
+    {
+        $doc = new Document('id', implode([
+            '# Heading 1',
+            '',
+            '    <span>this is not a code block</span>',
+            '',
+            'Closing paragraph',
+        ], "\n"));
+
+        $parser = new MarkdownDocumentParser();
+
+        $outputDoc = $parser->parse($doc);
+
+        $this->assertNotContains('<pre><code>', $outputDoc->content());
+        $this->assertNotContains('</code></pre>', $outputDoc->content());
+    }
 }

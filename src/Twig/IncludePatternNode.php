@@ -20,6 +20,7 @@ class IncludePatternNode extends Node implements NodeOutputInterface
     {
         $compiler->addDebugInfo($this);
 
+        // phpcs:disable Generic.Files.LineLength
         $compiler
             ->write('$this->loadTemplate("primer-pattern.twig", ')
             ->repr($this->getTemplateName())
@@ -29,5 +30,6 @@ class IncludePatternNode extends Node implements NodeOutputInterface
             ->raw('->display(["pattern" => \Rareloop\Primer\Twig\PrimerExtension::primer()->patternProvider()->getPattern(')
             ->subcompile($this->getNode('expr'))
             ->raw(')->toArray(), "primer" => \Rareloop\Primer\Twig\PrimerExtension::primer()->getCustomData()]);');
+        // phpcs:enable Generic.Files.LineLength
     }
 }

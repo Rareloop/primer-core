@@ -34,6 +34,20 @@ class PrimerTokenParserTest extends TestCase
 
         $this->assertInstanceOf(IncludePatternNode::class, $firstNode);
         $this->assertSame('components/folder/id', $firstNode->getNode('expr')->getAttribute('value'));
+        $this->assertFalse($firstNode->getAttribute('hideUI'));
+    }
+
+    /** @test */
+    public function can_parse_a_pattern_token_without_ui()
+    {
+        $stream = $this->tokenize("{% primer pattern 'components/folder/id' hide ui %}");
+
+        $nodes = $this->parser->parse($stream);
+        $firstNode = $nodes->getNode('body')->getNode(0);
+
+        $this->assertInstanceOf(IncludePatternNode::class, $firstNode);
+        $this->assertSame('components/folder/id', $firstNode->getNode('expr')->getAttribute('value'));
+        $this->assertTrue($firstNode->getAttribute('hideUI'));
     }
 
     private function tokenize(string $code)

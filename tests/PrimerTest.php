@@ -386,6 +386,19 @@ class PrimerTest extends TestCase
     }
 
     /** @test */
+    public function can_get_custom_data()
+    {
+        $templateRenderer = Mockery::mock(TemplateRenderer::class);
+        $patternProvider = Mockery::mock(PatternProvider::class);
+        $templateProvider = Mockery::mock(PatternProvider::class);
+        $documentProvider = Mockery::mock(DocumentProvider::class);
+        $primer = new Primer($templateRenderer, $patternProvider, $templateProvider, $documentProvider);
+        $primer->setCustomData('foo', 'bar');
+
+        $this->assertSame(['foo' => 'bar'], $primer->getCustomData());
+    }
+
+    /** @test */
     public function custom_set_data_is_applied_by_renderDocument()
     {
         $templateRenderer = Mockery::mock(TemplateRenderer::class);
@@ -538,6 +551,45 @@ class PrimerTest extends TestCase
         $primer->setCustomData('foo', 'bar');
 
         $this->assertSame('<body><p>Document</p></body>', $primer->renderPatternWithoutChrome('frontend/overview'));
+    }
+
+    /** @test */
+    public function can_get_pattern_provider()
+    {
+        $templateRenderer = Mockery::mock(TemplateRenderer::class);
+        $patternProvider = Mockery::mock(PatternProvider::class);
+        $templateProvider = Mockery::mock(PatternProvider::class);
+        $documentProvider = Mockery::mock(DocumentProvider::class);
+        $primer = new Primer($templateRenderer, $patternProvider, $templateProvider, $documentProvider);
+        $primer->setCustomData('foo', 'bar');
+
+        $this->assertSame($patternProvider, $primer->patternProvider());
+    }
+
+    /** @test */
+    public function can_get_template_provider()
+    {
+        $templateRenderer = Mockery::mock(TemplateRenderer::class);
+        $patternProvider = Mockery::mock(PatternProvider::class);
+        $templateProvider = Mockery::mock(PatternProvider::class);
+        $documentProvider = Mockery::mock(DocumentProvider::class);
+        $primer = new Primer($templateRenderer, $patternProvider, $templateProvider, $documentProvider);
+        $primer->setCustomData('foo', 'bar');
+
+        $this->assertSame($templateProvider, $primer->templateProvider());
+    }
+
+    /** @test */
+    public function can_get_document_provider()
+    {
+        $templateRenderer = Mockery::mock(TemplateRenderer::class);
+        $patternProvider = Mockery::mock(PatternProvider::class);
+        $templateProvider = Mockery::mock(PatternProvider::class);
+        $documentProvider = Mockery::mock(DocumentProvider::class);
+        $primer = new Primer($templateRenderer, $patternProvider, $templateProvider, $documentProvider);
+        $primer->setCustomData('foo', 'bar');
+
+        $this->assertSame($documentProvider, $primer->documentProvider());
     }
 
     protected function assertUIVisible(array $data)

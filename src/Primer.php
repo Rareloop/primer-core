@@ -161,4 +161,29 @@ class Primer
     {
         $this->customData[$key] = $value;
     }
+
+    /**
+     * Get all custom data
+     *
+     * @return array
+     */
+    public function getCustomData(): array
+    {
+        return $this->customData;
+    }
+
+    public function patternProvider(): PatternProvider
+    {
+        return $this->patternProvider;
+    }
+
+    public function templateProvider(): PatternProvider
+    {
+        return $this->templateProvider;
+    }
+
+    public function documentProvider(): DocumentProvider
+    {
+        return $this->documentProvider;
+    }
 }

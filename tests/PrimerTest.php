@@ -560,14 +560,14 @@ class PrimerTest extends TestCase
         $this->assertSame($this->getTreeArrayData($ids, $current), $actual);
     }
 
-    protected function getTreeArrayData($ids, $selected = null) : array
+    protected function getTreeArrayData($ids, $selected = null): array
     {
         $tree = new Tree($ids);
 
         if ($selected) {
             try {
                 $tree->setCurrent($selected);
-            } catch (\Exception $e) {}
+            } catch (\Exception $e) { }
         }
 
         return $tree->toArray();

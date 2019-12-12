@@ -29,7 +29,7 @@ class Primer
         $this->documentProvider = $documentProvider;
     }
 
-    public function renderPatternWithoutChrome(string $id, string $state = 'default') : string
+    public function renderPatternWithoutChrome(string $id, string $state = 'default'): string
     {
         $pattern = $this->patternProvider->getPattern($id, $state);
 
@@ -42,7 +42,7 @@ class Primer
         );
     }
 
-    public function renderTemplate(string $id, string $state = 'default') : string
+    public function renderTemplate(string $id, string $state = 'default'): string
     {
         $pattern = $this->templateProvider->getPattern($id, $state);
 
@@ -55,12 +55,12 @@ class Primer
         );
     }
 
-    public function renderPattern(string $id, string $state = 'default') : string
+    public function renderPattern(string $id, string $state = 'default'): string
     {
         $pattern = $this->patternProvider->getPattern($id, $state);
 
         return $this->templateRenderer->renderPatterns(
-            [ $pattern ],
+            [$pattern],
             $this->getMenu()->setCurrent('patterns', $id),
             $this->getData([
                 'ui' => true,
@@ -70,7 +70,7 @@ class Primer
         );
     }
 
-    public function renderPatterns(string $id) : string
+    public function renderPatterns(string $id): string
     {
         $patterns = collect($this->patternProvider->allPatternIds())
             ->filter(function ($thisId) use ($id) {
@@ -102,7 +102,7 @@ class Primer
         );
     }
 
-    public function renderDocument(string $id) : string
+    public function renderDocument(string $id): string
     {
         $document = $this->documentProvider->getDocument($id);
 
@@ -118,12 +118,12 @@ class Primer
         );
     }
 
-    protected function getData(array $data = []) : array
+    protected function getData(array $data = []): array
     {
         return array_merge($this->customData, $data);
     }
 
-    public function getMenu() : Menu
+    public function getMenu(): Menu
     {
         $patternIds = $this->patternProvider->allPatternIds();
         $templateIds = $this->templateProvider->allPatternIds();
@@ -142,7 +142,7 @@ class Primer
         return $menu;
     }
 
-    public function getPatternStateData(string $id, string $state = 'default') : array
+    public function getPatternStateData(string $id, string $state = 'default'): array
     {
         try {
             return $this->patternProvider->getPatternStateData($id, $state);

@@ -18,7 +18,7 @@ class TwigTemplateRenderer implements TemplateRenderer
         $this->twig = $twig;
     }
 
-    public function renderPatternWithoutChrome(Pattern $pattern, array $primerData = []) : string
+    public function renderPatternWithoutChrome(Pattern $pattern, array $primerData = []): string
     {
         $data = [
             'patterns' => [$pattern->toArray()],
@@ -28,7 +28,7 @@ class TwigTemplateRenderer implements TemplateRenderer
         return $this->twig->render($this->templateFilename, $data);
     }
 
-    public function renderTemplate(Pattern $pattern, array $primerData = []) : string
+    public function renderTemplate(Pattern $pattern, array $primerData = []): string
     {
         $data = $pattern->data();
 
@@ -37,7 +37,7 @@ class TwigTemplateRenderer implements TemplateRenderer
         return $this->twig->render($pattern->id(), $data);
     }
 
-    public function renderPatterns(array $patterns, Menu $menu, array $primerData = []) : string
+    public function renderPatterns(array $patterns, Menu $menu, array $primerData = []): string
     {
         $data = [
             'menu' => $menu->toArray(),
@@ -50,7 +50,7 @@ class TwigTemplateRenderer implements TemplateRenderer
         return $this->twig->render($this->templateFilename, $data);
     }
 
-    public function renderDocument(Document $document, Menu $menu, array $primerData = []) : string
+    public function renderDocument(Document $document, Menu $menu, array $primerData = []): string
     {
         $data = [
             'menu' => $menu->toArray(),

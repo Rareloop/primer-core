@@ -12,18 +12,25 @@ class PrimerTokenParser extends AbstractTokenParser
     {
         $stream = $this->parser->getStream();
 
-        $node = null;
 
         if ($stream->nextIf(Token::NAME_TYPE, 'pattern')) {
+            $node = null;
             $expr = $this->parser->getExpressionParser()->parseExpression();
             $hideUI = false;
+            $state = 'default';
+
+            if ($stream->nextIf(Token::NAME_TYPE, 'with')) {
+                $stream->expect(Token::NAME_TYPE, 'state');
+                $token = $stream->expect(Token::STRING_TYPE);
+                $state = $token->getValue();
+            }
 
             if ($stream->nextIf(Token::NAME_TYPE, 'hide')) {
                 $stream->expect(Token::NAME_TYPE, 'ui');
                 $hideUI = true;
             }
 
-            $node = new IncludePatternNode($expr, $hideUI, $token->getLine(), $this->getTag());
+            $node = new IncludePatternNode($expr, $token->getLine(), $state, $hideUI, $this->getTag());
         }
 
         $stream->expect(Token::BLOCK_END_TYPE);

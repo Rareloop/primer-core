@@ -9,11 +9,16 @@ use Twig\Node\Expression\AbstractExpression;
 
 class IncludePatternNode extends Node implements NodeOutputInterface
 {
-    public function __construct(AbstractExpression $expr, bool $hideUI = false, int $lineno, string $tag = null)
-    {
+    public function __construct(
+        AbstractExpression $expr,
+        int $lineno,
+        string $state = 'default',
+        bool $hideUI = false,
+        string $tag = null
+    ) {
         $nodes = ['expr' => $expr];
 
-        parent::__construct($nodes, ['hideUI' => (bool) $hideUI], $lineno, $tag);
+        parent::__construct($nodes, ['state' => (string) $state, 'hideUI' => (bool) $hideUI], $lineno, $tag);
     }
 
     public function compile(Compiler $compiler)
@@ -33,7 +38,9 @@ class IncludePatternNode extends Node implements NodeOutputInterface
                 ->raw(')')
                 ->raw('->display(\Rareloop\Primer\Twig\PrimerExtension::primer()->getPatternStateData(')
                 ->subcompile($this->getNode('expr'))
-                ->raw('));');
+                ->raw(', "')
+                ->raw($this->getAttribute('state'))
+                ->raw('"));');
 
             return;
         }
@@ -46,7 +53,9 @@ class IncludePatternNode extends Node implements NodeOutputInterface
             ->raw(')')
             ->raw('->display(["pattern" => \Rareloop\Primer\Twig\PrimerExtension::primer()->patternProvider()->getPattern(')
             ->subcompile($this->getNode('expr'))
-            ->raw(')->toArray(), "primer" => \Rareloop\Primer\Twig\PrimerExtension::primer()->getCustomData()]);');
+            ->raw(', "')
+            ->raw($this->getAttribute('state'))
+            ->raw('")->toArray(), "primer" => \Rareloop\Primer\Twig\PrimerExtension::primer()->getCustomData()]);');
         // phpcs:enable Generic.Files.LineLength
     }
 }

@@ -35,6 +35,7 @@ class PrimerTokenParserTest extends TestCase
         $this->assertInstanceOf(IncludePatternNode::class, $firstNode);
         $this->assertSame('components/folder/id', $firstNode->getNode('expr')->getAttribute('value'));
         $this->assertFalse($firstNode->getAttribute('hideUI'));
+        $this->assertSame('default', $firstNode->getAttribute('state'));
     }
 
     /** @test */
@@ -48,6 +49,20 @@ class PrimerTokenParserTest extends TestCase
         $this->assertInstanceOf(IncludePatternNode::class, $firstNode);
         $this->assertSame('components/folder/id', $firstNode->getNode('expr')->getAttribute('value'));
         $this->assertTrue($firstNode->getAttribute('hideUI'));
+        $this->assertSame('default', $firstNode->getAttribute('state'));
+    }
+
+    /** @test */
+    public function can_select_state_data()
+    {
+        $stream = $this->tokenize("{% primer pattern 'components/folder/id' with state 'errors' %}");
+
+        $nodes = $this->parser->parse($stream);
+        $firstNode = $nodes->getNode('body')->getNode(0);
+
+        $this->assertInstanceOf(IncludePatternNode::class, $firstNode);
+        $this->assertSame('components/folder/id', $firstNode->getNode('expr')->getAttribute('value'));
+        $this->assertSame('errors', $firstNode->getAttribute('state'));
     }
 
     private function tokenize(string $code)

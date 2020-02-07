@@ -98,6 +98,87 @@ class PrimerTest extends TestCase
         $this->assertSame('<p>Testing123</p>', $primer->renderTemplate('templates/home'));
     }
 
+
+    /** @test */
+    public function can_get_current_template_default()
+    {
+        $templateRenderer = Mockery::mock(TemplateRenderer::class);
+        $templateRenderer->shouldReceive('renderTemplate')->once();
+
+        $patternProvider = Mockery::mock(PatternProvider::class);
+
+        $templateProvider = Mockery::mock(PatternProvider::class);
+        $templateProvider->shouldReceive('getPattern')->once();
+
+        $documentProvider = Mockery::mock(DocumentProvider::class);
+
+        $primer = new Primer($templateRenderer, $patternProvider, $templateProvider, $documentProvider);
+
+        $primer->renderTemplate('templates/home');
+
+        $this->assertSame('templates/home', $primer->currentTemplateId());
+    }
+
+    /** @test */
+    public function can_get_current_template_with_state()
+    {
+        $templateRenderer = Mockery::mock(TemplateRenderer::class);
+        $templateRenderer->shouldReceive('renderTemplate')->once();
+
+        $patternProvider = Mockery::mock(PatternProvider::class);
+
+        $templateProvider = Mockery::mock(PatternProvider::class);
+        $templateProvider->shouldReceive('getPattern')->once();
+
+        $documentProvider = Mockery::mock(DocumentProvider::class);
+
+        $primer = new Primer($templateRenderer, $patternProvider, $templateProvider, $documentProvider);
+
+        $primer->renderTemplate('templates/home', 'error');
+
+        $this->assertSame('templates/home', $primer->currentTemplateId());
+    }
+
+    /** @test */
+    public function can_get_current_template_state_default()
+    {
+        $templateRenderer = Mockery::mock(TemplateRenderer::class);
+        $templateRenderer->shouldReceive('renderTemplate')->once();
+
+        $patternProvider = Mockery::mock(PatternProvider::class);
+
+        $templateProvider = Mockery::mock(PatternProvider::class);
+        $templateProvider->shouldReceive('getPattern')->once();
+
+        $documentProvider = Mockery::mock(DocumentProvider::class);
+
+        $primer = new Primer($templateRenderer, $patternProvider, $templateProvider, $documentProvider);
+
+        $primer->renderTemplate('templates/home');
+
+        $this->assertSame('default', $primer->currentTemplateState());
+    }
+
+    /** @test */
+    public function can_get_current_template_state()
+    {
+        $templateRenderer = Mockery::mock(TemplateRenderer::class);
+        $templateRenderer->shouldReceive('renderTemplate')->once();
+
+        $patternProvider = Mockery::mock(PatternProvider::class);
+
+        $templateProvider = Mockery::mock(PatternProvider::class);
+        $templateProvider->shouldReceive('getPattern')->once();
+
+        $documentProvider = Mockery::mock(DocumentProvider::class);
+
+        $primer = new Primer($templateRenderer, $patternProvider, $templateProvider, $documentProvider);
+
+        $primer->renderTemplate('templates/home', 'error');
+
+        $this->assertSame('error', $primer->currentTemplateState());
+    }
+
     /** @test */
     public function can_render_a_list_of_patterns()
     {
@@ -540,6 +621,195 @@ class PrimerTest extends TestCase
         $this->assertSame('<body><p>Document</p></body>', $primer->renderPatternWithoutChrome('frontend/overview'));
     }
 
+    /** @test */
+    public function can_get_the_current_pattern_id_without_chrome()
+    {
+        $templateRenderer = Mockery::mock(TemplateRenderer::class);
+        $templateRenderer
+            ->shouldReceive('renderPatternWithoutChrome')
+            ->once();
+
+        $patternProvider = Mockery::mock(PatternProvider::class);
+        $patternProvider->shouldReceive('getPattern');
+
+        $templateProvider = Mockery::mock(PatternProvider::class);
+        $documentProvider = Mockery::mock(DocumentProvider::class);
+
+        $primer = new Primer($templateRenderer, $patternProvider, $templateProvider, $documentProvider);
+
+        $primer->renderPatternWithoutChrome('components/misc/header');
+
+        $this->assertSame('components/misc/header', $primer->currentPatternId());
+    }
+
+    /** @test */
+    public function can_get_the_current_pattern_id()
+    {
+        $templateRenderer = Mockery::mock(TemplateRenderer::class);
+
+        $templateRenderer
+            ->shouldReceive('renderPatterns')
+            ->once();
+
+        $patternProvider = Mockery::mock(PatternProvider::class);
+        $patternProvider
+            ->shouldReceive('getPattern')->with('components/misc/header', 'default')->andReturn(new Pattern('components/misc/header', [], ''))
+            ->shouldReceive('allPatternIds')->once();
+
+        $templateProvider = Mockery::mock(PatternProvider::class);
+        $templateProvider->shouldReceive('allPatternIds')->andReturn([]);
+
+        $documentProvider = Mockery::mock(DocumentProvider::class);
+        $documentProvider->shouldReceive('allDocumentIds')->once()->andReturn([]);
+
+        $primer = new Primer($templateRenderer, $patternProvider, $templateProvider, $documentProvider);
+
+        $primer->renderPattern('components/misc/header');
+
+        $this->assertSame('components/misc/header', $primer->currentPatternId());
+    }
+
+    /** @test */
+    public function can_get_the_current_pattern_id_for_state()
+    {
+        $templateRenderer = Mockery::mock(TemplateRenderer::class);
+
+        $templateRenderer
+            ->shouldReceive('renderPatterns')
+            ->once();
+
+        $patternProvider = Mockery::mock(PatternProvider::class);
+        $patternProvider
+            ->shouldReceive('getPattern')->with('components/misc/header', 'error')->andReturn(new Pattern('components/misc/header', [], '', 'error'))
+            ->shouldReceive('allPatternIds')->once();
+
+        $templateProvider = Mockery::mock(PatternProvider::class);
+        $templateProvider->shouldReceive('allPatternIds')->andReturn([]);
+
+        $documentProvider = Mockery::mock(DocumentProvider::class);
+        $documentProvider->shouldReceive('allDocumentIds')->once()->andReturn([]);
+
+        $primer = new Primer($templateRenderer, $patternProvider, $templateProvider, $documentProvider);
+
+        $primer->renderPattern('components/misc/header', 'error');
+
+        $this->assertSame('components/misc/header', $primer->currentPatternId());
+    }
+
+    /** @test */
+    public function can_get_the_current_pattern_id_for_state_without_chrome()
+    {
+        $templateRenderer = Mockery::mock(TemplateRenderer::class);
+
+        $templateRenderer->shouldReceive('renderPatternWithoutChrome')->once();
+
+        $patternProvider = Mockery::mock(PatternProvider::class);
+        $patternProvider->shouldReceive('getPattern')->once();
+
+        $templateProvider = Mockery::mock(PatternProvider::class);
+        $documentProvider = Mockery::mock(DocumentProvider::class);
+
+        $primer = new Primer($templateRenderer, $patternProvider, $templateProvider, $documentProvider);
+
+        $primer->renderPatternWithoutChrome('components/misc/header', 'error');
+
+        $this->assertSame('components/misc/header', $primer->currentPatternId());
+    }
+
+    /** @test */
+    public function can_get_the_current_pattern_state_default()
+    {
+        $templateRenderer = Mockery::mock(TemplateRenderer::class);
+
+        $templateRenderer
+            ->shouldReceive('renderPatterns')
+            ->once();
+
+        $patternProvider = Mockery::mock(PatternProvider::class);
+        $patternProvider
+            ->shouldReceive('getPattern')->with('components/misc/header', 'default')->andReturn(new Pattern('components/misc/header', [], '', ''))
+            ->shouldReceive('allPatternIds')->once();
+
+        $templateProvider = Mockery::mock(PatternProvider::class);
+        $templateProvider->shouldReceive('allPatternIds')->andReturn([]);
+
+        $documentProvider = Mockery::mock(DocumentProvider::class);
+        $documentProvider->shouldReceive('allDocumentIds')->once()->andReturn([]);
+
+        $primer = new Primer($templateRenderer, $patternProvider, $templateProvider, $documentProvider);
+
+        $primer->renderPattern('components/misc/header');
+
+        $this->assertSame('default', $primer->currentPatternState());
+    }
+
+    /** @test */
+    public function can_get_the_current_pattern_state()
+    {
+        $templateRenderer = Mockery::mock(TemplateRenderer::class);
+
+        $templateRenderer
+            ->shouldReceive('renderPatterns')
+            ->once();
+
+        $patternProvider = Mockery::mock(PatternProvider::class);
+        $patternProvider
+            ->shouldReceive('getPattern')->with('components/misc/header', 'error')->andReturn(new Pattern('components/misc/header', [], '', 'error'))
+            ->shouldReceive('allPatternIds')->once();
+
+        $templateProvider = Mockery::mock(PatternProvider::class);
+        $templateProvider->shouldReceive('allPatternIds')->andReturn([]);
+
+        $documentProvider = Mockery::mock(DocumentProvider::class);
+        $documentProvider->shouldReceive('allDocumentIds')->once()->andReturn([]);
+
+        $primer = new Primer($templateRenderer, $patternProvider, $templateProvider, $documentProvider);
+
+        $primer->renderPattern('components/misc/header', 'error');
+
+        $this->assertSame('error', $primer->currentPatternState());
+    }
+
+    /** @test */
+    public function can_get_the_current_pattern_state_default_without_chrome()
+    {
+        $templateRenderer = Mockery::mock(TemplateRenderer::class);
+
+        $templateRenderer->shouldReceive('renderPatternWithoutChrome')->once();
+
+        $patternProvider = Mockery::mock(PatternProvider::class);
+        $patternProvider->shouldReceive('getPattern')->once();
+
+        $templateProvider = Mockery::mock(PatternProvider::class);
+        $documentProvider = Mockery::mock(DocumentProvider::class);
+
+        $primer = new Primer($templateRenderer, $patternProvider, $templateProvider, $documentProvider);
+
+        $primer->renderPatternWithoutChrome('components/misc/header');
+
+        $this->assertSame('default', $primer->currentPatternState());
+    }
+
+    /** @test */
+    public function can_get_the_current_pattern_state_without_chrome()
+    {
+        $templateRenderer = Mockery::mock(TemplateRenderer::class);
+
+        $templateRenderer->shouldReceive('renderPatternWithoutChrome')->once();
+
+        $patternProvider = Mockery::mock(PatternProvider::class);
+        $patternProvider->shouldReceive('getPattern')->once();
+
+        $templateProvider = Mockery::mock(PatternProvider::class);
+        $documentProvider = Mockery::mock(DocumentProvider::class);
+
+        $primer = new Primer($templateRenderer, $patternProvider, $templateProvider, $documentProvider);
+
+        $primer->renderPatternWithoutChrome('components/misc/header', 'error');
+
+        $this->assertSame('error', $primer->currentPatternState());
+    }
+
     protected function assertUIVisible(array $data)
     {
         $this->assertTrue(isset($data['ui']));
@@ -560,14 +830,15 @@ class PrimerTest extends TestCase
         $this->assertSame($this->getTreeArrayData($ids, $current), $actual);
     }
 
-    protected function getTreeArrayData($ids, $selected = null) : array
+    protected function getTreeArrayData($ids, $selected = null): array
     {
         $tree = new Tree($ids);
 
         if ($selected) {
             try {
                 $tree->setCurrent($selected);
-            } catch (\Exception $e) {}
+            } catch (\Exception $e) {
+            }
         }
 
         return $tree->toArray();

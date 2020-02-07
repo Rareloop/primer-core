@@ -2,8 +2,9 @@
 
 namespace Rareloop\Primer;
 
-use Rareloop\Primer\Contracts\DocumentProvider;
+use Rareloop\Primer\Pattern;
 use Rareloop\Primer\Contracts\PatternProvider;
+use Rareloop\Primer\Contracts\DocumentProvider;
 use Rareloop\Primer\Contracts\TemplateRenderer;
 use Rareloop\Primer\Exceptions\PatternNotFoundException;
 
@@ -35,10 +36,7 @@ class Primer
 
     public function renderPatternWithoutChrome(string $id, string $state = 'default'): string
     {
-        $this->currentPatternId = $id;
-        $this->currentPatternState = $state;
-
-        $pattern = $this->patternProvider->getPattern($id, $state);
+        $pattern = $this->getPattern($id, $state);
 
         return $this->templateRenderer->renderPatternWithoutChrome(
             $pattern,
@@ -67,10 +65,7 @@ class Primer
 
     public function renderPattern(string $id, string $state = 'default'): string
     {
-        $this->currentPatternId = $id;
-        $this->currentPatternState = $state;
-
-        $pattern = $this->patternProvider->getPattern($id, $state);
+        $pattern = $this->getPattern($id, $state);
 
         return $this->templateRenderer->renderPatterns(
             [$pattern],
@@ -83,21 +78,29 @@ class Primer
         );
     }
 
+    protected function getPattern($id, $state = 'default'): Pattern
+    {
+        $this->currentPatternId = $id;
+        $this->currentPatternState = $state;
+
+        return $this->patternProvider->getPattern($id, $state);
+    }
+
     public function renderPatterns(string $id): string
     {
         $patterns = collect($this->patternProvider->allPatternIds())
-            ->filter(function ($thisId) use ($id) {
-                if (strpos($thisId, $id) !== 0) {
+            ->filter(function ($currentPatternId) use ($id) {
+                if (strpos($currentPatternId, $id) !== 0) {
                     return false;
                 }
 
                 // We need to make sure that we don't match substrings that are not folder prefixes
                 // e.g. we don't want to match `misc/headers` against `misc/header`
-                $nextChar = substr($thisId, strlen($id), 1);
+                $nextChar = substr($currentPatternId, strlen($id), 1);
 
                 return empty($nextChar) || $nextChar === '/';
-            })->map(function ($thisId) {
-                return $this->patternProvider->getPattern($thisId);
+            })->map(function ($currentPatternId) {
+                return $this->getPattern($currentPatternId);
             })->all();
 
         if (count($patterns) === 0) {
@@ -175,22 +178,22 @@ class Primer
         $this->customData[$key] = $value;
     }
 
-    public function currentPatternId()
+    public function currentPatternId(): ?string
     {
         return $this->currentPatternId;
     }
 
-    public function currentPatternState()
+    public function currentPatternState(): ?string
     {
         return $this->currentPatternState;
     }
 
-    public function currentTemplateId()
+    public function currentTemplateId(): ?string
     {
         return $this->currentTemplateId;
     }
 
-    public function currentTemplateState()
+    public function currentTemplateState(): ?string
     {
         return $this->currentTemplateState;
     }

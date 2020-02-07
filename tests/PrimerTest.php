@@ -218,8 +218,8 @@ class PrimerTest extends TestCase
         $patternProvider = Mockery::mock(PatternProvider::class);
         $patternProvider
             ->shouldReceive('allPatternIds')->andReturn($patternIds)
-            ->shouldReceive('getPattern')->with('components/misc/header')->once()->andReturn(new Pattern('components/misc/header', [], ''))
-            ->shouldReceive('getPattern')->with('components/misc/footer')->once()->andReturn(new Pattern('components/misc/footer', [], ''));
+            ->shouldReceive('getPattern')->with('components/misc/header', 'default')->once()->andReturn(new Pattern('components/misc/header', [], ''))
+            ->shouldReceive('getPattern')->with('components/misc/footer', 'default')->once()->andReturn(new Pattern('components/misc/footer', [], ''));
 
         $templateProvider = Mockery::mock(PatternProvider::class);
         $templateProvider->shouldReceive('allPatternIds')->once()->andReturn($templateIds);
@@ -230,6 +230,94 @@ class PrimerTest extends TestCase
         $primer = new Primer($templateRenderer, $patternProvider, $templateProvider, $documentProvider);
 
         $this->assertSame('<p>Testing123</p>', $primer->renderPatterns('components/misc'));
+    }
+
+    /** @test */
+    public function can_get_current_pattern_ids_when_rendering_all_patterns()
+    {
+        $patternIds = [
+            'components/misc/header',
+            'components/misc/footer',
+            'components/not-misc/another',
+        ];
+
+        $templateRenderer = Mockery::mock(TemplateRenderer::class);
+        $templateRenderer->shouldReceive('renderPatterns')->once();
+
+        $patternProvider = Mockery::mock(PatternProvider::class);
+        $templateProvider = Mockery::mock(PatternProvider::class);
+        $templateProvider->shouldReceive('allPatternIds')->once()->andReturn([]);
+
+        $documentProvider = Mockery::mock(DocumentProvider::class);
+        $documentProvider->shouldReceive('allDocumentIds')->once()->andReturn([]);
+
+        $primer = new Primer($templateRenderer, $patternProvider, $templateProvider, $documentProvider);
+
+        $patternProvider->shouldReceive('allPatternIds')->twice()->andReturn($patternIds);
+
+        $patternProvider->shouldReceive('getPattern')->with('components/misc/header', 'default')->once()->andReturnUsing(function () use ($primer) {
+            $this->assertSame('components/misc/header', $primer->currentPatternId());
+
+            return new Pattern('components/misc/header', [], '');
+        });
+
+        $patternProvider->shouldReceive('getPattern')->with('components/misc/footer', 'default')->once()->andReturnUsing(function () use ($primer) {
+            $this->assertSame('components/misc/footer', $primer->currentPatternId());
+
+            return new Pattern('components/misc/footer', [], '');
+        });
+
+        $patternProvider->shouldReceive('getPattern')->with('components/not-misc/another', 'default')->once()->andReturnUsing(function () use ($primer) {
+            $this->assertSame('components/not-misc/another', $primer->currentPatternId());
+
+            return new Pattern('components/not-misc/another', [], '');
+        });
+
+        $primer->renderPatterns('components');
+    }
+
+    /** @test */
+    public function can_get_current_pattern_states_when_rendering_all_patterns()
+    {
+        $patternIds = [
+            'components/misc/header',
+            'components/misc/footer',
+            'components/not-misc/another',
+        ];
+
+        $templateRenderer = Mockery::mock(TemplateRenderer::class);
+        $templateRenderer->shouldReceive('renderPatterns')->once();
+
+        $patternProvider = Mockery::mock(PatternProvider::class);
+        $templateProvider = Mockery::mock(PatternProvider::class);
+        $templateProvider->shouldReceive('allPatternIds')->once()->andReturn([]);
+
+        $documentProvider = Mockery::mock(DocumentProvider::class);
+        $documentProvider->shouldReceive('allDocumentIds')->once()->andReturn([]);
+
+        $primer = new Primer($templateRenderer, $patternProvider, $templateProvider, $documentProvider);
+
+        $patternProvider->shouldReceive('allPatternIds')->twice()->andReturn($patternIds);
+
+        $patternProvider->shouldReceive('getPattern')->with('components/misc/header', 'default')->once()->andReturnUsing(function () use ($primer) {
+            $this->assertSame('default', $primer->currentPatternState());
+
+            return new Pattern('components/misc/header', [], '');
+        });
+
+        $patternProvider->shouldReceive('getPattern')->with('components/misc/footer', 'default')->once()->andReturnUsing(function () use ($primer) {
+            $this->assertSame('default', $primer->currentPatternState());
+
+            return new Pattern('components/misc/footer', [], '');
+        });
+
+        $patternProvider->shouldReceive('getPattern')->with('components/not-misc/another', 'default')->once()->andReturnUsing(function () use ($primer) {
+            $this->assertSame('default', $primer->currentPatternState());
+
+            return new Pattern('components/not-misc/another', [], '');
+        });
+
+        $primer->renderPatterns('components');
     }
 
     /** @test */
@@ -254,7 +342,7 @@ class PrimerTest extends TestCase
         $patternProvider = Mockery::mock(PatternProvider::class);
         $patternProvider
             ->shouldReceive('allPatternIds')->andReturn($patternIds)
-            ->shouldReceive('getPattern')->with('components/misc/header')->once()->andReturn(new Pattern('components/misc/header', [], ''));
+            ->shouldReceive('getPattern')->with('components/misc/header', 'default')->once()->andReturn(new Pattern('components/misc/header', [], ''));
 
         $templateProvider = Mockery::mock(PatternProvider::class);
         $templateProvider->shouldReceive('allPatternIds')->once()->andReturn([]);

@@ -4,7 +4,6 @@ namespace Rareloop\Primer\Twig;
 
 use Rareloop\Primer\Contracts\TemplateProvider;
 use Twig\Loader\LoaderInterface;
-use Twig_Source;
 
 class PrimerLoader implements LoaderInterface
 {
@@ -26,7 +25,7 @@ class PrimerLoader implements LoaderInterface
      */
     public function getSourceContext($name)
     {
-        return new Twig_Source($this->templateProvider->getPatternTemplate($name), $name);
+        return new \Twig\Source($this->templateProvider->getPatternTemplate($name), $name);
     }
 
     /**

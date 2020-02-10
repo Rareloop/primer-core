@@ -51,7 +51,7 @@ class PrimerLoaderTest extends TestCase
 
         $source = $loader->getSourceContext('components/misc/header');
 
-        $this->assertInstanceOf(\Twig_Source::class, $source);
+        $this->assertInstanceOf(\Twig\Source::class, $source);
         $this->assertSame('<h1>Hello World</h1>', $source->getCode());
         $this->assertSame('components/misc/header', $source->getName());
     }

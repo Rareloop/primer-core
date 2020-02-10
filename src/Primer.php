@@ -167,6 +167,15 @@ class Primer
         }
     }
 
+    public function getTemplateStateData(string $id, string $state = 'default'): array
+    {
+        try {
+            return $this->templateProvider->getPatternStateData($id, $state);
+        } catch (PatternNotFoundException $e) {
+            return [];
+        }
+    }
+
     /**
      * Provide custom data to pass to the twig renderer. Is merged into the `primer` set of data
      *

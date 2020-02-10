@@ -535,6 +535,27 @@ class PrimerTest extends TestCase
     }
 
     /** @test */
+    public function can_get_template_state_data()
+    {
+        $templateRenderer = Mockery::mock(TemplateRenderer::class);
+        $patternProvider = Mockery::mock(PatternProvider::class);
+
+        $templateProvider = Mockery::mock(PatternProvider::class);
+        $templateProvider
+            ->shouldReceive('getPatternStateData')
+            ->once()
+            ->with('home', 'state-name')
+            ->andReturn(['foo' => 'bar']);
+        $documentProvider = Mockery::mock(DocumentProvider::class);
+
+        $primer = new Primer($templateRenderer, $patternProvider, $templateProvider, $documentProvider);
+
+        $data = $primer->getTemplateStateData('home', 'state-name');
+
+        $this->assertSame(['foo' => 'bar'], $data);
+    }
+
+    /** @test */
     public function getPatternStateData_returns_empty_array_when_pattern_is_not_valid()
     {
         $templateRenderer = Mockery::mock(TemplateRenderer::class);
@@ -550,6 +571,26 @@ class PrimerTest extends TestCase
         $primer = new Primer($templateRenderer, $patternProvider, $templateProvider, $documentProvider);
 
         $data = $primer->getPatternStateData('components/common/header', 'state-name');
+
+        $this->assertSame([], $data);
+    }
+
+    /** @test */
+    public function getTemplateStateData_returns_empty_array_when_pattern_is_not_valid()
+    {
+        $templateRenderer = Mockery::mock(TemplateRenderer::class);
+        $patternProvider = Mockery::mock(PatternProvider::class);
+
+        $templateProvider = Mockery::mock(PatternProvider::class);
+        $templateProvider
+            ->shouldReceive('getPatternStateData')
+            ->once()
+            ->andThrow(new PatternNotFoundException);
+        $documentProvider = Mockery::mock(DocumentProvider::class);
+
+        $primer = new Primer($templateRenderer, $patternProvider, $templateProvider, $documentProvider);
+
+        $data = $primer->getTemplateStateData('home', 'state-name');
 
         $this->assertSame([], $data);
     }

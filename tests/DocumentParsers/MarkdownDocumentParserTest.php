@@ -24,13 +24,13 @@ class MarkdownDocumentParserTest extends TestCase
     /** @test */
     public function indents_are_not_treated_as_code_blocks()
     {
-        $doc = new Document('id', implode([
+        $doc = new Document('id', implode("\n", [
             '# Heading 1',
             '',
             '    <span>this is not a code block</span>',
             '',
             'Closing paragraph',
-        ], "\n"));
+        ]));
 
         $parser = new MarkdownDocumentParser();
 

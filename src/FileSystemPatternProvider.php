@@ -29,7 +29,7 @@ class FileSystemPatternProvider implements PatternProvider, TemplateProvider
      *
      * @return array
      */
-    public function allPatternIds() : array
+    public function allPatternIds(): array
     {
         if (empty($this->paths)) {
             return [];
@@ -51,7 +51,7 @@ class FileSystemPatternProvider implements PatternProvider, TemplateProvider
      * @param  string $id The pattern ID
      * @return array
      */
-    protected function allPatternStates(string $id) : array
+    protected function allPatternStates(string $id): array
     {
         $path = $this->getPathForPattern($id);
 
@@ -77,7 +77,7 @@ class FileSystemPatternProvider implements PatternProvider, TemplateProvider
      * @param  string $state The state name
      * @return Rareloop\Primer\Pattern
      */
-    public function getPattern(string $id, string $state = 'default') : Pattern
+    public function getPattern(string $id, string $state = 'default'): Pattern
     {
         if (empty($this->paths)) {
             throw new PatternNotFoundException;
@@ -102,14 +102,14 @@ class FileSystemPatternProvider implements PatternProvider, TemplateProvider
      * @param  string $id The pattern ID
      * @return string
      */
-    public function getPatternTemplate(string $id) : string
+    public function getPatternTemplate(string $id): string
     {
         $path = $this->getPathForPattern($id);
 
         return file_get_contents($path . '/template.' . $this->fileExtension);
     }
 
-    protected function convertIdToPathRegex(string $id) : string
+    protected function convertIdToPathRegex(string $id): string
     {
         $parts = array_map(function ($part) {
             return str_replace('-', '\-', $part);
@@ -126,17 +126,16 @@ class FileSystemPatternProvider implements PatternProvider, TemplateProvider
             return $this->patternPaths[$id];
         }
 
-        $finder = $this->createFinderForPattern($id)->name('template.' . $this->fileExtension);
+        foreach ($this->paths as $path) {
+            $filePath = $path . '/' . $id . '/template.' . $this->fileExtension;
 
-        $files = array_values(iterator_to_array($finder));
-
-        if (count($files) === 0) {
-            throw new PatternNotFoundException;
+            if (file_exists($filePath)) {
+                $this->patternPaths[$id] = $path . '/' . $id . '/';
+                return $path . '/' . $id . '/';
+            }
         }
 
-        $this->patternPaths[$id] = $files[0]->getPath();
-
-        return $this->patternPaths[$id];
+        throw new PatternNotFoundException();
     }
 
     /**
@@ -145,7 +144,7 @@ class FileSystemPatternProvider implements PatternProvider, TemplateProvider
      * @param  string $id The pattern ID
      * @return bool
      */
-    public function patternExists(string $id) : bool
+    public function patternExists(string $id): bool
     {
         if (empty($this->paths)) {
             return false;
@@ -169,7 +168,7 @@ class FileSystemPatternProvider implements PatternProvider, TemplateProvider
      * @param  string      $state The state name
      * @return bool
      */
-    public function patternHasState(string $id, string $state = 'default') : bool
+    public function patternHasState(string $id, string $state = 'default'): bool
     {
         if (empty($this->paths)) {
             return false;
@@ -191,7 +190,7 @@ class FileSystemPatternProvider implements PatternProvider, TemplateProvider
         return count($files) > 0;
     }
 
-    protected function supportedFormats() : array
+    protected function supportedFormats(): array
     {
         return array_merge(['php'], $this->dataParser ? $this->dataParser->supportedFormats() : []);
     }
@@ -203,7 +202,7 @@ class FileSystemPatternProvider implements PatternProvider, TemplateProvider
      * @param  string $state [description]
      * @return [type]        [description]
      */
-    public function getPatternStateData(string $id, string $state = 'default') : array
+    public function getPatternStateData(string $id, string $state = 'default'): array
     {
         if (!$this->patternHasState($id, $state)) {
             return [];
@@ -250,7 +249,7 @@ class FileSystemPatternProvider implements PatternProvider, TemplateProvider
      * @param  string $id The pattern ID
      * @return int        Unix timestamp of when last modified
      */
-    public function getPatternTemplateLastModified(string $id) : int
+    public function getPatternTemplateLastModified(string $id): int
     {
         $path = $this->getPathForPattern($id);
 

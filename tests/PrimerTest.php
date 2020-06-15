@@ -535,6 +535,68 @@ class PrimerTest extends TestCase
     }
 
     /** @test */
+    public function current_pattern_and_state_is_set_for_get_pattern_state_data()
+    {
+        $templateRenderer = Mockery::mock(TemplateRenderer::class);
+        $patternProvider = Mockery::mock(PatternProvider::class);
+
+        $templateProvider = Mockery::mock(PatternProvider::class);
+        $documentProvider = Mockery::mock(DocumentProvider::class);
+
+        $primer = new Primer($templateRenderer, $patternProvider, $templateProvider, $documentProvider);
+
+        $patternProvider
+            ->shouldReceive('getPatternStateData')
+            ->once()
+            ->with('components/common/header', 'state-name')
+            ->andReturnUsing(function () use ($primer) {
+                return ['pattern' => $primer->currentPatternId(), 'state' => $primer->currentPatternState()];
+            });
+
+        $data = $primer->getPatternStateData('components/common/header', 'state-name');
+
+        $this->assertSame(['pattern' => 'components/common/header', 'state' => 'state-name'], $data);
+    }
+
+    /** @test */
+    public function current_pattern_and_state_is_set_for_get_pattern_state_data_when_using_include()
+    {
+        $templateRenderer = Mockery::mock(TemplateRenderer::class);
+        $patternProvider = Mockery::mock(PatternProvider::class);
+
+        $templateProvider = Mockery::mock(PatternProvider::class);
+        $documentProvider = Mockery::mock(DocumentProvider::class);
+
+        $primer = new Primer($templateRenderer, $patternProvider, $templateProvider, $documentProvider);
+
+        $patternProvider
+            ->shouldReceive('getPatternStateData')
+            ->once()
+            ->with('components/common/header', 'state-name')
+            ->andReturnUsing(function ($id) use ($primer) {
+                return [
+                    'this' => ['pattern' => $primer->currentPatternId(), 'state' => $primer->currentPatternState()],
+                    'sub' => $primer->getPatternStateData('components/common/footer', 'another-state'),
+                ];
+            });
+
+        $patternProvider
+            ->shouldReceive('getPatternStateData')
+            ->once()
+            ->with('components/common/footer', 'another-state')
+            ->andReturnUsing(function ($id) use ($primer) {
+                return ['pattern' => $primer->currentPatternId(), 'state' => $primer->currentPatternState()];
+            });
+
+        $data = $primer->getPatternStateData('components/common/header', 'state-name');
+
+        $this->assertSame([
+            'this' => ['pattern' => 'components/common/header', 'state' => 'state-name'],
+            'sub' => ['pattern' => 'components/common/footer', 'state' => 'another-state'],
+        ], $data);
+    }
+
+    /** @test */
     public function can_get_template_state_data()
     {
         $templateRenderer = Mockery::mock(TemplateRenderer::class);
@@ -553,6 +615,68 @@ class PrimerTest extends TestCase
         $data = $primer->getTemplateStateData('home', 'state-name');
 
         $this->assertSame(['foo' => 'bar'], $data);
+    }
+
+    /** @test */
+    public function current_template_id_is_set_when_calling_can_get_template_state_data()
+    {
+        $templateRenderer = Mockery::mock(TemplateRenderer::class);
+        $patternProvider = Mockery::mock(PatternProvider::class);
+
+        $templateProvider = Mockery::mock(PatternProvider::class);
+        $documentProvider = Mockery::mock(DocumentProvider::class);
+
+        $primer = new Primer($templateRenderer, $patternProvider, $templateProvider, $documentProvider);
+
+        $templateProvider
+            ->shouldReceive('getPatternStateData')
+            ->once()
+            ->with('home', 'state-name')
+            ->andReturnUsing(function () use ($primer) {
+                return ['template' => $primer->currentTemplateId(), 'state' => $primer->currentTemplateState()];
+            });
+
+        $data = $primer->getTemplateStateData('home', 'state-name');
+
+        $this->assertSame(['template' => 'home', 'state' => 'state-name'], $data);
+    }
+
+    /** @test */
+    public function current_template_id_is_set_when_calling_can_get_template_state_data_when_using_includes()
+    {
+        $templateRenderer = Mockery::mock(TemplateRenderer::class);
+        $patternProvider = Mockery::mock(PatternProvider::class);
+
+        $templateProvider = Mockery::mock(PatternProvider::class);
+        $documentProvider = Mockery::mock(DocumentProvider::class);
+
+        $primer = new Primer($templateRenderer, $patternProvider, $templateProvider, $documentProvider);
+
+        $templateProvider
+            ->shouldReceive('getPatternStateData')
+            ->once()
+            ->with('home', 'state-name')
+            ->andReturnUsing(function () use ($primer) {
+                return [
+                    'this' => ['template' => $primer->currentTemplateId(), 'state' => $primer->currentTemplateState()],
+                    'sub' => $primer->getTemplateStateData('away', 'another-state'),
+                ];
+            });
+
+        $templateProvider
+            ->shouldReceive('getPatternStateData')
+            ->once()
+            ->with('away', 'another-state')
+            ->andReturnUsing(function () use ($primer) {
+                return ['template' => $primer->currentTemplateId(), 'state' => $primer->currentTemplateState()];
+            });
+
+        $data = $primer->getTemplateStateData('home', 'state-name');
+
+        $this->assertSame([
+            'this' => ['template' => 'home', 'state' => 'state-name'],
+            'sub' => ['template' => 'away', 'state' => 'another-state'],
+        ], $data);
     }
 
     /** @test */

@@ -161,7 +161,18 @@ class Primer
     public function getPatternStateData(string $id, string $state = 'default'): array
     {
         try {
-            return $this->patternProvider->getPatternStateData($id, $state);
+            $oldPattern = $this->currentPatternId;
+            $oldState = $this->currentPatternState;
+
+            $this->currentPatternId = $id;
+            $this->currentPatternState = $state;
+
+            $retVal = $this->patternProvider->getPatternStateData($id, $state);
+
+            $this->currentPatternId = $oldPattern;
+            $this->currentPatternState = $oldState;
+
+            return $retVal;
         } catch (PatternNotFoundException $e) {
             return [];
         }
@@ -170,7 +181,18 @@ class Primer
     public function getTemplateStateData(string $id, string $state = 'default'): array
     {
         try {
-            return $this->templateProvider->getPatternStateData($id, $state);
+            $oldTemplate = $this->currentTemplateId;
+            $oldState = $this->currentTemplateState;
+
+            $this->currentTemplateId = $id;
+            $this->currentTemplateState = $state;
+
+            $retVal = $this->templateProvider->getPatternStateData($id, $state);
+
+            $this->currentTemplateId = $id;
+            $this->currentTemplateState = $state;
+
+            return $retVal;
         } catch (PatternNotFoundException $e) {
             return [];
         }

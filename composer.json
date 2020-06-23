@@ -2,7 +2,7 @@
     "name": "rareloop/primer-core",
     "require": {
         "php": ">=7.1.3",
-        "symfony/finder": "^4.2.5",
+        "symfony/finder": "^4.2.5|^5.0",
         "twig/twig": "^2.6",
         "tightenco/collect": "^5.7.0",
         "league/commonmark": "^1.5",

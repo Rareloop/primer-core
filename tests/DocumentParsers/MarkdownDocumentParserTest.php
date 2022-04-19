@@ -36,7 +36,7 @@ class MarkdownDocumentParserTest extends TestCase
 
         $outputDoc = $parser->parse($doc);
 
-        $this->assertNotContains('<pre><code>', $outputDoc->content());
-        $this->assertNotContains('</code></pre>', $outputDoc->content());
+        $this->assertStringNotContainsString('<pre><code>', $outputDoc->content());
+        $this->assertStringNotContainsString('</code></pre>', $outputDoc->content());
     }
 }

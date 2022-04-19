@@ -174,12 +174,10 @@ class FileSystemDocumentProviderTest extends TestCase
         $this->assertSame('01-building.md', $pattern2->content());
     }
 
-    /**
-     * @test
-     * @expectedException Rareloop\Primer\Exceptions\DocumentNotFoundException
-     */
+    /** @test */
     public function getDocument_throws_exception_if_document_does_not_exist()
     {
+        $this->expectException(\Rareloop\Primer\Exceptions\DocumentNotFoundException::class);
         vfsStream::setup();
         $root = vfsStream::create([
             'foo' => [
@@ -202,12 +200,11 @@ class FileSystemDocumentProviderTest extends TestCase
         $this->assertSame([], $dataProvider->allDocumentIds());
     }
 
-    /**
-     * @test
-     * @expectedException Rareloop\Primer\Exceptions\DocumentNotFoundException
-     */
+    /** @test */
     public function getDocument_does_not_fall_over_if_no_paths_are_provided()
     {
+        $this->expectException(\Rareloop\Primer\Exceptions\DocumentNotFoundException::class);
+
         $dataProvider = new FileSystemDocumentProvider([], 'md');
 
         $dataProvider->getDocument('not/found');

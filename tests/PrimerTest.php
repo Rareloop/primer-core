@@ -355,12 +355,11 @@ class PrimerTest extends TestCase
         $this->assertSame('<p>Testing123</p>', $primer->renderPatterns('components/misc/header'));
     }
 
-    /**
-     * @test
-     * @expectedException Rareloop\Primer\Exceptions\PatternNotFoundException
-     */
+    /** @test */
     public function renderPatterns_throws_exception_if_no_matching_patterns_are_found()
     {
+        $this->expectException(\Rareloop\Primer\Exceptions\PatternNotFoundException::class);
+
         $patternIds = [
             'components/misc/header',
             'components/misc/footer',

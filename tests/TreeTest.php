@@ -343,12 +343,11 @@ class TreeTest extends TestCase
         ], $tree->toArray());
     }
 
-    /**
-     * @test
-     * @expectedException Rareloop\Primer\Exceptions\TreeNodeNotFoundException
-     */
+    /** @test  */
     public function setCurrent_throws_exception_when_node_not_found()
     {
+        $this->expectException(\Rareloop\Primer\Exceptions\TreeNodeNotFoundException::class);
+
         $tree = new Tree([
             'components/misc/footer',
             'components/misc/header',

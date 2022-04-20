@@ -56,12 +56,11 @@ class MenuTest extends TestCase
         $this->assertFalse($menu->hasSection('templates'));
     }
 
-    /**
-     * @test
-     * @expectedException Rareloop\Primer\Exceptions\SectionNotFoundException
-     */
+    /** @test */
     public function getSection_throws_an_exception_if_section_is_not_found()
     {
+        $this->expectException(\Rareloop\Primer\Exceptions\SectionNotFoundException::class);
+
         $menu = new Menu();
         $menu->getSection('patterns');
     }

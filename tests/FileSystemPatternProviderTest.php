@@ -109,12 +109,11 @@ class FileSystemPatternProviderTest extends TestCase
         $this->assertSame('<footer>Hello World</footer>', $dataProvider->getPatternTemplate('components/misc/footer'));
     }
 
-    /**
-     * @test
-     * @expectedException Rareloop\Primer\Exceptions\PatternNotFoundException
-     */
+    /** @test */
     public function can_not_get_template_contents_if_partial_id_provided()
     {
+        $this->expectException(\Rareloop\Primer\Exceptions\PatternNotFoundException::class);
+
         vfsStream::setup();
         $root = vfsStream::create([
             'foo' => [
@@ -215,12 +214,11 @@ class FileSystemPatternProviderTest extends TestCase
         $this->assertFalse($dataProvider->patternHasState('components/misc/header', 'unexpected'));
     }
 
-    /**
-     * @test
-     * @expectedException Rareloop\Primer\Exceptions\PatternNotFoundException
-     */
+    /** @test */
     public function patternHasState_throws_exception_if_pattern_does_not_exist()
     {
+        $this->expectException(\Rareloop\Primer\Exceptions\PatternNotFoundException::class);
+
         vfsStream::setup();
         $root = vfsStream::create([
             'foo' => [
@@ -535,12 +533,11 @@ class FileSystemPatternProviderTest extends TestCase
         $this->assertSame([], $data);
     }
 
-    /**
-     * @test
-     * @expectedException Rareloop\Primer\Exceptions\PatternNotFoundException
-     */
+    /** @test */
     public function getPatternStateData_throws_exception_when_pattern_is_invalid()
     {
+        $this->expectException(\Rareloop\Primer\Exceptions\PatternNotFoundException::class);
+
         vfsStream::setup();
         $root = vfsStream::create([
             'foo' => [
@@ -592,12 +589,11 @@ class FileSystemPatternProviderTest extends TestCase
         $this->assertSame([], $dataProvider->getPatternStateData('not/found', 'state'));
     }
 
-    /**
-     * @test
-     * @expectedException Rareloop\Primer\Exceptions\PatternNotFoundException
-     */
+    /** @test */
     public function getPattern_does_not_fall_over_if_no_paths_are_provided()
     {
+        $this->expectException(\Rareloop\Primer\Exceptions\PatternNotFoundException::class);
+
         $dataProvider = new FileSystemPatternProvider([], 'md');
 
         $dataProvider->getPattern('not/found');

@@ -2,13 +2,13 @@
 
 namespace Rareloop\Primer;
 
+use Rareloop\Primer\Pattern;
+use Illuminate\Support\Collection;
+use Symfony\Component\Finder\Finder;
 use Rareloop\Primer\Contracts\DataParser;
 use Rareloop\Primer\Contracts\PatternProvider;
 use Rareloop\Primer\Contracts\TemplateProvider;
 use Rareloop\Primer\Exceptions\PatternNotFoundException;
-use Rareloop\Primer\Pattern;
-use Symfony\Component\Finder\Finder;
-use Tightenco\Collect\Support\Collection;
 
 class FileSystemPatternProvider implements PatternProvider, TemplateProvider
 {

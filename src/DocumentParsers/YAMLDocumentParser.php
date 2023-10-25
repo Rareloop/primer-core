@@ -2,28 +2,24 @@
 
 namespace Rareloop\Primer\DocumentParsers;
 
-use Mni\FrontYAML\Parser;
 use Rareloop\Primer\Contracts\DocumentParser;
 use Rareloop\Primer\Document;
 use Spatie\YamlFrontMatter\YamlFrontMatter;
 
 class YAMLDocumentParser implements DocumentParser
 {
-    public function parse(Document $document) : Document
+    public function parse(Document $document): Document
     {
-        $parser = new Parser;
-        $parsedDocument = $parser->parse($document->content(), false);
-        $yaml = $parsedDocument->getYAML();
+        $parsedDocument = YamlFrontMatter::parse($document->content());
 
-        $newDoc = new Document($document->id(), $parsedDocument->getContent());
-        $newDoc->setMeta($yaml ?? []);
+        $newDoc = new Document($document->id(), $parsedDocument->body());
+        $newDoc->setMeta($parsedDocument->matter() ?? []);
 
-        if (!empty($yaml['title'])) {
-            $newDoc->setTitle($yaml['title']);
+        if (!empty($parsedDocument->matter('title'))) {
+            $newDoc->setTitle($parsedDocument->matter('title'));
         }
 
-        $newDoc->setDescription($yaml['description'] ?? '');
-
+        $newDoc->setDescription($parsedDocument->matter('description') ?? '');
         return $newDoc;
     }
 }

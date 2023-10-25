@@ -14,6 +14,7 @@ class FileSystemPatternProvider implements PatternProvider, TemplateProvider
 {
     protected $paths;
     protected $fileExtension;
+    protected ?DataParser $dataParser;
 
     protected $patternPaths = [];
 

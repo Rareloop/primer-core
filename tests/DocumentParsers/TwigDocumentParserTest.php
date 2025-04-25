@@ -3,11 +3,13 @@
 namespace Rareloop\Primer\Test\DataParsers;
 
 use Mockery;
-use PHPUnit\Framework\TestCase;
+use Twig\Environment;
 use Rareloop\Primer\Document;
+use PHPUnit\Framework\TestCase;
 use Rareloop\Primer\DocumentParsers\TwigDocumentParser;
 use Rareloop\Primer\DocumentParsers\YAMLDocumentParser;
-use Twig\Environment;
+use Twig\Template;
+use Twig\TemplateWrapper;
 
 class TwigDocumentParserTest extends TestCase
 {
@@ -17,11 +19,13 @@ class TwigDocumentParserTest extends TestCase
         $doc = new Document('id', 'Twig Input');
         $doc->setMeta(['foo' => 'bar']);
 
+        $twig = Mockery::mock(Environment::class);
         $template = Mockery::mock(Template::class);
+        $templateWrapper = new TemplateWrapper($twig, $template);
+
         $template->shouldReceive('render')->with($doc->meta())->once()->andReturn('Twig Output');
 
-        $twig = Mockery::mock(Environment::class);
-        $twig->shouldReceive('createTemplate')->with('Twig Input')->once()->andReturn($template);
+        $twig->shouldReceive('createTemplate')->with('Twig Input')->once()->andReturn($templateWrapper);
 
         $parser = new TwigDocumentParser($twig);
 

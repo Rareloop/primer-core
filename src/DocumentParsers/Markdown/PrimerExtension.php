@@ -47,6 +47,7 @@ use League\CommonMark\Extension\CommonMark\Renderer\Inline\StrongRenderer;
 use League\CommonMark\Extension\ExtensionInterface;
 use League\CommonMark\Environment\EnvironmentBuilderInterface;
 use League\CommonMark\Extension\CommonMark\Delimiter\Processor\EmphasisDelimiterProcessor;
+use League\CommonMark\Extension\ConfigurableExtensionInterface;
 use League\CommonMark\Node\Block\Document;
 use League\CommonMark\Node\Block\Paragraph;
 use League\CommonMark\Node\Inline\Newline;
@@ -56,14 +57,27 @@ use League\CommonMark\Renderer\Block\DocumentRenderer;
 use League\CommonMark\Renderer\Block\ParagraphRenderer;
 use League\CommonMark\Renderer\Inline\NewlineRenderer;
 use League\CommonMark\Renderer\Inline\TextRenderer;
+use League\Config\ConfigurationBuilderInterface;
+use Nette\Schema\Expect;
 
 /**
  * Primer flavoured Markdown setup. It is the same as the CommonMarkCoreExtension but with the
  * `IndentedCodeStartParser` removed to allow for embedded Twig code in Markdown to be interpretted
  * rather than code blocked.
  */
-class PrimerExtension implements ExtensionInterface
+class PrimerExtension implements ConfigurableExtensionInterface
 {
+    public function configureSchema(ConfigurationBuilderInterface $builder): void
+    {
+        $builder->addSchema('commonmark', Expect::structure([
+            'use_asterisk' => Expect::bool(true),
+            'use_underscore' => Expect::bool(true),
+            'enable_strong' => Expect::bool(true),
+            'enable_em' => Expect::bool(true),
+            'unordered_list_markers' => Expect::listOf('string')->min(1)->default(['*', '+', '-'])->mergeDefaults(false),
+        ]));
+    }
+
     public function register(EnvironmentBuilderInterface $environment): void
     {
         $environment

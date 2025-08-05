@@ -32,7 +32,6 @@ class MarkdownDocumentParser implements DocumentParser
                 'inner_separator' => "\n",
                 'soft_break'      => "\n",
             ],
-            'safe'               => false, // deprecated option
             'html_input'         => HtmlFilter::ALLOW,
             'allow_unsafe_links' => true,
             'max_nesting_level'  => PHP_INT_MAX,

@@ -73,8 +73,9 @@ class PrimerExtension implements ExtensionInterface
             ->addBlockStartParser(new HtmlBlockStartParser(),      40)
             ->addBlockStartParser(new ThematicBreakStartParser(),  20)
             ->addBlockStartParser(new ListBlockStartParser(),      10)
+            // ->addBlockStartParser(new IndentedCodeStartParser(), -100)
 
-            ->addInlineParser(new NewlineParser(), 200)
+            ->addInlineParser(new NewlineParser(),     200)
             ->addInlineParser(new BacktickParser(),    150)
             ->addInlineParser(new EscapableParser(),    80)
             ->addInlineParser(new EntityParser(),       70)
@@ -85,14 +86,14 @@ class PrimerExtension implements ExtensionInterface
             ->addInlineParser(new BangParser(),         10)
 
             ->addRenderer(BlockQuote::class,    new BlockQuoteRenderer(),    0)
-            ->addRenderer(Document::class, new DocumentRenderer(),  0)
+            ->addRenderer(Document::class,      new DocumentRenderer(),      0)
             ->addRenderer(FencedCode::class,    new FencedCodeRenderer(),    0)
             ->addRenderer(Heading::class,       new HeadingRenderer(),       0)
             ->addRenderer(HtmlBlock::class,     new HtmlBlockRenderer(),     0)
             ->addRenderer(IndentedCode::class,  new IndentedCodeRenderer(),  0)
             ->addRenderer(ListBlock::class,     new ListBlockRenderer(),     0)
             ->addRenderer(ListItem::class,      new ListItemRenderer(),      0)
-            ->addRenderer(Paragraph::class, new ParagraphRenderer(), 0)
+            ->addRenderer(Paragraph::class,     new ParagraphRenderer(),     0)
             ->addRenderer(ThematicBreak::class, new ThematicBreakRenderer(), 0)
 
             ->addRenderer(Code::class,        new CodeRenderer(),        0)
@@ -100,9 +101,9 @@ class PrimerExtension implements ExtensionInterface
             ->addRenderer(HtmlInline::class,  new HtmlInlineRenderer(),  0)
             ->addRenderer(Image::class,       new ImageRenderer(),       0)
             ->addRenderer(Link::class,        new LinkRenderer(),        0)
-            ->addRenderer(Newline::class, new NewlineRenderer(), 0)
+            ->addRenderer(Newline::class,     new NewlineRenderer(),     0)
             ->addRenderer(Strong::class,      new StrongRenderer(),      0)
-            ->addRenderer(Text::class,    new TextRenderer(),    0);
+            ->addRenderer(Text::class,        new TextRenderer(),        0);
 
 
         if ($environment->getConfiguration()->get('commonmark/use_asterisk')) {

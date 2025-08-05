@@ -3,7 +3,9 @@
 namespace Rareloop\Primer\DocumentParsers;
 
 use League\CommonMark\CommonMarkConverter;
-use League\CommonMark\Environment;
+use League\CommonMark\Environment\Environment;
+use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
+use League\CommonMark\Util\HtmlFilter;
 use Rareloop\Primer\DocumentParsers\Markdown\PrimerExtension;
 use Rareloop\Primer\Contracts\DocumentParser;
 use Rareloop\Primer\Document;
@@ -20,19 +22,18 @@ class MarkdownDocumentParser implements DocumentParser
 
     protected function createEnvironment(): Environment
     {
-        $environment = new Environment();
-        $environment->addExtension(new PrimerExtension());
-        $environment->mergeConfig([
+        $environment = new Environment([
             'renderer' => [
                 'block_separator' => "\n",
                 'inner_separator' => "\n",
                 'soft_break'      => "\n",
             ],
             'safe'               => false, // deprecated option
-            'html_input'         => Environment::HTML_INPUT_ALLOW,
+            'html_input'         => HtmlFilter::ALLOW,
             'allow_unsafe_links' => true,
             'max_nesting_level'  => INF,
         ]);
+        $environment->addExtension(new PrimerExtension());
 
         return $environment;
     }

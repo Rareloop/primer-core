@@ -73,11 +73,17 @@ class PrimerExtension implements ConfigurableExtensionInterface
             'commonmark',
             Expect::structure(
                 [
-                'use_asterisk' => Expect::bool(true),
-                'use_underscore' => Expect::bool(true),
-                'enable_strong' => Expect::bool(true),
-                'enable_em' => Expect::bool(true),
-                'unordered_list_markers' => Expect::listOf('string')->min(1)->default(['*', '+', '-'])->mergeDefaults(false),
+                    'use_asterisk' => Expect::bool(true),
+                    'use_underscore' => Expect::bool(true),
+                    'enable_strong' => Expect::bool(true),
+                    'enable_em' => Expect::bool(true),
+                    'unordered_list_markers' => Expect::listOf('string')
+                        ->min(1)
+                        ->default([
+                            '*',
+                            '+',
+                            '-'
+                        ])->mergeDefaults(false),
                 ]
             )
         );

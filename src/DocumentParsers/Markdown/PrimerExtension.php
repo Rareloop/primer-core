@@ -74,7 +74,7 @@ class PrimerExtension implements ExtensionInterface
             ->addBlockStartParser(new ThematicBreakStartParser(),  20)
             ->addBlockStartParser(new ListBlockStartParser(),      10)
 
-            ->addInlineParser(new NewlineParser(),  200)
+            ->addInlineParser(new NewlineParser(), 200)
             ->addInlineParser(new BacktickParser(),    150)
             ->addInlineParser(new EscapableParser(),    80)
             ->addInlineParser(new EntityParser(),       70)
@@ -114,4 +114,3 @@ class PrimerExtension implements ExtensionInterface
         }
     }
 }
-c

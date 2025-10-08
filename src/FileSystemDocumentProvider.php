@@ -14,14 +14,14 @@ class FileSystemDocumentProvider implements DocumentProvider
     protected $fileExtension;
     protected $documentParser;
 
-    public function __construct(array $paths, string $fileExtension, DocumentParser $parser = null)
+    public function __construct(array $paths, string $fileExtension, ?DocumentParser $parser = null)
     {
         $this->paths = $paths;
         $this->fileExtension = $fileExtension;
         $this->documentParser = $parser;
     }
 
-    public function allDocumentIds() : array
+    public function allDocumentIds(): array
     {
         if (empty($this->paths)) {
             return [];
@@ -43,7 +43,7 @@ class FileSystemDocumentProvider implements DocumentProvider
         })->values()->toArray();
     }
 
-    public function getDocument(string $id) : Document
+    public function getDocument(string $id): Document
     {
         if (empty($this->paths)) {
             throw new DocumentNotFoundException;
@@ -67,7 +67,7 @@ class FileSystemDocumentProvider implements DocumentProvider
         return $this->documentParser ? $this->documentParser->parse($doc) : $doc;
     }
 
-    protected function getFolderPathFromId(string $id) : string
+    protected function getFolderPathFromId(string $id): string
     {
         $parts = explode('/', $id);
         array_pop($parts);
@@ -75,7 +75,7 @@ class FileSystemDocumentProvider implements DocumentProvider
         return $this->convertIdToPathRegex(implode('/', $parts));
     }
 
-    protected function convertIdToPathRegex(string $id) : string
+    protected function convertIdToPathRegex(string $id): string
     {
         $parts = array_map(function ($part) {
             return '([0-9]+\-)?' . str_replace('-', '\-', $part);

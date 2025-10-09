@@ -4,7 +4,7 @@
         "php": ">=8.1",
         "symfony/finder": "^6.4.24",
         "twig/twig": "^3.21.1",
-        "illuminate/collections": "^8.53.1||^9.52.16",
+        "illuminate/collections": "^10",
         "league/commonmark": "^2.7.1",
         "spatie/yaml-front-matter": "^2.1"
     },

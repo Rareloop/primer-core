@@ -18,7 +18,7 @@ class FileSystemPatternProvider implements PatternProvider, TemplateProvider
 
     protected $patternPaths = [];
 
-    public function __construct(array $paths, $fileExtension, DataParser $dataParser = null)
+    public function __construct(array $paths, $fileExtension, ?DataParser $dataParser = null)
     {
         $this->paths = $paths;
         $this->fileExtension = $fileExtension;

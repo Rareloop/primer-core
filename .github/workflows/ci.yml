@@ -1,6 +1,13 @@
 name: CI
 
-on: [push, pull_request]
+on:
+    push:
+        branches: [main]
+    pull_request:
+
+concurrency:
+    group: ci-${{ github.head_ref || github.ref }}
+    cancel-in-progress: true
 
 jobs:
     build-test:
